@@ -11,10 +11,38 @@ from customer.forms import *
 
 
 # Create your views here.
+
+
+
+
+# --------------------------------------------------------------------
 def adminpart(request):
+    form = Customer()
+    form = Customer(request.POST or None, request.FILES or None)
+    if request.method == 'POST':
+        adminlogin = authenticate(username = request.POST ['username'],password = request.POST['password1'])
+        username = request.POST['username']
+        if adminlogin is not None:
+            admincheck = Usercreation.objects.get(username = username)
+            if admincheck.is_superuser:
+                return render(request,'adminpart/dashbord.html')
+        
+        else:
+            errorshowing = 'Incorrect user name and password'
+            return render(request,'adminpart/admin_login.html',{'errorshowing': errorshowing,'form':form})
+
+        
+    else:
+        form = Customer()
+        return render(request,'adminpart/admin_login.html',{'form':form })
+
+# --------------------------------------------------------------------
+def admin_dashboard(request):
+
     return render(request,'adminpart/dashbord.html')
 
 # --------------------------------------------------------------------
+
 
 
 

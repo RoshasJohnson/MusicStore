@@ -37,7 +37,7 @@ class Product(models.Model):
     product_prize     =  models.FloatField(max_length=200, null = True)
     category_type   = models.ForeignKey(Category,on_delete=models.CASCADE,null = True)
     stock           = models.IntegerField(max_length=200,default = 0)
-    product_image = models.FileField(null= True,blank = True,upload_to ='images/')
+    product_image = models.ImageField(null= True,blank = True,upload_to ='images/')
     def __str__(self):
         return self.product_name
          
