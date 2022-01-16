@@ -1,0 +1,62 @@
+{% extends 'adminpart/base.html' %}
+
+{% block content%}
+{% load static %}
+
+
+<div class='ml-5 mt-5 col-xm-12-lg-3'>
+    <div class="border   " style="color:black;"><a class="btn btn" href="/adminpanel/add_product/"  role="sumbit"><button type="button" class="btn btn-outline-success">Add Product</button></a></div>
+
+    <table class="table">
+    <thead> 
+      <tr>
+        <th  scope="col" class="border border-primary " style="color:black;">Product Name</th>
+        <th scope="col" class="border border-primary" style="color:black;">Category</th>
+        <th scope="col" class="border border-primary" style="color:black;">description</th>
+        <th scope="col" class="border border-primary" style="color:black;">Product_prize</th>
+        <th scope="col" class="border border-primary" style="color:black;">Product stock</th>
+        <th scope="col" class="border border-primary" style="color:black;">Product Image</th>
+        <th scope="col" class="border border-primary" style="color:black;">Edit Product </th>
+        <th scope="col" class="border border-primary" style="color:black;"> Delete Product</th>
+
+        
+      </tr>
+    </thead>
+    {% for i in products  %}
+   
+    <tbody class="border border-danger">
+      <tr>
+        <td class="border border-primary" style="color:black;">{{i.product_name }}</td>
+        <td class="border border-primary" style="color:black;">{{i.category_type}}</td>
+        <td class="border border-primary" style="color:black;">{{i.product_description}}</td>
+        <td class="border border-primary" style="color:black;">{{i.product_prize}}</td>
+        <td class="border border-primary" style="color:black;">{{i.stock}}</td>
+        <td class="border border-primary" style="color:black;"> <img class="rounded mx-auto d-block" src='{{ i.product_image.url }}'  alt="..."></td>
+        <td class="border border-primary" style="color:black;"><a class="btn btn" href="{% url 'update_product' i.id %}" role="sumbit"><button type="button" class="btn btn-outline-warning">Edit</button></a></td>
+        <td class="border border-primary" style="color:black;"><a class="btn btn" href="{% url 'delete_product' i.id %}" role="sumbit"><button type="button" onclick=alert('Item deleted') class="btn btn-outline-danger">Delete</button></a></td>
+      </tr>
+    
+  {% endfor %}
+    
+    </tbody>
+  </table>
+
+   
+  {{ products }}
+
+  {% if products.has_previous %}
+  
+  <a href="?page=1">&laquo First </a>
+  
+  <a href="?page={{ products.previous_page_number}}">Previous </a>
+  
+  {% endif %}
+  {% if products.has_next %}
+  
+  <a href="?page={{ products.next_page_number}}">Next </a>
+  
+  <a href="?page={{ products.paginator.num_pages}}">Last &raquo </a>
+  </div>
+  
+  {% endif %}
+  {% endblock %}

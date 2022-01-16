@@ -1,0 +1,28 @@
+{% extends 'adminpart/base.html' %}
+
+{% load static%}
+{% block content %}
+
+
+
+<div class = 'ml-5'>
+
+    <form method="post" enctype="multipart/form-data"  class="post-form" action="/adminpanel/update_product/{{update.id}}/">  
+      {% csrf_token %} 
+      {% for f in form %}
+      <div class = 'form-group'>
+  
+        {{f.label_tag}}{{f}} {{f.errors|striptags}}
+  
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-success">Update</button>
+    </div>  
+</form>
+
+
+
+</div>
+
+
+{% endblock %}

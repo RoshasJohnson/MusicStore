@@ -1,0 +1,65 @@
+{% extends 'adminpart/base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+<div class='ml-5 mt-5'>
+    
+
+<table class="table">
+    <thead>
+      <tr>
+        <th  scope="col" class="border border-danger " style="color:black;">Number</th>
+        <th  scope="col" class="border border-danger " style="color:black;">Username</th>
+        <th scope="col" class="border border-danger" style="color:black;">First Name</th>
+        <th scope="col" class="border border-danger" style="color:black;">Second Name</th>
+        <th scope="col" class="border border-danger" style="color:black;">Email</th>
+        <th scope="col" class="border border-danger" style="color:black;">Phone Number</th>
+        <th scope="col" class="border border-danger" style="color:black;">Status</th>
+        <div class="border " style="color:black;"><a class="btn btn" href="" role="sumbit"><button type="button" class="btn btn-outline-success">Add User</button></a></div>
+      </tr>
+    </thead>
+    {% for i in listing  %}
+    {% if i.is_superuser == 0 %}
+    <tbody class="border border-danger">
+      <tr>
+        <th scope="row" class="border border-danger" style="color:black;">
+            {{i.id}}
+     
+        </th>
+        <th scope="row" class="border border-danger" style="color:black;">{{i.username}}</th>
+        <td class="border border-danger" style="color:black;">{{i.first_name}}</td>
+        <td class="border border-danger" style="color:black;">{{i.last_name}}</td>
+        <td class="border border-danger" style="color:black;">{{i.email}}</td>
+        <td class="border border-danger" style="color:black;">{{i.phone_number}}</td>
+        <td class="border border-danger" style="color:black;"><a class="btn btn" href="" role="sumbit"><button type="button" class="btn btn-outline-success">Unblock</button></a></td>
+      
+      </tr>
+      {% endif %}
+  {% endfor %}
+    
+    </tbody>
+  </table>
+ 
+</div>
+  
+
+
+   <div class="border "> 
+       {{ listing }}
+
+{% if listing.has_previous %}
+
+<a href="?page={{ listing.previous_page_number}}">Previous </a>
+
+{% endif %}
+{% if listing.has_next %}
+
+<a href="?page={{ listing.next_page_number}}">Next </a>
+
+
+</div>
+
+{% endif %}
+{% endblock %}
