@@ -1,6 +1,5 @@
 
 {% extends 'customer/header.html' %}
-{% load crispy_forms_tags %}
 
 {% load static %}
 <!DOCTYPE HTML>
@@ -10,7 +9,6 @@
 <meta http-equiv="pragma" content="no-cache" />
 <meta http-equiv="cache-control" content="max-age=604800" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 <title>GreatKart | One of the Biggest Online Shopping Platform</title>
 
@@ -27,7 +25,7 @@
 <link href="{% static 'fonts/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet">
 
 <!-- custom style -->
-<link href="{% static '' %}css/ui.css" rel="stylesheet" type="text/css"/>
+<link href="{% static 'css/ui.css' %}" rel="stylesheet" type="text/css"/>
 <link href="css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
 
 <!-- custom javascript -->
@@ -48,35 +46,34 @@ $(document).ready(function() {
 <body>
 
 
-{%block content%}
+{% block content %}
+
 
 
 <!-- ========================= SECTION CONTENT ========================= -->
-<section class="section-content padding-y">
+<section class="section-conten padding-y" style="min-height:84vh">
 
-<!-- ============================ COMPONENT REGISTER   ================================= -->
-	<div class="card mx-auto" style="max-width:520px; margin-top:px;">
-      <article class="card-body">
-		<header class="mb-4"><h4 class="card-title">Sign up</h4></header>	
-		
-       <form method ='post' action='/' >
-		{% csrf_token %} 
-		{% for f in form %}
-		<div class = 'form-group'>
+<!-- ============================ COMPONENT LOGIN   ================================= -->
+		<div class="card mx-auto" style="max-width: 380px;">
+		<div class="card-body">
+		<h4 class="card-title mb-4">Sign up</h4>
+		<form method ='post' action='/signup/' >
+			{% csrf_token %} 
+			{% for f in form %}
+			<div class = 'form-group'>
+	
+				{{f.label_tag}}{{f}} {{f.errors|striptags}}
+	
+			</div>
+			{% endfor %}
+			<button style="border: red;background-color: red;" type="submit" class="btn btn-primary btn-block"> sign up  </button>
+		   </form>
+		</div> <!-- card-body.// -->
+		</div> <!-- card .// -->
 
-			{{f.label_tag}}{{f}} {{f.errors|striptags}}
-
-		</div>
-		{% endfor %}
-		<button type="submit" class="btn btn-success">button</button>
-	   </form>
-	 
-
-		</article><!-- card-body.// -->
-    </div> <!-- card .// -->
-    <p class="text-center mt-4">Have an account? <a href="">Log In</a></p>
-    <br><br>
-<!-- ============================ COMPONENT REGISTER  END.// ================================= -->
+     <p class="text-center mt-4">Don't have account? <a href="/registeruser/">Sign up</a></p>
+     <br><br>
+<!-- ============================ COMPONENT LOGIN  END.// ================================= -->
 
 
 </section>
@@ -87,17 +84,14 @@ $(document).ready(function() {
 <footer class="section-footer border-top padding-y">
 	<div class="container">
 		<p class="float-md-right"> 
-			&copy Copyright 2019 All rights reserved
+			Copyright © 2022 Everything Inc. All rights reserved.
 		</p>
-		<p>
-			<a href="#">Terms and conditions</a>
-		</p>
+		
 	</div><!-- //container -->
 </footer>
 <!-- ========================= FOOTER END // ========================= -->
 
-
+{% endblock%}
 
 </body>
 </html>
-{% endblock%}

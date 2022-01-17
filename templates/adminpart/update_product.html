@@ -5,24 +5,93 @@
 
 
 
-<div class = 'ml-5'>
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="max-age=604800" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <form method="post" enctype="multipart/form-data"  class="post-form" action="/adminpanel/update_product/{{update.id}}/">  
+<title>GreatKart | One of the Biggest Online Shopping Platform</title>
+
+<link href="{% static 'images/favicon.ico' %}" rel="shortcut icon" type="image/x-icon">
+
+<!-- jQuery -->
+<script src="{% static 'js/jquery-2.0.0.min.js' %}" type="text/javascript"></script>
+
+<!-- Bootstrap4 files-->
+<script src="{% static 'js/bootstrap.bundle.min.js' %}" type="text/javascript"></script>
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css"/>
+
+<!-- Font awesome 5 -->
+<link href="{% static 'fonts/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet">
+
+<!-- custom style -->
+<link href="{% static 'css/ui.css' %}" rel="stylesheet" type="text/css"/>
+<link href="css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
+
+<!-- custom javascript -->
+<script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+
+<script type="text/javascript">
+/// some script
+
+// jquery ready start
+$(document).ready(function() {
+	// jQuery code
+
+}); 
+// jquery end
+</script>
+
+</head>
+<body>
+
+
+
+
+
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-x ml-5" style="min-height:84vh">
+
+<!-- ============================ COMPONENT LOGIN   ================================= -->
+		<div class="card mx-auto" style="max-width: 380px;">
+		<div class="card-body">
+		
+		   <form method="post" enctype="multipart/form-data"  class="post-form" action="/adminpanel/update_product/{{update.id}}/">  
       {% csrf_token %} 
-      {% for f in form %}
-      <div class = 'form-group'>
-  
-        {{f.label_tag}}{{f}} {{f.errors|striptags}}
-  
-      </div>
-      {% endfor %}
-      <button type="submit" class="btn btn-success">Update</button>
-    </div>  
+        {% for f in form %}
+        <div class = 'form-group'>
+    
+          {{f.label_tag}}{{f}} {{f.errors|striptags}}
+    
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-success ml-5"> Add</button>
+      </div>   
 </form>
+		</div> <!-- card-body.// -->
+		</div> <!-- card .// -->
+
+<!-- ============================ COMPONENT LOGIN  END.// ================================= -->
 
 
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
 
-</div>
+
+<!-- ========================= FOOTER ========================= -->
+
+		<p class="float-md-right"> 
+			Copyright © 2022 Everything Inc. All rights reserved.
+		</p>
+		
+	</div><!-- //container -->
+</footer>
+<!-- ========================= FOOTER END // ========================= -->
+
 
 
 {% endblock %}

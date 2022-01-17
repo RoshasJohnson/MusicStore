@@ -1,5 +1,5 @@
 
-{% extends 'customer/base.html' %}
+{% extends 'customer/header.html' %}
 
 
 {% load static%}
@@ -8,7 +8,7 @@
 <body>  
         <!-- banner part start-->
     
-        <section class="banner_part">
+        {% comment %} <section class="banner_part">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-12">
@@ -47,29 +47,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div class="single_banner_slider">
-                                <div class="row">
-                                    <div class="col-lg-5 col-md-8">
-                                        <div class="banner_text">
-                                            <div class="banner_text_iner">
-                                                <h1>Cloth $ Wood Sofa</h1>
-                                                <p>Incididunt ut labore et dolore magna aliqua quis ipsum
-                                                    suspendisse ultrices gravida. Risus commodo viverra</p>
-                                                <a href="#" class="btn_2">buy now</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="banner_img d-none d-lg-block">
-                                        <img src="img/banner_img.png" alt="">
-                                    </div>
-                                </div>
-                            </div> -->
                         </div>
                         <div class="slider-counter"></div>
                     </div>
                 </div>
             </div>
-        </section>
+        </section> {% endcomment %}
         <!-- banner part start-->
 
     <!-- feature_part start-->
@@ -86,14 +69,29 @@
 
 
                 <!-- for loops stars -->
-                    <div class="col-lg-5 col-sm-6">
+                {% for i in products %}
+                <a href="{% url 'selected_Product' i.id %}">
+                    <div class="col-lg-5 col-sm-6"> 
                         <div class="single_feature_post_text">
-                            <p>Premium Quality</p>
-                            <h3>Latest foam Sofa</h3>
-                            <a href="#" class="feature_btn">EXPLORE NOW <i class="fas fa-play"></i></a>
-                            <img src="img/items/woodwind1.jpg" alt="">
+                            <img class  src="{{ i.product_image }}" alt="">
+                            <h3>{{i.product_name}}</h3>
+                            <p>{{i.product_description}}</p>
+                            <p style ='color:red; margin-top:10%'>$  {{i.product_prize}}</p>
+                            
+                            <a href="#" class="feature_btn"> BUY NOW<i class="fas fa-play"></i></a>
+
+                            
                         </div>
                     </div>
+                </a>
+                {% comment %} <style>
+                    .bimg{
+                        background-image: url("{{i.product_image.url}}");
+                        background-color: #cccccc;
+                    }
+
+                </style> {% endcomment %}
+                    {% endfor %}
                 <!-- for loops ends -->
             
             </div>
@@ -119,16 +117,19 @@
 
 
                                 <!-- for loop starts -->
+                                {% for i in products %}
                                     <div class="col-lg-3 col-sm-6">
                                         <div class="single_product_item">
-                                            <img src="img/items/percusion.jpg" alt="">
+                                            <img src="{{ i.product_image.url }}"  alt="g">
                                             <div class="single_product_text">
-                                                <h4>Quartz Belt Watch</h4>
+                                                <h4>{{i.product_name}}</h4>
                                                 <h3>$150.00</h3>
-                                                <a href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
+                                                <a href="#" class="add_cart">add to cart<i class="ti-heart"></i></a>
+                                                <a href="#" class="add_cart ml-3">Buy Now</a>
                                             </div>
                                         </div>
                                     </div>
+                                    {% endfor %}
                                 <!-- for loop ends -->
                             </div>
                         </div>
@@ -138,18 +139,19 @@
                         <div class="single_product_list_slider">
                             <div class="row align-items-center justify-content-between">
 
-                                <!-- for loop -->
+                                {% for i in products %}
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="single_product_item">
-                                        <img src="img/items/guitar3.jpg" alt="">
+                                        <img src="{{ i.product_image }}"  alt="">
                                         <div class="single_product_text">
-                                            <h4>Quartz roshas Belt Watch</h4>
+                                            <h4>{{i.product_name}}</h4>
                                             <h3>$150.00</h3>
-                                            <a href="#" class="add_cart">+ add to cart<i class="ti-heart"></i></a>
+                                            <a href="#" class="add_cart">add to cart<i class="ti-heart"></i></a>
+                                            <a href="#" class="add_cart text-center">Buy Now</a>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- for loop ends -->
+                                {% endfor %}
 
                             </div>
                         </div>
@@ -181,13 +183,15 @@
                     <div class="best_product_slider owl-carousel">
 
                         <!-- for loop starts -->
+                        {% for i in products %}
                             <div class="single_product_item">
-                                <img src="img/items/piano4jpg" alt="">
+                                <img src="{{ i.product_image }}"  alt="">
                                 <div class="single_product_text">
-                                    <h4>Quartz roshasBelt Watch</h4>
+                                    <h4>{{i.product_name}}</h4>
                                     <h3>$150.00</h3>
                                 </div>
                             </div>
+                            {% endfor %}
                         <!-- for loop ends -->
                     </div>
                 </div>

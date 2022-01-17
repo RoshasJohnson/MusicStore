@@ -70,12 +70,9 @@ def user_view_full_details(request, pk):
 # Fetching products data and displaying
 
 def product_view(request):
-    page_inition = Paginator(Product.objects.all(),5)
+    page_inition = Paginator(Product.objects.all(),4)
     page = request.GET.get('page')
     products =page_inition.get_page(page)
-
-    
-
     return render(request,'adminpart/product-management.html',{'products':products})
 
 # -------------------------------------------------------------------- 
@@ -124,3 +121,10 @@ def add_product(request):
    
 
 
+
+def userStatusview(request,id):
+    id = request.GET.get('id')
+    status =Usercreation.objects.get(id = id)
+    status.is_active = not(status.is_active)
+    status.save()
+    return redirect ('usermanagement')

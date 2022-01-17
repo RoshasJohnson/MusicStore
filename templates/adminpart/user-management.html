@@ -17,7 +17,6 @@
         <th scope="col" class="border border-danger" style="color:black;">Email</th>
         <th scope="col" class="border border-danger" style="color:black;">Phone Number</th>
         <th scope="col" class="border border-danger" style="color:black;">Status</th>
-        <div class="border " style="color:black;"><a class="btn btn" href="" role="sumbit"><button type="button" class="btn btn-outline-success">Add User</button></a></div>
       </tr>
     </thead>
     {% for i in listing  %}
@@ -33,7 +32,13 @@
         <td class="border border-danger" style="color:black;">{{i.last_name}}</td>
         <td class="border border-danger" style="color:black;">{{i.email}}</td>
         <td class="border border-danger" style="color:black;">{{i.phone_number}}</td>
-        <td class="border border-danger" style="color:black;"><a class="btn btn" href="" role="sumbit"><button type="button" class="btn btn-outline-success">Unblock</button></a></td>
+        <td class="border border-danger" style="color:black;"><a class="btn btn" href="{% url 'userstatus' i.id %}" role="sumbit">
+          {% if status.is_active %}
+          <button type="submit" class="btn btn-outline-success">block</button>
+          {% else %}
+          <button type="submit" class="btn btn-outline-danger">Unblock</button>
+          {% endif %}
+        </a>
       
       </tr>
       {% endif %}
@@ -46,7 +51,7 @@
   
 
 
-   <div class="border "> 
+  
        {{ listing }}
 
 {% if listing.has_previous %}
