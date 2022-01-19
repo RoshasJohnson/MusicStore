@@ -35,7 +35,10 @@
         <td class="border border-primary" style="color:black;">{{i.stock}}</td>
         {% comment %} <td class="border border-primary" style="color:black;"> <img class="rounded mx-auto d-block" src='{{ i.product_image.url }}'  alt="..."></td> {% endcomment %}
         <td class="border border-primary" style="color:black;"><a class="btn btn" href="{% url 'update_product' i.id %}" role="sumbit"><button type="button" class="btn btn-outline-warning">Edit</button></a></td>
-        <td class="border border-primary" style="color:black;"><a class="btn btn" href="{% url 'delete_product' i.id %}" role="sumbit"><button type="button" onclick=alert('Item deleted') class="btn btn-outline-danger">Delete</button></a></td>
+
+          <div class="alert alert-danger" role="alert">
+            <a  class=" delete" data-confirm="Are you sure to delete this item?"><td class="border border-primary" style="color:black;"><a class=" delete btn btn" data-confirm="Are you sure to delete this item?" href="{% url 'delete_product' i.id %}" role="sumbit"><button type="button" onclick=alert('Item deleted') class="btn btn-outline-danger">Delete</button></a></a>
+          </div></td>
       </tr>
     
   {% endfor %}
@@ -43,7 +46,20 @@
     </tbody>
   </table>
 
-   
+  <script>
+    var deleteLinks = document.querySelectorAll('.delete');
+    for (var i = 0; i < deleteLinks.length; i++) {
+      deleteLinks[i].addEventListener('click', function(event) {
+          event.preventDefault();
+
+          var choice = confirm(this.getAttribute('data-confirm'));
+
+          if (choice) {
+            window.location.href = this.getAttribute('href');
+          }
+      });
+    } 
+  </script>
   {{ products }}
 
   {% if products.has_previous %}
@@ -59,6 +75,7 @@
   
   <a href="?page={{ products.paginator.num_pages}}">Last &raquo </a>
   </div>
+
   
   {% endif %}
   {% endblock %}

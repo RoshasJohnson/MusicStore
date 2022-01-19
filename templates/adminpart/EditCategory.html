@@ -56,22 +56,25 @@ $(document).ready(function() {
 
 
 <!-- ========================= SECTION CONTENT ========================= -->
-<section class="section-conten padding-x ml-5" style="min-height:84vh">
+
+<section class="section-conten padding-x ml-5 mt-5" style="min-height:84vh">
+    <h1> Category</h1>
+    {{error}}
 
 <!-- ============================ COMPONENT LOGIN   ================================= -->
 		<div class="card mx-auto" style="max-width: 380px;">
 		<div class="card-body">
 		
-		   <form   method="POST" enctype="multipart/form-data"  class="post-form" action="/adminpanel/add_product/">  
+		   <form method="post"  class="post-form" action="/adminpanel/editcategory/{{update.id}}/">  
         {% csrf_token %} 
-        {% for f in update %}
+        {% for f in contex %}
         <div class = 'form-group'>
-    
+
           {{f.label_tag}}{{f}} {{f.errors|striptags}}
     
         </div>
         {% endfor %}
-        <button type="submit" class="btn btn-success ml-5"> Add</button>
+        <button type="submit" class="btn btn-warning ml-5"> Update Category</button>
       </div>  
   </form>
 		</div> <!-- card-body.// -->

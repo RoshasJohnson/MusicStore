@@ -1,8 +1,11 @@
 from itertools import product
+from os import name
+from unicodedata import category
 from django.shortcuts import render
 
 import customer
 from .models import AbstractUser, Product
+from .models import *
 from .forms import *
 from django.contrib.auth import authenticate
 
@@ -12,30 +15,35 @@ from django.contrib.auth import authenticate
 
 
 # This function for registring the user
-def usersignupView  (request):
+def usersignupView (request):
     if request.method == 'POST':
         form = Customer(request.POST)
         if form.is_valid():
             form.save()
-            #   if  form is not None :
-            # request.session['pk'] = username
+            request.session['name'] = 'username'
             return render(request,'customer/otp.html') 
 
-    # elif  request.session.has_key('pk') :
-    #     return render(request,'customer/otp.html') 
     else:
         form = Customer()
     return render(request,'customer/register.html',{'form':form})
 
 
 #----------------------------------------------------------------------------------- 
-# 
-#    
+#     
+#     
 
 def homepage_view(request):
-    everyproduct = Product.objects.all()
-    
-    return render(request,'customer/index.html',{'everyproduct':everyproduct})
+    if request.session.get('name'):
+        Designpage= Design.objects.all()[0]
+        print(Designpage.Banner_image1.url,'===================================================roshas')
+        everyproduct = Product.objects.all()
+        return render(request,'customer/index.html',{'everyproduct':everyproduct,'Designpage':Designpage})
+    else:
+        Designpage = Design.objects.all()
+        print(Designpage,'===================================================')
+        print('======================================================')
+        everyproduct = Product.objects.all()
+        return render(request,'customer/index.html',{'everyproduct':everyproduct,'Designpage':Designpage})
 
 
 #-----------------------------------------------------------------------------------
@@ -43,8 +51,13 @@ def homepage_view(request):
   
 
 def selected_Product_view(request,id):
-    selectedProduct = Product.objects.filter(id= id)
-    return render(request,'customer/selected_product.html',{'selectedProduct':selectedProduct })
+    if request.session.get('name'):
+        selectedProduct = Product.objects.filter(id= id)
+        return render(request,'customer/selected_product.html',{'selectedProduct':selectedProduct })
+    else:
+        selectedProduct = Product.objects.filter(id= id)
+        return render(request,'customer/selected_product.html',{'selectedProduct':selectedProduct })
+
 
 
 

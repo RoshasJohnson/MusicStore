@@ -60,7 +60,7 @@ $(document).ready(function() {
 		<div class="card mx-auto" style="max-width: 380px;">
 		<div class="card-body">
 		
-		   <form method="post" enctype="multipart/form-data"  class="post-form" action="/adminpanel/update_product/{{update.id}}/">  
+		   <form  method="post" enctype="multipart/form-data"  class="post-form" action="/adminpanel/update_product/{{update.id}}/">  
       {% csrf_token %} 
         {% for f in form %}
         <div class = 'form-group'>

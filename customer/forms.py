@@ -1,4 +1,6 @@
-from .models import AbstractUser
+from dataclasses import fields
+from pyexpat import model
+from .models import AbstractUser, Design
 from .models import Usercreation
 from django import forms
 from django.contrib.auth.forms import  UserCreationForm
@@ -10,14 +12,19 @@ class Customer(UserCreationForm):
         fields =['first_name','last_name','username','email','phone_number','password1','password2']
 
         
-# CATEGORY_CHOICES =(
-#     ("1", "String"),
-#     ("2", "Keyborad"),
-#     ("3", "Brass"),
-#     ("4", "Woodwind"),
-#     ("5", "Percussion"),
-# )       
+class sign(UserCreationForm):
+    class Meta:
+        model = Usercreation
+        fields = ['username','password']
 
-# class category(forms.Form):
-#     category_type = forms.ChoiceField(choices = CATEGORY_CHOICES)
-    
+
+
+
+
+
+
+
+class DesignForm(forms.ModelForm):
+    class Meta:
+        model = Design
+        fields = '__all__'              

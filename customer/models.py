@@ -106,3 +106,14 @@ class Sms(models.Model):
             print(message.sid)
             
         return super().save(*args, **kwargs)
+
+
+
+class Design(models.Model):
+    Icon_image = models.ImageField(null= True,blank = True,upload_to ='images/')
+    Logo_image = models.ImageField(null= True,blank = True,upload_to ='images/')
+    Banner_image1 = models.ImageField(null= True,blank = True,upload_to ='images/')
+    Banner_image2 = models.ImageField(null= True,blank = True,upload_to ='images/')
+    Banner_image3 = models.ImageField(null= True,blank = True,upload_to ='images/')
+    Footer_image =models.ImageField(null= True,blank = True,upload_to ='images/')
+

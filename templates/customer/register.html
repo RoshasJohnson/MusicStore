@@ -10,7 +10,7 @@
 <meta http-equiv="cache-control" content="max-age=604800" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>GreatKart | One of the Biggest Online Shopping Platform</title>
+<title>M-Store</title>
 
 <link href="{% static 'images/favicon.ico' %}" rel="shortcut icon" type="image/x-icon">
 
@@ -57,12 +57,12 @@ $(document).ready(function() {
 		<div class="card mx-auto" style="max-width: 380px;">
 		<div class="card-body">
 		<h4 class="card-title mb-4">Sign up</h4>
-		<form method ='post' action='/signup/' >
+		<form novalidate  method ='post' action='/usersignup/' >
 			{% csrf_token %} 
 			{% for f in form %}
 			<div class = 'form-group'>
 	
-				{{f.label_tag}}{{f}} {{f.errors|striptags}}
+				{{f.label_tag}} {{f}} <p style= 'color:red'> {{f.errors|striptags}}</p>
 	
 			</div>
 			{% endfor %}

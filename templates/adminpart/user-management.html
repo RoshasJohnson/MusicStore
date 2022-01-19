@@ -33,10 +33,10 @@
         <td class="border border-danger" style="color:black;">{{i.email}}</td>
         <td class="border border-danger" style="color:black;">{{i.phone_number}}</td>
         <td class="border border-danger" style="color:black;"><a class="btn btn" href="{% url 'userstatus' i.id %}" role="sumbit">
-          {% if status.is_active %}
-          <button type="submit" class="btn btn-outline-success">block</button>
+          {% if i.is_active %}
+          <button type="submit" class="btn btn-outline-success">Block</button>
           {% else %}
-          <button type="submit" class="btn btn-outline-danger">Unblock</button>
+          <button type="submit" class="btn btn-outline-danger">blocked</button>
           {% endif %}
         </a>
       

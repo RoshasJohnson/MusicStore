@@ -10,3 +10,7 @@ class Update_form(forms.ModelForm):
         model = Product
         fields = '__all__'
     
+class Category_form(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = '__all__'

@@ -1,0 +1,49 @@
+{% extends 'adminpart/base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+
+ 
+
+
+
+
+
+<div class="card" style="width: 50rem;">
+<div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
+    <h3 class = 'text-dark'>  Banner </h3>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        {% for i in  Design_page  %}
+            
+        {% if i.Banner_image1 %}
+        <img src="{{i.Banner_image1.url }}" class="d-block img-thumbnail w-50" alt="...">
+      </div>
+      {% endif %}
+      {% if i.Banner_image2 %}
+      <div class="carousel-item">
+        <img src="{{i.Banner_image2.url }}" class="d-block img-thumbnail w-50" alt="...">
+      </div>
+      {% endif %}
+      <div class="carousel-item">
+        {% if i.Banner_image3 %}
+      <div class="carousel-item">
+        <img src="{{i.Banner_image3.url }}" class="d-block img-thumbnail w-50 " alt="...">
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only text:dark">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleFade" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only bg-dark">Next</span>
+    </a>
+  </div>
+</div>
+  {% endblock %}

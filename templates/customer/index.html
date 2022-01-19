@@ -1,9 +1,5 @@
 <!DOCTYPE html>
 {% extends 'customer/header.html' %}
-
-
-
-
 {% load static %}
 <html>
    <head>
@@ -16,8 +12,12 @@
          <!-- slider section -->
          <section class="slider_section ">
             <div class="slider_bg_box">
-               <img src="images/slider-bg.jpg" alt="">
+               {% for f in  Designpage %}
+               {% if  f.Banner_image1 %}
+               <img src="{{ f.Banner_image1.url }}" alt="">
             </div>
+            {% endif %}
+            {% endfor %}
             <div id="customCarousel1" class="carousel slide" data-ride="carousel">
                <div class="carousel-inner">
                   <div class="carousel-item active">
@@ -117,7 +117,7 @@
       
       <!-- product section -->
       
-      <section class="product_section layout_padding">
+      <section class="product_section layout_padding mt-5">
          <div class="container">
             <div class="heading_container heading_center">
                <h2>
@@ -139,11 +139,11 @@
                            </a>
                         </div>
                      </div>
-                     {% if i.product_image %}
+                      {% if i.product_image %} 
                      <div class="img-box">
                         <img src="{{i.product_image.url}}" alt="">
                      </div>
-                     {% endif %}
+                    {% endif %}
                      <div class="detail-box">
                         <h5>
                            {{i.product_name}}
