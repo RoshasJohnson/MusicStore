@@ -90,23 +90,6 @@ class Sms(models.Model):
         
     
 
-    def save(self,*args, **kwargs):
-        if self.result < 20 :
-            account_sid = os.environ['AC0eb31c976dfd6b92c07d3e35d715b3f8']
-            auth_token = os.environ['a8301a295d3b125452c6559da1a24a78']
-            client = Client(account_sid, auth_token)
-
-            message = client.messages \
-                .create(
-                    messaging_service_sid='+19378844760',
-                    body='this is working',
-                    to='7012598205'
-                )
-
-            print(message.sid)
-            
-        return super().save(*args, **kwargs)
-
 
 
 class Design(models.Model):

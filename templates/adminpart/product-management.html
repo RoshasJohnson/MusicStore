@@ -10,6 +10,7 @@
     <table class="table">
     <thead> 
       <tr>
+        <th  scope="col" class="border border-primary " style="color:black;">Product Id</th>
         <th  scope="col" class="border border-primary " style="color:black;">Product Name</th>
         <th scope="col" class="border border-primary" style="color:black;">Category</th>
         <th scope="col" class="border border-primary" style="color:black;">description</th>
@@ -28,6 +29,7 @@
    
     <tbody class="border border-danger">
       <tr>
+        <td class="border border-primary" style="color:black;">{{i.id }}</td>
         <td class="border border-primary" style="color:black;">{{i.product_name }}</td>
         <td class="border border-primary" style="color:black;">{{i.category_type}}</td>
         <td class="border border-primary" style="color:black;">{{i.product_description}}</td>
@@ -36,11 +38,10 @@
         {% comment %} <td class="border border-primary" style="color:black;"> <img class="rounded mx-auto d-block" src='{{ i.product_image.url }}'  alt="..."></td> {% endcomment %}
         <td class="border border-primary" style="color:black;"><a class="btn btn" href="{% url 'update_product' i.id %}" role="sumbit"><button type="button" class="btn btn-outline-warning">Edit</button></a></td>
 
-          <div class="alert alert-danger" role="alert">
+          
             <a  class=" delete" data-confirm="Are you sure to delete this item?"><td class="border border-primary" style="color:black;"><a class=" delete btn btn" data-confirm="Are you sure to delete this item?" href="{% url 'delete_product' i.id %}" role="sumbit"><button type="button" onclick=alert('Item deleted') class="btn btn-outline-danger">Delete</button></a></a>
           </div></td>
       </tr>
-    
   {% endfor %}
     
     </tbody>

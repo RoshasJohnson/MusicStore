@@ -2,7 +2,7 @@ from itertools import product
 from os import name
 from unicodedata import category
 from django.shortcuts import render
-
+import re 
 import customer
 from .models import AbstractUser, Product
 from .models import *
@@ -19,9 +19,15 @@ def usersignupView (request):
     if request.method == 'POST':
         form = Customer(request.POST)
         if form.is_valid():
-            form.save()
-            request.session['name'] = 'username'
-            return render(request,'customer/otp.html') 
+            # Phone_Number = form.phone_number
+            # r=re.fullmatch('[6-9][0-9]{9}',Phone_Number)
+            # if r!=None:                 
+                form.save()                
+                request.session['name'] = 'username'
+                return render(request,'customer/otp.html') 
+            # else:
+            #     error = 'Enter Valid phone number'
+            #     return render('customer/register.html',{'eroor':error})            
 
     else:
         form = Customer()

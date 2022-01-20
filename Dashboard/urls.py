@@ -6,8 +6,8 @@ from.import views
 # coding patterns here
 
 urlpatterns = [
-    path('',views.adminpart, name = 'adminpart'),
-    path('admindashboard/',views.admin_dashboard, name ='admindashboard'),
+    path('login/',views.adminpart, name = 'login'),
+    path('',views.admin_dashboard, name ='adminpanel'),
     path('usermanagement/',views.user_view ,name='usermanagement'),
     # path('viewfull/<int:pk>/',views.user_view_full_details,name = 'viewfull'),
      path('productmanagement/',views.product_view,name='product_view'),

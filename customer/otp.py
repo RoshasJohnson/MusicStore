@@ -9,14 +9,14 @@ from twilio.rest import Client
 def otpverification(id):
 
     account_sid = os.environ['AC0eb31c976dfd6b92c07d3e35d715b3f8']
-    auth_token = os.environ['df0e63faa94d9ccb6144adf3cb705cbf']
+    auth_token = os.environ['c0fb01106cb0736e0ed0e14354817fd8']
     client = Client(account_sid, auth_token)
 
     message = client.messages \
         .create(
             messaging_service_sid='MG9752274e9e519418a7406176694466fa',
             body='body',
-            to='+15558675310'
+            to='+917012598205'
         )
-
     print(message.sid)
+ 

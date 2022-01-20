@@ -10,14 +10,14 @@
          {% block content %}
         
          <!-- slider section -->
-         <section class="slider_section ">
+         {% comment %} <section class="slider_section ">
             <div class="slider_bg_box">
                {% for f in  Designpage %}
                {% if  f.Banner_image1 %}
                <img src="{{ f.Banner_image1.url }}" alt="">
             </div>
             {% endif %}
-            {% endfor %}
+            {% endfor %} {% endcomment %}
             <div id="customCarousel1" class="carousel slide" data-ride="carousel">
                <div class="carousel-inner">
                   <div class="carousel-item active">

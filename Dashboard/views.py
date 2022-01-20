@@ -45,7 +45,7 @@ def admin_dashboard(request):
     if request.session.get('name'):
         return render(request,'adminpart/dashbord.html')
     else:
-        return redirect('adminpanel')
+        return redirect('/adminpanel/login/')
 
 # --------------------------------------------------------------------
 
@@ -83,7 +83,7 @@ def product_view(request):
         products =page_inition.get_page(page)
         return render(request,'adminpart/product-management.html',{'products':products})
     else:
-        return redirect('/adminpanel')    
+        return redirect('/adminpanel/login/')    
 
 # -------------------------------------------------------------------- 
 # Fetching category and displaying   
@@ -93,7 +93,7 @@ def category_view(request):
         categories = Category.objects.all()
         return render(request,'adminpart/category.html',{'categories':categories})
     else:
-        return redirect('/adminpanel')    
+        return redirect('/adminpanel/login/')    
 
 
 
@@ -105,7 +105,7 @@ def delete_product(request,id):
         dumb.delete()
         return redirect('product_view')
     else:
-        return redirect('/adminpanel')    
+        return redirect('/adminpanel/login/')    
     
 
 # --------------------------------------------------------------------     
@@ -125,7 +125,7 @@ def update_product(request,id):
             form = Update_form(instance= update)
             return render(request,'adminpart/update_product.html',{'form':form,'update':update})
         else:
-            return redirect('/adminpanel')    
+            return redirect('/adminpanel/login/')    
 
 
  # ------------------------------------------------------------------------------------------  
@@ -141,7 +141,7 @@ def add_product(request):
             update=  Update_form()
             return render(request,'adminpart/add_product.html',{'update':update})
         else:
-            return redirect('/adminpanel')    
+            return redirect('/adminpanel/login/')    
    
 
 
@@ -153,7 +153,7 @@ def userStatusview(request,id):
         status.save()
         return redirect ('usermanagement')
     else:
-        return redirect('/adminpanel')    
+        return redirect('/adminpanel/login/')    
 
 # def addcategory_view(request):
 #     form =Category_form()
@@ -175,7 +175,7 @@ def addcategory_view(request):
             form =Category_form()
             return render(request,'adminpart/AddCategory.html',{'form':form})  
         else:
-            return redirect('/adminpanel')     
+            return redirect('/adminpanel/login/')     
 
 
 
@@ -186,7 +186,7 @@ def deletecategory_view(request,id):
         dumb.delete()
         return redirect ('categorymanagement')
     else:
-        return redirect('/adminpanel')
+        return redirect('/adminpanel/login/')
 
 
 
@@ -205,7 +205,7 @@ def editcategory_view(request,id):
             contex = Category_form(instance = update)
             return render(request,'adminpart/EditCategory.html',{'contex':contex,'update':update})
         else:
-            return redirect('/adminpanel')
+            return redirect('/adminpanel/login/')
 
 
 
@@ -224,5 +224,5 @@ def designManagement_View(request):
 
 def adminlogout_view(request):
     del request.session['name']
-    return redirect('/adminpanel')
+    return redirect('/adminpanel/login/')
     
