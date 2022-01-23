@@ -117,7 +117,7 @@
           <div class="s_product_text">
             {% comment %} <h5>previous <span>|</span> next</h5> {% endcomment %}
             <h3>{{ i.product_name }} </h3>
-            <h2 class = 'text-danger'>₹{{i.product_prize}}</h2>
+            <h2 class = 'text-danger'><span class = 'text-dark'>₹</span>{{i.product_prize}}</h2>
             <ul class="list">
               <li>
                 <a class="active" href="#">
@@ -130,15 +130,18 @@
             <p>
               {{i.product_description}}
             </p>
-            
-            <div class="card_area d-flex justify-content-between align-items-center">
-              <div class="product_count">
-                <span class="inumber-decrement"> <i class="ti-minus"></i></span>
-                <input class="input-number" type="text" value="1" min="0" max="10">
-                <span class="number-increment"> <i class="ti-plus"></i></span>
+            <div class="card_area d-flex justify-content-between align-items-center input-group my-3">
+             
+              <a href="" class="btn_3 ml-2">Buy now</a>
+              <input class = "number" value = "1" class = "form-control" style = 'width:30px' id = "productQty"/>
+               <div class = "input-group-append">
+                
+                  <input type = "hidden" class = "product-id" value = "{{i.id}}" />
+                  <input type = "hidden" class = "product-title" value = "{{i.product_name}}" />
+                 <button  class  = 'btn_3' type = 'button' id ="addTocartBtn">
+                  Add to cart </button>
               </div>
-              <a href="#" class="btn_3">add to cart</a>
-              <a href="#" class="like_us"> <i class="ti-heart"></i> </a>
+             
             </div>
           </div>
         </div>

@@ -10,14 +10,14 @@
          {% block content %}
         
          <!-- slider section -->
-         {% comment %} <section class="slider_section ">
+          <section class="slider_section ">
             <div class="slider_bg_box">
-               {% for f in  Designpage %}
+               {% comment %} {% for f in  Designpage %}
                {% if  f.Banner_image1 %}
                <img src="{{ f.Banner_image1.url }}" alt="">
             </div>
             {% endif %}
-            {% endfor %} {% endcomment %}
+            {% endfor %}  {% endcomment %}
             <div id="customCarousel1" class="carousel slide" data-ride="carousel">
                <div class="carousel-inner">
                   <div class="carousel-item active">
@@ -131,12 +131,10 @@
                   <div class="box">
                      <div class="option_container">
                         <div class="options">
-                           <a href="" class="option1">
-                           Add To Cart
-                           </a>
                            <a href="{% url 'selected_Product' i.id %}" class="option2">
                            Buy Now
                            </a>
+                           <script src="{% static 'js/cart.js' %}"></script>
                         </div>
                      </div>
                       {% if i.product_image %} 
@@ -151,7 +149,7 @@
                         
                   </div>
                   <h6 class ='text-center text-danger'>
-                    ₹ {{i.product_prize}}
+                    <span class = 'text-dark'>₹</span> {{i.product_prize}}
                    </h6>
                 </div>
                </div>
@@ -363,6 +361,7 @@
          
          </p>
       </div>
+      <script src="{% static 'js/cart.js' %}"></script>
       
       {% endblock %}
    </body>

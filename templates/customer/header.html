@@ -38,6 +38,25 @@
      <link href="{% static '' %}css/home.css" rel="stylesheet" />
      <!-- responsive style -->
      <link href="{% static '' %}css/responsive.css" rel="stylesheet" />
+     <!-- flaticon CSS -->
+    <link rel="stylesheet" href="{% static 'css/flaticon.css'%}">
+    <link rel="stylesheet" href="{% static 'css/themify-icons.css'%}">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css'%}">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="{% static 'css/slick.css'%}">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
+
+    <!--====== Vendor Css ======-->
+    <link rel="stylesheet" href="{% static 'css/vendor.css' %}">
+
+    <!--====== Utility-Spacing ======-->
+    <link rel="stylesheet" href="{% static 'css/utility.css' %}">
+
+    <!--====== App ======-->
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
 <link rel="stylesheet" href="{% static 'css/style.css'%}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -91,13 +110,15 @@
                                         Category
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
-                                        <a class="dropdown-item" href="blog.html">Strings </a>
-                                        <a class="dropdown-item" href="single-blog.html">Keyboards</a>
-                                        <a class="dropdown-item" href="blog.html"> brass </a>
-                                        <a class="dropdown-item" href="single-blog.html">Precussion</a>
-                                        <a class="dropdown-item" href="single-blog.html">Wood winds</a>
+                                        <a class="dropdown-item" href="blog.html">df</a>
+                                        {% for i in choices %}
+                                        <a class="dropdown-item" href="blog.html">df</a>
+                                        <a class="dropdown-item" href="blog.html">{{ i }}</a>
+                                        {% endfor %}
                                     </div>
                                 </li>
+
+                                
                                 
                                 <li class="nav-item">
                                     <a class="nav-link" href="contact.html">Your account</a>
@@ -106,18 +127,13 @@
                         </div>
                         <div class="hearer_icon d-flex">
                             
-                            <a href=""><i class="ti-heart"></i></a>
-                            <div class="dropdown cart">
-                                <a class="dropdown-toggle" href="#" id="navbarDropdown3" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-cart-plus"></i>
-                                </a>  
-                            </div>
+                            <a href="/cart/"><i class="fas fa-cart-plus"></i></a>
+                            
                             <a href="/signin/"> <i class="fas fa-sign-in-alt"></i></a>
                         </div>
                     </nav>
                 </div>
-            </div>
+            </div>   
         </div>
         <!-- jQery -->
       <script src="{% static '' %}js/jquery-3.4.1.min.js"></script>
@@ -127,7 +143,47 @@
       <script src="{% static '' %}js/bootstrap.js"></script>
       <!-- custom js -->
       <script src="{% static '' %}js/custom.js"></script>
-
+      <script src="{% static 'js/theme.js' %}"></script>
+      <script src="{% static 'js/custom.js' %}"></script>
+      <script src="{% static 'js/cart.js' %}"></script>
+    
+      <script src="{% static 'js/jquery-1.12.1.min.js' %}"></script>
+      <!-- popper js -->
+      <script src="{% static 'js/popper.min.js' %}"></script>
+      <!-- bootstrap js -->
+      <script src="{% static 'js/bootstrap.min.js' %}"></script>
+      <!-- easing js -->
+      <script src="{% static 'js/jquery.magnific-popup.js' %}"></script>
+      <!-- swiper js -->
+      <script src="{% static 'js/lightslider.min.js' %}"></script>
+      <!-- swiper js -->
+      <script src="{% static 'js/masonry.pkgd.js' %}"></script>
+      <!-- particles js -->
+      <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+      <script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+      <!-- slick js -->
+      <script src="{% static 'js/slick.min.js' %}"></script>
+      <script src="{% static 'js/swiper.jquery.js' %}"></script>
+      <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+      <script src="{% static 'js/waypoints.min.js' %}"></script>
+      <script src="{% static 'js/contact.js' %}"></script>
+      <script src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
+      <script src="{% static 'js/jquery.form.js' %}"></script>
+      <script src="{% static 'js/jquery.validate.min.js' %}"></script>
+      <script src="{% static 'js/mail-script.js' %}"></script>
+      <script src="{% static 'js/stellar.js' %}"></script>
+      <!-- custom js -->
+      <script src="{% static 'js/theme.js' %}"></script>
+      <script src="{% static 'js/custom.js' %}"></script>
+      <script src="{% static 'js/cart.js' %}"></script>
+        <!--====== Vendor Js ======-->
+        <script src="{% static 'js/vendor.js' %}"></script>
+    
+        <!--====== jQuery Shopnav plugin ======-->
+        <script src="{% static 'js/jquery.shopnav.js' %}"></script>
+    
+        <!--====== App ======-->
+        <script src="{% static 'js/app.js' %}"></script>
 
     {% block content%}
 
