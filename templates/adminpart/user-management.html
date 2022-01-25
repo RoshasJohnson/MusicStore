@@ -52,19 +52,21 @@
 
 
   
-       {{ listing }}
+
+
+
+</div>
+<div class= 'float-right mb-5'>
+{{ listing }}
 
 {% if listing.has_previous %}
 
-<a href="?page={{ listing.previous_page_number}}">Previous </a>
+<button type="submit" class="btn btn-success"><a href="?page={{ listing.previous_page_number}}">Previous </a></button>
 
 {% endif %}
 {% if listing.has_next %}
 
-<a href="?page={{ listing.next_page_number}}">Next </a>
-
-
+<button type="submit" class="btn btn-success"><a href="?page={{ listing.next_page_number}}">Next </a></button>
 </div>
-
 {% endif %}
 {% endblock %}

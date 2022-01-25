@@ -126,13 +126,14 @@
             </div>
             <div class="row">
                {% for i in everyproduct %}
-            <a href="{% url 'selected_Product' i.id %}">
+           
                <div class="col-sm-6 col-md-4 col-lg-4">
                   <div class="box">
                      <div class="option_container">
                         <div class="options">
-                           <a href="{% url 'selected_Product' i.id %}" class="option2">
-                           Buy Now
+                           
+                           <a href="{% url 'selected_Product' i.id %}" class="option1">
+                              Explore
                            </a>
                            <script src="{% static 'js/cart.js' %}"></script>
                         </div>
@@ -153,7 +154,7 @@
                    </h6>
                 </div>
                </div>
-            </a>
+         
                {% endfor %}
             
             </div>
@@ -365,5 +366,5 @@
       
       {% endblock %}
    </body>
-   
+   <script src="{% static 'js/custom.js' %}"></script>
 </html>

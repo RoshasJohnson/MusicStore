@@ -93,29 +93,10 @@
             </div>
           </div>
         </div>
-        <div class="previewPane"></div><div id="zoomer"></div>
-        <script>
-          $(function(){
-            $('.previewPane, #zoomer').css('background-image','url('+$('.imgkey').first().attr('src')+')');
-            $('.imgkey').click(function(){
-            $('.previewPane').css('background-image','url('+$(this).attr('src')+')');
-                  });
-            $('.previewPane').mousemove(function(ev){
-            $('#zoomer').css('display','inline-block');
-            var img = $(this).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
-            var posX = ev.offsetX ? (ev.offsetX) : ev.pageX - $(this).offset().left;
-            var posY = ev.offsetY ? (ev.offsetY) : ev.pageY - $(this).offset().top;
-            $('#zoomer').css('background-position',((-posX * 3) + "px " + (-posY * 3) + "px"));
-            $('#zoomer').css('background-image','url('+img+')');
-                  });
-            $('.previewPane').mouseleave(function(){$('#zoomer').css('display','none');});
-                });
-        
-              </script>
-	
+      
         <div class="col-lg-5 col-xl-4">
           <div class="s_product_text">
-            {% comment %} <h5>previous <span>|</span> next</h5> {% endcomment %}
+
             <h3>{{ i.product_name }} </h3>
             <h2 class = 'text-danger'><span class = 'text-dark'>₹</span>{{i.product_prize}}</h2>
             <ul class="list">
@@ -136,11 +117,12 @@
               <input class = "number" value = "1" class = "form-control" style = 'width:30px' id = "productQty"/>
                <div class = "input-group-append">
                 
-                  <input type = "hidden" class = "product-id" value = "{{i.id}}" />
-                  <input type = "hidden" class = "product-title" value = "{{i.product_name}}" />
-                 <button  class  = 'btn_3' type = 'button' id ="addTocartBtn">
+                  <input type = "hidden" class = "product-id" value = "{{ i.id }}" />
+                  <input type = "hidden" class = "product-title" value = "{{i.product_name }}" />
+                  <input type = "hidden" class = "product-prize" value = "{{i.product_prize }}" />
+                 <button data-product = {{i.id}} data-action = 'add'  class = 'btn_3 update-cart' type = 'submit' id ="addTocartBtn">
                   Add to cart </button>
-              </div>
+              </div> 
              
             </div>
           </div>
@@ -306,7 +288,7 @@
                 <div class="review_item">
                   <div class="media">
                     <div class="d-flex">
-                      <img src="img/product/single-product/review-1.png" alt="" />
+                      <img src="t/review-1.png" alt="" />
                     </div>
                     <div class="media-body">
                       <h4>Blake Ruiz</h4>
@@ -324,7 +306,7 @@
                 <div class="review_item reply">
                   <div class="media">
                     <div class="d-flex">
-                      <img src="img/product/single-product/review-2.png" alt="" />
+                      <img src="t/review-2.png" alt="" />
                     </div>
                     <div class="media-body">
                       <h4>Blake Ruiz</h4>
@@ -342,7 +324,7 @@
                 <div class="review_item">
                   <div class="media">
                     <div class="d-flex">
-                      <img src="img/product/single-product/review-3.png" alt="" />
+                      <img src="t/review-3.png" alt="" />
                     </div>
                     <div class="media-body">
                       <h4>Blake Ruiz</h4>
@@ -458,7 +440,7 @@
                 <div class="review_item">
                   <div class="media">
                     <div class="d-flex">
-                      <img src="img/product/single-product/review-1.png" alt="" />
+                      <img src="t/review-1.png" alt="" />
                     </div>
                     <div class="media-body">
                       <h4>Blake Ruiz</h4>
@@ -479,7 +461,7 @@
                 <div class="review_item">
                   <div class="media">
                     <div class="d-flex">
-                      <img src="img/product/single-product/review-2.png" alt="" />
+                      <img src="t/review-2.png" alt="" />
                     </div>
                     <div class="media-body">
                       <h4>Blake Ruiz</h4>
@@ -500,7 +482,7 @@
                 <div class="review_item">
                   <div class="media">
                     <div class="d-flex">
-                      <img src="img/product/single-product/review-3.png" alt="" />
+                      <img src="t/review-3.png" alt="" />
                     </div>
                     <div class="media-body">
                       <h4>Blake Ruiz</h4>
@@ -587,6 +569,25 @@
     </div>
   </section>
   <!--================End Product Description Area =================-->
+  <script src="{% static 'js/custom.js' %}">
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+    
+</script>
 
   <!-- product_list part start-->
   <section class="product_list best_seller">
@@ -602,35 +603,35 @@
         <div class="col-lg-12">
           <div class="best_product_slider owl-carousel">
             <div class="single_product_item">
-              <img src="img/product/product_1.png" alt="">
+              <img src="" alt="">
               <div class="single_product_text">
                 <h4>Quartz Belt Watch</h4>
                 <h3>$150.00</h3>
               </div>
             </div>
             <div class="single_product_item">
-              <img src="img/product/product_2.png" alt="">
+              <img src="" alt="">
               <div class="single_product_text">
                 <h4>Quartz Belt Watch</h4>
                 <h3>$150.00</h3>
               </div>
             </div>
             <div class="single_product_item">
-              <img src="img/product/product_3.png" alt="">
+              <img src="" alt="">
               <div class="single_product_text">
                 <h4>Quartz Belt Watch</h4>
                 <h3>$150.00</h3>
               </div>
             </div>
             <div class="single_product_item">
-              <img src="img/product/product_4.png" alt="">
+              <img src="" alt="">
               <div class="single_product_text">
                 <h4>Quartz Belt Watch</h4>
                 <h3>$150.00</h3>
               </div>
             </div>
             <div class="single_product_item">
-              <img src="img/product/product_5.png" alt="">
+              <img src="" alt="">
               <div class="single_product_text">
                 <h4>Quartz Belt Watch</h4>
                 <h3>$150.00</h3>
@@ -718,7 +719,7 @@
           <div class="col-lg-8">
             <div class="copyright_text">
               <P><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved  </i> by <a href="https://colorlib.com" target="_blank">Everything In</a>
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved  </i> by <a href="https://colorlib.com" target="_blank">Everything Inc</a>
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></P>
             </div>
           </div>

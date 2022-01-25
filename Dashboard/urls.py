@@ -19,9 +19,6 @@ urlpatterns = [
     path('addcategory/',views.addcategory_view,name = 'addcategory'), 
     path('deletecategory/<int:id>/',views.deletecategory_view,name = 'deletecategory'),
     path('editcategory/<int:id>/',views.editcategory_view,name ='editcategory'),
-
-
-
     path('design_management/',views.designManagement_View,name = 'design_management'),
     path('admin_logout/',views.adminlogout_view,name = 'admin_logout')
 ]

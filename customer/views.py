@@ -1,10 +1,17 @@
+from cgi import print_environ
+from copy import error
 from itertools import product
+import json
 from logging import exception
 from os import name
 from unicodedata import category
-from django.http import HttpResponse
+from venv import create
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-import re 
+import re
+
+from pyparsing import replaceWith
+from sqlalchemy import false 
 import customer
 from .models import AbstractUser, Product
 from .models import *
@@ -34,7 +41,7 @@ def usersignupView (request):
         form = Customer(request.POST)
         if form.is_valid():                 
                 form.save()                
-                # request.session['name'] = 'username'
+                request.session['name'] = 'username'
                 return render(request,'customer/otp.html') 
                 
 
@@ -67,7 +74,7 @@ def selected_Product_view(request,id):
         return render(request,'customer/selected_product.html',{'selectedProduct':selectedProduct })
     else:
         selectedProduct = Product.objects.filter(id= id)
-        return render(request,'customer/product-detail.html',{'selectedProduct':selectedProduct })
+        return render(request,'customer/selected_product.html',{'selectedProduct':selectedProduct })
 
 
 #-----------------------------------------------------------------------------------  
@@ -83,16 +90,23 @@ def signIcon_view(request):
         
         if userlogin is not None:
              usercheck = Usercreation.objects.get(username = username)
-             return render (request,'customer/Home.html')
+             request.session['name'] = 'username'
+             return redirect('/')
         else:
             errorshowing = 'Incorrect user name and password'
             return render(request,'customer/signin.html',{'errorshowing': errorshowing,'form':form})
     else:
+        try:
+            del request.session['name']
+        except  KeyError as name:
+            print('error')
         form = Customer()
+
+        
         return render(request,'customer/signin.html',{'form':form })
+    
 
-
-
+    
 
 #-----------------------------------------------------------------------------------  
 # user sign in view
@@ -106,39 +120,86 @@ def register_USer_View(request):
 
 #-----------------------------------------------------------------------------------  
 
-def cart_View(request):
-    return render(request,'customer/cart.html')
+# def cart_View(request):
+#     if request.session.get('name'):
+#         return render(request,'customer/cart.html')
+#     else:
+#         error = 'you must login in  before add to cart'
+#         form = Customer()
+#         return render(request,'customer/signin.html',{'form':form ,'error':error})
+# #-----------------------------------------------------------------------------------      
 
-#-----------------------------------------------------------------------------------      
-
-def _cart_Id(request):
-    cart = request.session.session_key
-    if not cart:
-        cart = request.session.create()
-    return cart 
 
    
+# def _cart_Id(request):
+#     cart = request.session.session_key
+#     if not cart:
+#         cart = request.session.create()
+#     return cart 
 
 
-def addto_cart_View(request,id):
-    product = Product.objects.get(id = id)
-    try:
-        cart  = Cart.objects.get(id = int(_cart_Id(request))) # get the cart using  cart id  present in the session
-    
-    except Cart.DoesNotExist:
-        cart =  Cart.object.create(
-            cart_id = _cart_Id(request)
-        )
-    cart.save()
-    try:
-        cart_item = CartItem.objects.get(product  = product,cart=cart)
-        cart_item.quantity += 1
-    except cart_item.DoesNotExist:
-        cart_item = CartItem.objects.create(
-            product  = product,
-            quantity = 1,
-            cart = cart
+# def addto_cart_View(request):
+#     # del request.session['cartdata']
+#     cart = {}
+#     cart[str(request.GET['id'])]= {
+#         'title':request.GET['title'],
+#         'qty':request.GET['qty'],
+#         'price':request.GET['price'], 
+#     }
+#     print(cart,'??????????????????????????????????????????????????????????????????????????')        
+#     if 'cartdata' in  request.session:
+#         if str(request.GET['id']) in  request.session['cartdata'] :
+#             cart_data = request.session['cartdata'] 
+#             cart_data[str(request.GET['id'])]['qty'] = int(cart[str(request.GET['id'])]['qty'])
+#             cart_data.update(cart_data)
+#             request.session['cartdata'] = cart_data    
+#         else:
+#             cart_data = request.session['cartdata']    
+#             cart_data.update(cart)
+#             request.session['cartdata'] = cart_data
+#     else:
+#         request.session['cartdata'] = cart
+#         print(cart)                          
+#     return JsonResponse({'data': request.session['cartdata'],'totalitms':len(request.session['cartdata'])})
 
-        ) 
-        cart_item.save()               
-    return redirect('cart')     
+
+
+def cart_View(request): 
+    if request.user.is_authenticated or request.session.get('name'): 
+        user = request.user
+        customer = request.user
+        print(customer)
+        order,create = Order.objects.get_or_create(Customer = customer,complete =  False)
+        items  = order.orderitem_set.all()
+    else:
+        items = []
+    # items = Order.objects.filter( Customer  = customer )
+    # print(items,'llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll') 
+    # contex = {'items':items} 
+        # if request.user.is_authenticated :
+            #     cart = {}
+            #     cart[str(request.POST['id'])]= {
+            #         'tittle':request.POST.get('title'),
+            #         'qty':request.POST.get('qty'),
+            #         'price':request.POST.get('price'), 
+            #     }
+            #     print(cart,'//////////////////////////////////////////////////////////////////////////////////////')
+    contex = {'items':items}            
+    return render (request,'customer/cart.html', contex)
+        # else:
+        #      print('working//////////////////////////////////////////////////////////')
+        #      return render(request,'customer/signin.html')
+# else:
+#     return redirect('signin/')
+ 
+ 
+
+def updateItem(request):
+    data  = json.loads(request.body)
+    productId  = data['productId']
+    action = data['action']
+    print('productId:',productId) 
+    print('action:',action)
+    user = request.user.UserCreation
+    product =Product.objects.get(id= productId)
+    return JsonResponse('item was added', safe = False) 

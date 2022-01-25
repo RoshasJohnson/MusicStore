@@ -1,4 +1,7 @@
+from enum import auto
+from itertools import product
 from re import T
+from tkinter.tix import Tree
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django import forms
@@ -6,6 +9,7 @@ from django.utils import timezone
 from sqlalchemy import true
 import os
 from twilio.rest import Client
+# from customer.forms import Customer
 
 # Create your models here.
 class Usercreation(AbstractUser):
@@ -14,7 +18,7 @@ class Usercreation(AbstractUser):
 
 # --------------------------------   
 
-
+ 
 
 #Choice field for category
 class Category(models.Model):
@@ -63,8 +67,7 @@ class Product(models.Model):
 
 #created category table   
 class useraddress(models.Model):
-    user_name       = models.ForeignKey(Usercreation,on_delete=models.CASCADE,null = True)
-    full_name       = models.CharField(max_length=200, null = True)
+    full_name       = models.CharField(max_length=200, default="",editable=False)
     house_address   = models.CharField(max_length=200, null = True)
     post_code       = models.IntegerField(max_length=200, null = True)
     city            = models.CharField(max_length=200, null = True)
@@ -101,21 +104,65 @@ class Design(models.Model):
     Banner_image2 = models.ImageField(null= True,blank = True,upload_to ='images/')
     Banner_image3 = models.ImageField(null= True,blank = True,upload_to ='images/')
     Footer_image  = models.ImageField(null= True,blank = True,upload_to ='images/')
-
-
-
-
-class Cart(models.Model):
-
-    cart_id     = models.CharField(max_length=250,blank= True)
-    date_added  = models.DateField(auto_now_add=True) 
-    def __str__(self) :
-        return self.cart_id
-class CartItem(models.Model):
-    product     = models.ForeignKey(Product,on_delete=models.CASCADE)
-    cart        = models.ForeignKey(Cart,on_delete=models.CASCADE)
-    quantity    = models.IntegerField()
-    is_active   = models.BooleanField(default= True)
+    
     def __str__(self):
-        return str(self.product)
+        return str(self.Icon_image)
 
+
+
+
+# class Cart(models.Model):
+#     user_id = models.ForeignKey(Usercreation, on_delete=models.CASCADE)
+#     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
+#     quantity = models.BigIntegerField(default=1)
+#     subtotal = models.BigIntegerField(default=1)
+#     class Meta:
+#         db_table = "Cart"
+
+
+
+# class CartItem(models.Model):
+#     product     = models.ForeignKey(Product,on_delete=models.CASCADE)
+#     cart        = models.ForeignKey(Cart,on_delete=models.CASCADE)
+#     quantity    = models.IntegerField()
+#     is_active   = models.BooleanField(default= True)
+
+#     def __str__(self):
+#         return str(self.product)
+
+
+
+class Order(models.Model):
+    Customer        =  models.ForeignKey(Usercreation,on_delete= models.SET_NULL, null = True ,blank = True )
+    date_ordered    =  models.DateField(auto_now_add= True)
+    complete        =  models.BooleanField(default= False,null = True ,blank = True )
+    transcation_id  =  models.CharField(max_length=100,null= True)   
+    def __str__(self) :
+        return str(self.id)  
+
+
+
+class OrderItem(models.Model):
+    product     = models.ForeignKey(Product,on_delete= models.SET_NULL, null= True ,blank = True)
+    order       = models.ForeignKey(Order,on_delete= models.SET_NULL,blank = True, null= True)  
+    quantity    = models.IntegerField(default=0,null = True ,blank= True)
+    date_added  = models.DateField(auto_now_add=True)
+    
+
+
+
+class ShippingAddress(models.Model):
+    customer        = models.ForeignKey(Usercreation,on_delete = models.SET_NULL,blank = True, null= True) 
+    order           = models.ForeignKey(Order,on_delete = models.SET_NULL,blank = True, null= True) 
+    address         = models.CharField(max_length=200, null = True)
+    city            = models.CharField(max_length=200, null = True)
+    state           = models.CharField(max_length=200, null = True)
+    zipcode         = models.CharField(max_length=200, null = True)
+    date_added      = models.DateField(auto_now_add=True)
+    def __str__(self) :
+        return self.address
+    
+
+    
+
+   
