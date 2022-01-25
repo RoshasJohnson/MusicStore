@@ -202,4 +202,4 @@ def updateItem(request):
     print('action:',action)
     user = request.user.UserCreation
     product =Product.objects.get(id= productId)
-    return JsonResponse('item was added', safe = False) 
+    return JsonResponse('item was added', safe = False)  
