@@ -1,5 +1,5 @@
-
-
+{% comment %} 
+{% load poll_extras %} {% endcomment %}
 {% load static %}
 <link rel="icon" href=" {% static 'img/favicon.png' %}">
 <!-- Bootstrap CSS -->
@@ -110,9 +110,9 @@
                                         Category
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
-                                        <a class="dropdown-item" href="blog.html">df</a>
+                                
                                         {% for i in choices %}
-                                        <a class="dropdown-item" href="blog.html">df</a>
+                                    
                                         <a class="dropdown-item" href="blog.html">{{ i }}</a>
                                         {% endfor %}
                                     </div>
@@ -136,6 +136,7 @@
             </div>   
         </div>
         <script type = 'text/javascript' >
+           
             function getCookie(name) {
                 let cookieValue = null;
                 if (document.cookie && document.cookie !== '') {
@@ -155,13 +156,13 @@
             
         </script>
         <!-- jQery -->
-      <script src="{% static '' %}js/jquery-3.4.1.min.js"></script>
+      <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
       <!-- popper js -->
-      <script src="{% static '' %}js/popper.min.js"></script>
+      <script src="{% static 'js/popper.min.js' %}"></script>
       <!-- bootstrap js -->
-      <script src="{% static '' %}js/bootstrap.js"></script>
+      <script src="{% static 'js/bootstrap.js' %}"></script>
       <!-- custom js -->
-      <script src="{% static '' %}js/custom.js"></script>
+      <script src="{% static 'js/custom.js' %}"></script>
       <script src="{% static 'js/theme.js' %}"></script>
       <script src="{% static 'js/custom.js' %}"></script>
       <script src="{% static 'js/cart.js' %}"></script>
@@ -203,6 +204,7 @@
     
         <!--====== App ======-->
         <script src="{% static 'js/app.js' %}"></script>
+            <!--====== Vendor Js ======-->
 
     {% block content%}
 

@@ -1,9 +1,12 @@
 from unicodedata import name
 from django.urls import path,include
 from . import views
+from.views import checkout_view, inclusiontag
+
 
 urlpatterns = [
     path('',views.homepage_view,name='homepage_view'),
+    path('inctag', inclusiontag),
     path('usersignup/',views.usersignupView,name = 'usersignup'),
     path('signin/',views.signIcon_view,name = 'signin/'),
     path('registeruser/',views.register_USer_View,name= 'registeruser/'),
@@ -11,6 +14,5 @@ urlpatterns = [
     path('cart/',views.cart_View,name = 'cart'),
     # path('add-to-cart',views.addto_cart_View,name = 'add-to-cart'),
     path('update_item/',views.updateItem, name= 'update_item'),
-
+    path('check_out',views.checkout_view,name  = 'check_out')
 ]
-

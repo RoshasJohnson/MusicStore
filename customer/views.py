@@ -19,6 +19,7 @@ from .forms import *
 from django.contrib.auth import authenticate
 from django import template
 register = template.Library()
+@register.inclusion_tag('customer/header.html')
 
 
 # Create your views here.
@@ -28,11 +29,10 @@ def category_view(request):
     print(contex,'''''''''''''''''''''''''''''''''''''''''''''''')
     return render(request,'customer/header.html',{'context':contex})
 #-----------------------------------------------------------------------------------      
-@register.inclusion_tag('customer/header.html')    
-def  category_view(poll):
-      choices = poll.Category.objects.all()
-      print(choices ,'''''''''''''''''''''''''''''''''''''''''''''''')
-      return {'choices': choices}
+  
+def inclusiontag(request):
+    choices =Category.objects.all()
+    return render(request, "customer/header.html",{'choices':choices})
 #-----------------------------------------------------------------------------------  
 
 # This function for registring the user
@@ -44,9 +44,10 @@ def usersignupView (request):
                 request.session['name'] = 'username'
                 return render(request,'customer/otp.html') 
                 
-
+ 
     else:
         form = Customer()
+        choices =Category.objects.all()
     return render(request,'customer/register.html',{'form':form})
 
 
@@ -56,7 +57,8 @@ def homepage_view(request):
     if request.session.get('name'):
         Designpage= Design.objects.all()[0]
         everyproduct = Product.objects.all()
-        return render(request,'customer/index.html',{'everyproduct':everyproduct,'Designpage':Designpage})
+        choices =Category.objects.all()
+        return render(request,'customer/index.html',{'everyproduct':everyproduct,'Designpage':Designpage,'choices':choices})
     else:
         Designpage = Design.objects.all()
         everyproduct = Product.objects.all()
@@ -171,28 +173,14 @@ def cart_View(request):
         print(customer)
         order,create = Order.objects.get_or_create(Customer = customer,complete =  False)
         items  = order.orderitem_set.all()
+       
     else:
         items = []
-    # items = Order.objects.filter( Customer  = customer )
-    # print(items,'llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll') 
-    # contex = {'items':items} 
-        # if request.user.is_authenticated :
-            #     cart = {}
-            #     cart[str(request.POST['id'])]= {
-            #         'tittle':request.POST.get('title'),
-            #         'qty':request.POST.get('qty'),
-            #         'price':request.POST.get('price'), 
-            #     }
-            #     print(cart,'//////////////////////////////////////////////////////////////////////////////////////')
-    contex = {'items':items}            
+ 
+    contex = {'items':items,'order':order}        
     return render (request,'customer/cart.html', contex)
-        # else:
-        #      print('working//////////////////////////////////////////////////////////')
-        #      return render(request,'customer/signin.html')
-# else:
-#     return redirect('signin/')
- 
- 
+
+
 
 def updateItem(request):
     data  = json.loads(request.body)
@@ -203,3 +191,9 @@ def updateItem(request):
     user = request.user.UserCreation
     product =Product.objects.get(id= productId)
     return JsonResponse('item was added', safe = False)  
+
+
+
+def checkout_view(request):
+    return render(request,'customer/checkout.html')
+ 

@@ -388,7 +388,8 @@ $.ajax({
 
 }); 
 
-
+var  user= request.user
+console.log(user)
 
 var updatebtn = document.getElementsByClassName('update-cart')
 console.log(updatebtn)
