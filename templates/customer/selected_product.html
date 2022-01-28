@@ -14,7 +14,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>aranoz</title>
-  <link rel="icon" href="img/favicon.png">
+  <link rel="icon" href="">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href=" {% static 'css/bootstrap.min.css' %}">
   <!-- animate CSS -->
@@ -30,16 +30,12 @@
   <!-- font awesome CSS -->
   <link rel="stylesheet" href=" {% static 'css/magnific-popup.css' %}">
   <!-- style CSS -->
-  <link rel="stylesheet" href="{%static 'text.css' %}">
+  <link rel="stylesheet" href="{% static 'css/text.css' %} ">
   <!-- style CSS -->
   <link rel="stylesheet" href=" {% static 'css/style.css' %}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
-<style>
-.imgkey{width:300;height:300;border:1px solid #ddd;}
-.previewPane{display:inline-block;border:1px solid #ddd;width:300;height:300;cursor:crosshair;background-repeat:no-repeat;background-position:center;background-size:100% 100%}
-#zoomer{display:none;background-repeat:no-repeat;border:1px solid #ddd;width:300;height:300;z-index:1000;}
-</style> 
+
 
 <body>
    <!--::header part start::-->
@@ -74,17 +70,19 @@
         <div class="col-lg-7 col-xl-7">
           <div  class="product_slider_img">
             <div class='imgline' id="vertical">
-            
+              
               {% if i.product_image %}
+              
+
               <div data-thumb="{{ i.product_image.url }}">
-                <img class="imgkey"  src="{{ i.product_image.url }}" />
+                <img class="f"  src="{{ i.product_image.url }}" />
               </div>
             
               <div data-thumb="{{ i.product_image1.url }}">
-                <img class="imgkey"  src="{{ i.product_image1.url }}" />
+                <img class="f"  src="{{ i.product_image1.url }}" />
               </div>
               <div data-thumb="{{ i.product_image2.url}}">
-                <img class="imgkey"  src="{{ i.product_image2.url }}" />
+                <img class="f"  src="{{ i.product_image2.url }}" />
               </div>
               <div data-thumb="{{ i.product_image3.url}}">
                 <img class="imgkey"  src="{{ i.product_image3.url }}" />
@@ -94,6 +92,9 @@
           </div>
         </div>
       
+    <script src = " {% static 'js/text.js' %} ">
+    
+    </script>
         <div class="col-lg-5 col-xl-4">
           <div class="s_product_text">
 
@@ -114,9 +115,9 @@
             <div class="card_area d-flex justify-content-between align-items-center input-group my-3">
              
               <a href="" class="btn_3 ml-2">Buy now</a>
-              <input class = "number" value = "1" class = "form-control" style = 'width:30px' id = "productQty"/>
+           
                <div class = "input-group-append">
-                
+              
                   <input type = "hidden" class = "product-id" value = "{{ i.id }}" />
                   <input type = "hidden" class = "product-title" value = "{{i.product_name }}" />
                   <input type = "hidden" class = "product-prize" value = "{{i.product_prize }}" />
@@ -288,7 +289,7 @@
                 <div class="review_item">
                   <div class="media">
                     <div class="d-flex">
-                      <img src="t/review-1.png" alt="" />
+                      <img src="" alt="" />
                     </div>
                     <div class="media-body">
                       <h4>Blake Ruiz</h4>
@@ -306,7 +307,7 @@
                 <div class="review_item reply">
                   <div class="media">
                     <div class="d-flex">
-                      <img src="t/review-2.png" alt="" />
+                      <img src="t/" alt="" />
                     </div>
                     <div class="media-body">
                       <h4>Blake Ruiz</h4>
@@ -324,7 +325,7 @@
                 <div class="review_item">
                   <div class="media">
                     <div class="d-flex">
-                      <img src="t/review-3.png" alt="" />
+                      <img src="" alt="" />
                     </div>
                     <div class="media-body">
                       <h4>Blake Ruiz</h4>
@@ -440,7 +441,7 @@
                 <div class="review_item">
                   <div class="media">
                     <div class="d-flex">
-                      <img src="t/review-1.png" alt="" />
+                      <img src="t/" alt="" />
                     </div>
                     <div class="media-body">
                       <h4>Blake Ruiz</h4>
@@ -461,7 +462,7 @@
                 <div class="review_item">
                   <div class="media">
                     <div class="d-flex">
-                      <img src="t/review-2.png" alt="" />
+                      <img src="t/" alt="" />
                     </div>
                     <div class="media-body">
                       <h4>Blake Ruiz</h4>
@@ -482,7 +483,7 @@
                 <div class="review_item">
                   <div class="media">
                     <div class="d-flex">
-                      <img src="t/review-3.png" alt="" />
+                      <img src="t/" alt="" />
                     </div>
                     <div class="media-body">
                       <h4>Blake Ruiz</h4>

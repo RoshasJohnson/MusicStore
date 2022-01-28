@@ -360,16 +360,17 @@ inputNumber($('.input-number'));
 }(jQuery));
 
 
-// // add to cart 
-$(document).on('click','#addTocartBtn',function(){
+// add to cart 
+$(document).on('click','.updjate-cart',function(){
   var _vm = $(this);
   var _qty = $('#productQty').val();
   var  _productId = $('.product-id').val();
   var _productTitle = $('.product-title').val();
   var _productPrice = $('.product-prize').val();
   console.log('id:',_productId,_productTitle,_qty,_productPrice)
+
 $.ajax({
-  url :'/add-to-cart',
+  url :'/update-cart',
   data:{
     'id': _productId,
     'qty':_qty,
@@ -384,15 +385,18 @@ $.ajax({
     $('.cart-list').text(res.totalitms);
     _vm.attr('disabled',false);
   }
-})
+}) 
 
 }); 
 
-var  user= request.user
-console.log(user)
+// var  user= request.user
+// console.log(user)
+
+
+
 
 var updatebtn = document.getElementsByClassName('update-cart')
-console.log(updatebtn)
+console.log(updatebtn,'dddddddddddddddd')
 for (var i = 0; i <updatebtn.length; i++){  
     updatebtn[i].addEventListener("click",function(){
         var productId = this.dataset.product
@@ -424,7 +428,52 @@ function updateuserOrder(productId,action){
     })
     .then((data)=>{
       console.log('data:',data)
+      // location.reload()
+      
     })
 }
 
 
+
+// var updatebtn = document.getElementsByClassName('update-cart')
+// console.log(updatebtn,'lkjsd;f')
+// for (var i = 0; i <updatebtn.length; i++){  
+//     updatebtn[i].addEventListener("click",function(){
+//         var productId = this.dataset.product
+//         var action = this.dataset.action
+//         console.log('i.Id:',productId,'action:',action)
+//         //  console.log('user:',user)
+//         // if(username == 'anonymouseuser'){
+//         //   console.log('not logged in')
+//         // }
+//         // else{
+//           updateuserOrder(productId,action)
+//         // }
+//     })
+// }
+
+// function  updateuserOrder(productId,action){
+//   console.log('user in logged in ,sending data....')
+//   var url = '/update_item/'
+//   fetch(url,{
+//     method:'POST',
+//     headers:{'content-Type':'application/json',
+//     'X-CSRFToken':csrftoken,
+//   },
+//   body:JSON.stringify({'productId':productId,'action':action})
+
+//   })
+//   .then((response)=>{
+//     return response.json()
+//   })
+//   .then((data)=>{
+//     console.log('data:',data)
+//     // location.reload()
+    
+//   })
+// }
+
+
+
+// var updateCart = document.getElementsByClassName('update-cart')
+// console(updateCart)

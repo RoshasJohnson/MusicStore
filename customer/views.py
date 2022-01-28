@@ -11,7 +11,7 @@ from django.shortcuts import redirect, render
 import re
 
 from pyparsing import replaceWith
-from sqlalchemy import false 
+from sqlalchemy import false, null 
 import customer
 from .models import AbstractUser, Product
 from .models import *
@@ -24,31 +24,33 @@ register = template.Library()
 
 # Create your views here.
 
-def category_view(request):
-    contex = Category.objects.all()
-    print(contex,'''''''''''''''''''''''''''''''''''''''''''''''')
-    return render(request,'customer/header.html',{'context':contex})
-#-----------------------------------------------------------------------------------      
+# def category_view(request):
+#     contex = Category.objects.all()
+#     print(contex,'''''''''''''''''''''''''''''''''''''''''''''''')
+#     return render(request,'customer/header.html',{'context':convtex})
+#----------------------------------------------------v\-------------------------------      
   
 def inclusiontag(request):
     choices =Category.objects.all()
-    return render(request, "customer/header.html",{'choices':choices})
+    contex = {'choices': choices}
+    return render(request, "customer/header.html",  contex )
 #-----------------------------------------------------------------------------------  
-
-# This function for registring the user
+ 
+# This function for registring the user 
 def usersignupView (request):
     if request.method == 'POST':
         form = Customer(request.POST)
         if form.is_valid():                 
-                form.save()                
+                form.save()                 
                 request.session['name'] = 'username'
                 return render(request,'customer/otp.html') 
                 
  
     else:
         form = Customer()
-        choices =Category.objects.all()
-    return render(request,'customer/register.html',{'form':form})
+    choices =Category.objects.all()
+    contex = {'form':form,'choices': choices}    
+    return render(request,'customer/register.html',contex)
 
 
 #-----------------------------------------------------------------------------------      
@@ -57,12 +59,25 @@ def homepage_view(request):
     if request.session.get('name'):
         Designpage= Design.objects.all()[0]
         everyproduct = Product.objects.all()
-        choices =Category.objects.all()
-        return render(request,'customer/index.html',{'everyproduct':everyproduct,'Designpage':Designpage,'choices':choices})
+        choices =Category.objects.all() 
+        cartItems = Order.get_cart_items
+        contex = {'everyproduct':everyproduct,
+        'Designpage':Designpage,
+        'choices':choices,
+        'cartItems':cartItems}
+        return render(request,'customer/index.html',contex)
+
+
     else:
         Designpage = Design.objects.all()
         everyproduct = Product.objects.all()
-        return render(request,'customer/index.html',{'everyproduct':everyproduct,'Designpage':Designpage})
+        choices =Category.objects.all()
+        cartItems = Order.get_cart_items
+        contex = {'everyproduct':everyproduct,
+        'Designpage':Designpage,
+        'choices':choices,
+        'cartItems':cartItems}
+        return render(request,'customer/index.html',contex)
 
 
 #-----------------------------------------------------------------------------------
@@ -70,13 +85,12 @@ def homepage_view(request):
   
 
 def selected_Product_view(request,id):
-    if request.session.get('name'):
-        selectedProduct = Product.objects.filter(id= id)
-
-        return render(request,'customer/selected_product.html',{'selectedProduct':selectedProduct })
-    else:
-        selectedProduct = Product.objects.filter(id= id)
-        return render(request,'customer/selected_product.html',{'selectedProduct':selectedProduct })
+    selectedProduct = Product.objects.filter(id= id) 
+    choices =Category.objects.all()
+    cartItems = Order.get_cart_items
+    contex = {'selectedProduct':selectedProduct,'choices':choices,'cartItems':cartItems }
+    return render(request,'customer/selected_product.html',contex)
+    
 
 
 #-----------------------------------------------------------------------------------  
@@ -96,16 +110,17 @@ def signIcon_view(request):
              return redirect('/')
         else:
             errorshowing = 'Incorrect user name and password'
-            return render(request,'customer/signin.html',{'errorshowing': errorshowing,'form':form})
+            choices =Category.objects.all()
+            return render(request,'customer/signin.html',{'errorshowing': errorshowing,'form':form, 'choices':choices})
     else:
         try:
             del request.session['name']
         except  KeyError as name:
             print('error')
         form = Customer()
-
+        choices =Category.objects.all()
         
-        return render(request,'customer/signin.html',{'form':form })
+        return render(request,'customer/signin.html',{'form':form, 'choices':choices })
     
 
     
@@ -115,59 +130,39 @@ def signIcon_view(request):
 
 
 def register_USer_View(request):
+    choices =Category.objects.all()
     form = Customer()
-    return render (request,'customer/register.html',{'form':form})
+    return render (request,'customer/register.html',{'form':form, 'choices':choices})
 
 
 
 #-----------------------------------------------------------------------------------  
 
-# def cart_View(request):
-#     if request.session.get('name'):
-#         return render(request,'customer/cart.html')
-#     else:
-#         error = 'you must login in  before add to cart'
-#         form = Customer()
-#         return render(request,'customer/signin.html',{'form':form ,'error':error})
-# #-----------------------------------------------------------------------------------      
-
-
-   
-# def _cart_Id(request):
-#     cart = request.session.session_key
-#     if not cart:
-#         cart = request.session.create()
-#     return cart 
-
-
-# def addto_cart_View(request):
-#     # del request.session['cartdata']
-#     cart = {}
-#     cart[str(request.GET['id'])]= {
-#         'title':request.GET['title'],
-#         'qty':request.GET['qty'],
-#         'price':request.GET['price'], 
-#     }
-#     print(cart,'??????????????????????????????????????????????????????????????????????????')        
-#     if 'cartdata' in  request.session:
-#         if str(request.GET['id']) in  request.session['cartdata'] :
-#             cart_data = request.session['cartdata'] 
-#             cart_data[str(request.GET['id'])]['qty'] = int(cart[str(request.GET['id'])]['qty'])
-#             cart_data.update(cart_data)
-#             request.session['cartdata'] = cart_data    
-#         else:
-#             cart_data = request.session['cartdata']    
-#             cart_data.update(cart)
-#             request.session['cartdata'] = cart_data
-#     else:
-#         request.session['cartdata'] = cart
-#         print(cart)                          
-#     return JsonResponse({'data': request.session['cartdata'],'totalitms':len(request.session['cartdata'])})
-
-
-
 def cart_View(request): 
+    choices =Category.objects.all()
     if request.user.is_authenticated or request.session.get('name'): 
+        user = request.user
+        customer = request.user
+        print(customer)
+        order,create = Order.objects.update_or_create(Customer = customer,complete =  False)
+        items  = order.orderitem_set.all()
+       
+    else:
+        items = [] 
+        error = "you have'nt carts"
+        return render(request,'customer/cart.html',{'error':error, 'choices':choices})
+    contex = {'items':items,'order':order, 'choices':choices}
+    return render (request,'customer/cart.html', contex)
+
+ 
+ 
+
+
+
+
+def checkout_view(request):
+    choices =Category.objects.all()
+    if request.user.is_authenticated or  request.session.get('name'): 
         user = request.user
         customer = request.user
         print(customer)
@@ -175,25 +170,34 @@ def cart_View(request):
         items  = order.orderitem_set.all()
        
     else:
-        items = []
+        return redirect('cart/')
  
-    contex = {'items':items,'order':order}        
-    return render (request,'customer/cart.html', contex)
+    contex = {'items':items,'order':order, 'choices':choices}  
+    return render(request,'customer/checkout.html',contex)
 
 
 
-def updateItem(request):
-    data  = json.loads(request.body)
+
+ 
+
+
+def updateItem(request): 
+    data  = json.loads(request.body)    
     productId  = data['productId']
     action = data['action']
-    print('productId:',productId) 
-    print('action:',action)
-    user = request.user.UserCreation
-    product =Product.objects.get(id= productId)
-    return JsonResponse('item was added', safe = False)  
+    print(productId,'_-------------________________--------------------------------')
+    customer = request.user
+    product = Product.objects.get(id = productId  )
+    order,create = Order.objects.get_or_create(Customer = customer,complete =  False)
+    orderItem,create = OrderItem.objects.get_or_create(order = order,product = product)
 
+    if action == 'add':
+        orderItem.quantity =(orderItem.quantity  + 1)
+    elif action == 'remove':
+        orderItem.quantity =(orderItem.quantity  - 1)
+    
+    orderItem.save()
 
-
-def checkout_view(request):
-    return render(request,'customer/checkout.html')
- 
+    if orderItem.quantity <= 0:
+        orderItem.delete()
+    return JsonResponse('item was added', safe = False)   

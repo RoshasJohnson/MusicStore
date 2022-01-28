@@ -6,7 +6,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django import forms
 from django.utils import timezone
-from sqlalchemy import true
+from sqlalchemy import false, true
 import os
 from twilio.rest import Client
 # from customer.forms import Customer
@@ -44,6 +44,7 @@ class Product(models.Model):
     product_prize       =  models.FloatField(max_length=200, null = True)
     stock               = models.IntegerField(max_length=200,null= True)
     is_available        = models.BooleanField(default=True)
+    digital             = models.BooleanField(default=False,null= True,blank = True)
     category_type       = models.ForeignKey(Category,on_delete=models.CASCADE,null = True)
     product_image       = models.ImageField(null= True,blank = True,upload_to ='images/')
     product_image1      = models.ImageField(null= True,blank = True,upload_to ='images/')
@@ -150,8 +151,17 @@ class Order(models.Model):
         orderitems = self.orderitem_set.all()
         total      = sum([item.quantity for item in orderitems])
         return total
-
-
+    @property
+    def shipping(self):
+        shipping  = False
+        orderItmes = self.OrderItem_set.all()
+        
+        for i in orderItmes:
+            if i.product.digital  == False :
+                shipping = True 
+        return self.shipping
+        
+ 
 class OrderItem(models.Model):
     product     = models.ForeignKey(Product,on_delete= models.SET_NULL, null= True ,blank = True)
     order       = models.ForeignKey(Order,on_delete= models.SET_NULL,blank = True, null= True)  
