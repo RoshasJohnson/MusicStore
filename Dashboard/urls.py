@@ -20,5 +20,6 @@ urlpatterns = [
     path('deletecategory/<int:id>/',views.deletecategory_view,name = 'deletecategory'),
     path('editcategory/<int:id>/',views.editcategory_view,name ='editcategory'),
     path('design_management/',views.designManagement_View,name = 'design_management'),
-    path('admin_logout/',views.adminlogout_view,name = 'admin_logout')
+    path('admin_logout/',views.adminlogout_view,name = 'admin_logout'),
+    path('order_management',views.ordermangemet_view,name = "order_management")
 ]

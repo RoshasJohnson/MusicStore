@@ -361,7 +361,7 @@ inputNumber($('.input-number'));
 
 
 // add to cart 
-$(document).on('click','.updjate-cart',function(){
+$(document).on('click','.updafte-cart',function(){
   var _vm = $(this);
   var _qty = $('#productQty').val();
   var  _productId = $('.product-id').val();
@@ -395,7 +395,111 @@ $.ajax({
 
 
 
-var updatebtn = document.getElementsByClassName('update-cart')
+var updatebtn = document.getElementsByClassName('add-cart')
+console.log(updatebtn,'dddddddddddddddd')
+for (var i = 0; i <updatebtn.length; i++){  
+    updatebtn[i].addEventListener("click",function(){
+        var productId = this.dataset.product
+        var action = this.dataset.action
+        console.log('iddddddddddddd.Id:',productId,'action:',action)
+        // console.log('user:',user)
+        // if(username == 'anonymouseuser'){
+        //   console.log('not logged in')
+        // }
+        // else{
+        addcart(productId,action)
+        // }
+    })
+}
+
+function  addcart(productId,action){
+    console.log('user in logged in ,sending data....')
+    var url = '/update_item/'
+    fetch(url,{
+      method:'POST',
+      headers:{'content-Type':'application/json',
+      'X-CSRFToken':csrftoken,
+    },
+    body:JSON.stringify({'productId':productId,'action':action})
+
+    })
+    .then((response)=>{
+      return response.json()
+    })
+    .then((data)=>{
+      console.log('data:',data)
+      fire()
+      // location.reload()
+      
+    })
+}
+
+
+
+
+
+function changeqty(id){
+  typeval = $("#"+id).attr('data-action') 
+  for (var i = 0; i <updatebtn.length; i++){  
+    updatebtn[i].addEventListener("click",function(){
+      var productId = this.dataset.product
+      var action = this.dataset.action
+      console.log('i.Id:',productId,'action:',action)
+      // console.log('user:',user)
+      // if(username == 'anonymouseuser'){
+        //   console.log('not logged in')
+        // }
+        // else{
+          updateuserOrder(productId,action)
+          // }
+        })
+   }
+}
+
+function updateuserOrder(productId,action){
+  console.log('user in logged in ,sending data....')
+  var url = '/cart_qty/'
+  fetch(url,{
+    method:'POST',
+    headers:{'content-Type':'application/json',
+    'X-CSRFToken':csrftoken,
+  },
+  body:JSON.stringify({'productId':productId,'action':action})
+
+  })
+  .then((response)=>{
+    return response.json()
+  })
+  .then((data)=>{
+    console.log('data:',data)
+    location.reload()
+    
+  })
+}
+
+
+
+if (document.querySelector('input[name="payment"]')) {
+  document.querySelectorAll('input[name="payment"]').forEach((elem) => {
+    elem.addEventListener("change", function(event) {
+      var item = event.target.value;
+      console.log(item);
+    });
+  })
+}
+
+
+
+
+
+
+
+
+
+// change qauntity cart function
+
+
+var updatebtn = document.getElementsByClassName('changeqty')
 console.log(updatebtn,'dddddddddddddddd')
 for (var i = 0; i <updatebtn.length; i++){  
     updatebtn[i].addEventListener("click",function(){
@@ -414,7 +518,7 @@ for (var i = 0; i <updatebtn.length; i++){
 
 function updateuserOrder(productId,action){
     console.log('user in logged in ,sending data....')
-    var url = '/update_item/'
+    var url = '/cart_qty/'
     fetch(url,{
       method:'POST',
       headers:{'content-Type':'application/json',
@@ -428,52 +532,32 @@ function updateuserOrder(productId,action){
     })
     .then((data)=>{
       console.log('data:',data)
-      // location.reload()
+      
+      location.reload()
       
     })
 }
 
 
 
-// var updatebtn = document.getElementsByClassName('update-cart')
-// console.log(updatebtn,'lkjsd;f')
-// for (var i = 0; i <updatebtn.length; i++){  
-//     updatebtn[i].addEventListener("click",function(){
-//         var productId = this.dataset.product
-//         var action = this.dataset.action
-//         console.log('i.Id:',productId,'action:',action)
-//         //  console.log('user:',user)
-//         // if(username == 'anonymouseuser'){
-//         //   console.log('not logged in')
-//         // }
-//         // else{
-//           updateuserOrder(productId,action)
-//         // }
-//     })
-// }
-
-// function  updateuserOrder(productId,action){
-//   console.log('user in logged in ,sending data....')
-//   var url = '/update_item/'
-//   fetch(url,{
-//     method:'POST',
-//     headers:{'content-Type':'application/json',
-//     'X-CSRFToken':csrftoken,
-//   },
-//   body:JSON.stringify({'productId':productId,'action':action})
-
-//   })
-//   .then((response)=>{
-//     return response.json()
-//   })
-//   .then((data)=>{
-//     console.log('data:',data)
-//     // location.reload()
-    
-//   })
-// }
+////////////////////////////////////////////////////////////////
 
 
 
-// var updateCart = document.getElementsByClassName('update-cart')
-// console(updateCart)
+
+
+
+////////////////////////////////////////////////////
+function fire(){
+Swal.fire({
+  position: 'top-end',
+
+  icon: 'success',
+  title: 'Your item has been added',
+  showConfirmButton: false,
+  timer: 1500,
+})
+setTimeout(() => {
+   window.location.reload()
+}, 1000);
+}

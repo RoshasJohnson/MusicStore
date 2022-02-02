@@ -20,6 +20,25 @@
 
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin-2.min.css'%}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/flaticon.css'%}">
+    <link rel="stylesheet" href="{% static 'css/themify-icons.css'%}">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css'%}">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="{% static 'css/slick.css'%}">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
+
+    <!--====== Vendor Css ======-->
+    <link rel="stylesheet" href="{% static 'css/vendor.css' %}">
+
+    <!--====== Utility-Spacing ======-->
+    <link rel="stylesheet" href="{% static 'css/utility.css' %}">
+
+    <!--====== App ======-->
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css'%}">
 
 </head>
 <body>
@@ -88,7 +107,7 @@
 
              <!-- Order Mangement -->
                     <li class="nav-item">
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="{% url 'order_management' %}">
                                 <i class="fas fa-fw fa-table"></i>
                             <span>Order Management</span></a>
                     </li>
@@ -144,6 +163,54 @@
            <!-- Page level custom scripts -->
            <script src="{%static 'js/demo/chart-area-demo.js'%}"></script>
            <script src="{%static 'js/demo/chart-pie-demo.js'%}"></script>
+           <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+           <!-- popper js -->
+           <script src="{% static 'js/popper.min.js' %}"></script>
+           <!-- bootstrap js -->
+           <script src="{% static 'js/bootstrap.js' %}"></script>
+           <!-- custom js -->
+           <script src="{% static 'js/custom.js' %}"></script>
+           <script src="{% static 'js/theme.js' %}"></script>
+           <script src="{% static 'js/custom.js' %}"></script>
+           <script src="{% static 'js/cart.js' %}"></script>
+         
+           <script src="{% static 'js/jquery-1.12.1.min.js' %}"></script>
+           <!-- popper js -->
+           <script src="{% static 'js/popper.min.js' %}"></script>
+           <!-- bootstrap js -->
+           <script src="{% static 'js/bootstrap.min.js' %}"></script>
+           <!-- easing js -->
+           <script src="{% static 'js/jquery.magnific-popup.js' %}"></script>
+           <!-- swiper js -->
+           <script src="{% static 'js/lightslider.min.js' %}"></script>
+           <!-- swiper js -->
+           <script src="{% static 'js/masonry.pkgd.js' %}"></script>
+           <!-- particles js -->
+           <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+           <script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+           <!-- slick js -->
+           <script src="{% static 'js/slick.min.js' %}"></script>
+           <script src="{% static 'js/swiper.jquery.js' %}"></script>
+           <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+           <script src="{% static 'js/waypoints.min.js' %}"></script>
+           <script src="{% static 'js/contact.js' %}"></script>
+           <script src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
+           <script src="{% static 'js/jquery.form.js' %}"></script>
+           <script src="{% static 'js/jquery.validate.min.js' %}"></script>
+           <script src="{% static 'js/mail-script.js' %}"></script>
+           <script src="{% static 'js/stellar.js' %}"></script>
+           <!-- custom js -->
+           <script src="{% static 'js/theme.js' %}"></script>
+           <script src="{% static 'js/custom.js' %}"></script>
+           <script src="{% static 'js/cart.js' %}"></script>
+             <!--====== Vendor Js ======-->
+             <script src="{% static 'js/vendor.js' %}"></script>
+         
+             <!--====== jQuery Shopnav plugin ======-->
+             <script src="{% static 'js/jquery.shopnav.js' %}"></script>
+         
+             <!--====== App ======-->
+             <script src="{% static 'js/app.js' %}"></script>
 
     
     <!-- side ends -->

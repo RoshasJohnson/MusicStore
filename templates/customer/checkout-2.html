@@ -1,0 +1,298 @@
+{% extends 'customer/header.html' %}
+{% load static %}
+    {% block content %}
+     <div id="app">
+                                     
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 2 ======-->
+
+
+            <!--====== Section 3 ======-->
+            <div class="">
+
+                <!--====== Section Content ======-->
+                <div class="section__content mt-5">
+                    <div class="container">
+                        <div class="checkout-f">
+                            <div class="row">
+                                <div class="col">
+   
+                                <form>
+                                 
+                                <div class="col-">
+                                    <h1 class="checkout-f__h1">ORDER SUMMARY</h1>
+
+                                    <!--====== Order Summary ======-->
+                                    <div class="o-summary">
+                                       
+                                        <div class="o-summary__section u-s-m-b-30">
+                                            <div class="o-summary__item-wrap gl-scroll">
+                                                {% for item in Buyorder %}
+                                               
+                                                
+                                                <div class="o-card">
+                                                    <div class="o-card__flex">
+                                                        <div class="o-card__img-wrap">
+                                                            {% if item.product_image %}
+                                                            <img class="u-img-fluid" src="{{item.product_image.url }}" alt=""></div>
+                                                            {% endif %}
+                                                            <div class="o-card__info-wrap mt-4">
+                                                                
+                                                                <span class="o-card__name">
+                                                                    
+                                                                    <a href="product-detail.html">{{item.product_name}}</a></span>
+                                                                    
+                                                            {% comment %} <span class="o-card__quantity text-success">Quantity x {{item.quantity}}</span> {% endcomment %}
+                                                            
+                                                            <span class="o-card__price text-danger">{{item.product_prize}}</span></div>
+                                                        </div>
+                                                        
+                                                    <a class="o-card__del far fa-trash-alt"></a>
+                                                </div>
+                                                {% endfor %}
+                                          
+                                                
+                                              
+                                            </div>
+                                        </div>
+                    
+                                        <div class="o-summary__section u-s-m-b-30">
+                                            <div class="o-summary__box">
+                                                <table class="o-summary__table">
+                                                    <tbody>
+                                                        {% comment %} <tr>
+                                                            <td>SHIPPING</td>
+                                                            <td>$4.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>TAX</td>
+                                                            <td>$0.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>SUBTOTAL</td>
+                                                            <td>$379.00</td>
+                                                        </tr> {% endcomment %}
+                                                        <tr>
+                                                            <td class = "text-warning">GRAND TOTAL</td>
+                                                            {% for i in Buyorder%}
+                                                            <td  class = "text-warning">₹{{i.product_prize  }}</td>
+                                                            {% endfor %}
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    <div class= "checkbox">
+                                        <h1 class="checkout-f__h1">Delivery  Address</h1>
+                                        {% for i in form %}
+                                        <address class = "ml-2">
+                                            
+                                     <P>{{i.first_name}} {{i.last_name}}</p>
+                                        <p>   {{i.house_name}} house <br>
+                                        <p>  {{i.street_name}} <br>
+                                       <p>   {{i.city}},{{i.state}},{{i.country}}<br>
+                                        <p> Post-code:{{i.post_code}}</p>
+          
+                                    </div>
+                                    
+                                    
+                                    {% endfor %}
+                                    <a class="btn btn-warning col-lg-2" href="#" role="button ">Change address</a>
+                                </address>
+
+                                <div class="o-summary__box">
+                                    <h1 class="checkout-f__h1">PAYMENT INFORMATION</h1>
+                                    <form class="checkout-f__payment">
+                                        <div class="u-s-m-b-10">
+
+                                            <!--====== Radio Box ======-->
+                                            <div class="radio-box">
+
+                                                <input type="radio" id="cash-on-delivery" name="payment">
+                                                <div class="radio-box__state radio-box__state--primary">
+
+                                                    <label class="radio-box__label" for="cash-on-delivery">Cash on Delivery</label></div>
+                                            </div>
+                                            <!--====== End - Radio Box ======-->
+
+                                        </div>
+                                  
+                                  
+                                        
+                                        <div class="u-s-m-b-10">
+
+                                            <!--====== Radio Box ======-->
+                                            <div class="radio-box">
+
+                                                <input type="radio" id="pay-pal" name="payment">
+                                                <div class="radio-box__state radio-box__state--primary">
+
+                                                    <label class="radio-box__label" for="pay-pal">Pay Pal</label></div>
+                                            </div>
+                                            <!--====== End - Radio Box ======-->
+
+                                        </div>
+                                                                       
+                                        <div class="u-s-m-b-10">
+
+                                            <!--====== Radio Box ======-->
+                                            <div class="radio-box">
+
+                                                <input type="radio" id="pay-pal" name="payment">
+                                                <div class="radio-box__state radio-box__state--primary">
+
+                                                    <label class="radio-box__label" for="pay-pal">Razor pay</label></div>
+                                            </div>
+                                            <!--====== End - Radio Box ======-->
+
+                                        </div>
+                                       
+                                    </form>
+                                </div>
+                                        <div class="o-summary__section u-s-m-b-30">
+                                       
+      
+                                                        </div>
+                                                        <!--====== End - Radio Box ======-->
+
+                   
+                                                    <div>
+                                                        
+                                                        <a href ="{% url 'checking_address'%}"><button  class="btn btn--e-brand-b-2 bg-danger" type="submit">PROCEED TO CHECKOUT</button> </a></div>
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                               
+                                    <!--====== End - Order Summary ======-->
+                                </div>
+                                
+                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 3 ======-->
+        </div>
+        <!--====== End - App Content ======-->
+
+
+        <!--====== Main Footer ======-->
+        <footer>
+            <div class="outer-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="outer-footer__content u-s-m-b-40">
+
+                                <span class="outer-footer__content-title">Contact Us</span>
+                                <div class="outer-footer__text-wrap"><i class="fas fa-home"></i>
+
+                                    <span>4247 Ashford Drive Virginia VA-20006 USA</span></div>
+                                <div class="outer-footer__text-wrap"><i class="fas fa-phone-volume"></i>
+
+                                    <span>(+0) 900 901 904</span></div>
+                                <div class="outer-footer__text-wrap"><i class="far fa-envelope"></i>
+
+                                    <span>contact@domain.com</span></div>
+                                <div class="outer-footer__social">
+                                    <ul>
+                                        <li>
+
+                                            <a class="s-fb--color-hover" href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                        <li>
+
+                                            <a class="s-tw--color-hover" href="#"><i class="fab fa-twitter"></i></a></li>
+                                        <li>
+
+                                            <a class="s-youtube--color-hover" href="#"><i class="fab fa-youtube"></i></a></li>
+                                        <li>
+
+                                            <a class="s-insta--color-hover" href="#"><i class="fab fa-instagram"></i></a></li>
+                                        <li>
+
+                                            <a class="s-gplus--color-hover" href="#"><i class="fab fa-google-plus-g"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                     
+            <div class="lower-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="lower-footer__content">
+                                <div class="lower-footer__copyright">
+
+                                    <span>Copyright © 2018</span>
+
+                                    <a href="index.html">Reshop</a>
+
+                                    <span>All Right Reserved</span></div>
+                                <div class="lower-footer__payment">
+                                    <ul>
+                                        <li><i class="fab fa-cc-stripe"></i></li>
+                                        <li><i class="fab fa-cc-paypal"></i></li>
+                                        <li><i class="fab fa-cc-mastercard"></i></li>
+                                        <li><i class="fab fa-cc-visa"></i></li>
+                                        <li><i class="fab fa-cc-discover"></i></li>
+                                        <li><i class="fab fa-cc-amex"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!--====== Modal Section ======-->
+
+
+        
+
+        <!--====== Shipping Address Add Modal ======-->
+     
+        <!--====== End - Shipping Address Add Modal ======-->
+        <!--====== End - Modal Section ======-->
+    </div>
+    <!--====== End - Main App ======-->
+
+    <!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
+    <script>
+        window.ga = function() {
+            ga.q.push(arguments)
+        };
+        ga.q = [];
+        ga.l = +new Date;
+        ga('create', 'UA-XXXXX-Y', 'auto');
+        ga('send', 'pageview')
+    </script>
+    <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!--====== Vendor Js ======-->
+    <script src="{% static 'js/vendor.js' %}"></script>
+
+    <!--====== jQuery Shopnav plugin ======-->
+    <script src="{% static 'js/jquery.shopnav.js' %}"></script>
+
+    <!--====== App ======-->
+    <script src="{% static 'js/app.js' %}"></script>
+
+    <script src="{% static 'js/custom.js' %}"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
+
+    <!--====== Noscript ======-->
+
+</body>
+</html>
+{% endblock %}

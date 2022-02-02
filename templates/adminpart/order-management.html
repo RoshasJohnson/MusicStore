@@ -6,7 +6,64 @@
 
 
 
+<div class='ml-5 mt-5'>
+    
 
+    <table class="table">
+        <thead>
+          <tr>
+            <th  scope="col" class="border border-danger " style="color:black;">Order Id</th>
+            <th  scope="col" class="border border-danger " style="color:black;">Customer</th>
+            <th scope="col" class="border border-danger" style="color:black;">Product Name</th>
+            <th scope="col" class="border border-danger" style="color:black;">Category  Name</th>
+            <th scope="col" class="border border-danger" style="color:black;">Quantity</th>
+            <th scope="col" class="border border-danger" style="color:black;">Total prize</th>
+            <th scope="col" class="border border-danger" style="color:black;">Order date</th>
+            <th scope="col" class="border border-danger" style="color:black;">Order status</th>
+          </tr>
+        </thead
+        {% for i in order  %}
+        <tbody class="border border-danger">
+          <tr>
+            <th scope="row" class="border border-danger" style="color:black;">
+                {{i.id}}
+         
+            </th>
+            <th scope="row" class="border border-danger" style="color:black;">{{i.order.Customer  }}</th>
+            <td class="border border-danger" style="color:black;">{{i.product}}</td>
+            <td class="border border-danger" style="color:black;">{{i.product.category_type}}</td>
+            <td class="border border-danger" style="color:black;">{{i.quantity}}</td>
+            <td class="border border-danger" style="color:black;">{{i.get_total}}</td>
+            <td class="border border-danger" style="color:black;">{{i.order.date_ordered}}</td>
+            <td class="border border-danger" style="color:black;">{{i.order.complete}}</td>
+            {% comment %} <td class="border border-danger" style="color:black;"><a class="btn btn" href="{% url 'userstatus' i.id %}" role="sumbit"> {% endcomment %}
+            </a>
+          
+          </tr>
+        
+      {% endfor %}
+        
+        </tbody>
+      </table>
+     
+    </div>
+      
+    
+
+    <br>
+    <div class= ' mb-5'>
+    {{ order }}
+    
+    {% if order.has_previous %}
+    
+    <button type="submit" class="btn btn-success"><a href="?page={{ order.previous_page_number}}">Previous </a></button>
+    
+    {% endif %}
+    {% if order.has_next %}
+    
+    <button type="submit" class="btn btn-success"><a href="?page={{ order.next_page_number}}">Next </a></button>
+    </div>
+    {% endif %}
 
 
 {% endblock %}

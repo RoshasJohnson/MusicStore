@@ -12,7 +12,7 @@ from customer.forms import *
 from Dashboard.forms import * 
 
 
-
+get_page = 5 
 # Create your views here.
 
 
@@ -28,8 +28,19 @@ def adminpart(request):
         if adminlogin is not None:
             admincheck = Usercreation.objects.get(username = username)
             if admincheck.is_superuser:
-                request.session['name'] = 'admin'
-                return render(request,'adminpart/dashbord.html')
+                        request.session['name'] = request.POST['username']
+                        total_customer  = Usercreation.objects.all().count()
+                        total_product   = Product.objects.all().count()
+                        total_category  = Category.objects.all().count()
+                        total_order     = Order.objects.all().count()    
+                        contex          = {'total_product'  : total_product,
+                                        'total_customer'  : total_customer,
+                                        'total_category'  : total_category,
+                                        'total_order'     : total_order,
+                                    
+                                        }
+
+                        return render(request,'adminpart/dashbord.html',contex)
         
         else:
             errorshowing = 'Incorrect user name and password'
@@ -43,10 +54,20 @@ def adminpart(request):
 # --------------------------------------------------------------------
 def admin_dashboard(request):
     if request.session.get('name'):
-        return render(request,'adminpart/dashbord.html')
+        total_customer  = Usercreation.objects.all().count()
+        total_product   = Product.objects.all().count()
+        total_category  = Category.objects.all().count()
+        total_order     = Order.objects.all().count()    
+        contex        = {'total_product'  : total_product,
+                        'total_customer'  : total_customer,
+                        'total_category'  : total_category,
+                        'total_order'     : total_order,
+                       
+                        }
+        return render(request,'adminpart/dashbord.html',contex)
     else:
         return redirect('/adminpanel/login/')
-
+  
 # --------------------------------------------------------------------
 
 
@@ -217,12 +238,21 @@ def designManagement_View(request):
 
     return render (request,'adminpart/Design_management.html',{'Design_page':Design_page})
 
-
-
+def ordermangemet_view(request):
+    if request.session.get('name'):   
+        page_inition=Paginator (OrderItem.objects.all(),5)
+        page = request.GET.get('page')
+        order = page_inition.get_page(page)
+       
+        contex = {'order':order}
+        return render (request, 'adminpart/order-management.html',contex)
+    else:
+        return redirect('/adminpanel/login/')
 #log out admin_----------------------------------------------------------------------------------------------- 
+   
 
 
 def adminlogout_view(request):
     del request.session['name']
     return redirect('/adminpanel/login/')
-    
+     

@@ -132,11 +132,21 @@
                      <div class="option_container">
                         <div class="options">
                            
-                           <a href="{% url 'selected_Product' i.id %}" class="option1">
-                              Explore
+                           <a href="{% url 'selected_Product' i.id %}" class="btn_3 ">
+                              View
                            </a>
-                           <script src="{% static 'js/cart.js' %}"></script>
+                         
+                         <button onclick= "fire()" data-product = {{i.id}} data-action = 'add'  class = 'btn_3 add-cart' type = 'submit' >
+                              Add to cart </button>
                         </div>
+    {% comment %} <script>
+       function changeqty(id){
+           typeval = $("#"+id).attr('data-action,data-product')
+          alert(typeval)
+          
+       }
+      
+    </script>  {% endcomment %}
                      </div>
                       {% if i.product_image %} 
                      <div class="img-box">
@@ -164,7 +174,25 @@
                </a>
             </div>
          </div>
-       
+        <script type = "text/javascript">
+           
+                  function getCookie(name) {
+               let cookieValue = null;
+               if (document.cookie && document.cookie !== '') {
+                  const cookies = document.cookie.split(';');
+                  for (let i = 0; i < cookies.length; i++) {
+                     const cookie = cookies[i].trim();
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                           cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                           break;
+                     }
+                  }
+               }
+               return cookieValue;
+         }
+         const csrftoken = getCookie('csrftoken');
+         </script> 
       </section>
       <!-- end product section -->
 
@@ -338,14 +366,7 @@
                           <p>Subscribe by our newsletter and get update protidin.</p>
                         </div>
                         <div class="form_sub">
-                           <form>
-                              <fieldset>
-                                 <div class="field">
-                                    <input type="email" placeholder="Enter Your Mail" name="email" />
-                                    <input type="submit" value="Subscribe" />
-                                 </div>
-                              </fieldset>
-                           </form>
+                      
                         </div>
                      </div>
                   </div>
@@ -356,15 +377,15 @@
       </footer>
       <!-- footer end -->
       <div class="cpy_">
-         <p class="mx-auto">© 2021 All Rights Reserved By <a href="https://html.design/">Free Html Templates</a><br>
+         <p class="mx-auto">© 2021 All Rights Reserved By <a href="">Everything Inc</a><br>
          
-            Distributed By <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+            Distributed By <a href="" target="_blank">Roshas Johnson</a>
          
          </p>
       </div>
       <script src="{% static 'js/cart.js' %}"></script>
-      
+      <script src="{% static 'js/custom.js' %}"></script>
       {% endblock %}
    </body>
-   <script src="{% static 'js/custom.js' %}"></script>
+
 </html>

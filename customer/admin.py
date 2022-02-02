@@ -5,7 +5,7 @@ from .models import *
 
 # Register your models here.
 admin.site.register(Usercreation)
-admin.site.register(useraddress)
+admin.site.register(CustomerAdress)
 admin.site.register(Product)
 admin.site.register(Category)
 admin.site.register(Sms)
