@@ -18,6 +18,10 @@
 <link rel="stylesheet" href="{% static 'css/magnific-popup.css'%}">
 <!-- swiper CSS -->
 <link rel="stylesheet" href="{% static 'css/slick.css'%}">
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.10/sweetalert2.css" integrity="sha512-fSWkjL6trYj6KvdwIga30e8V4h9dgeLxTF2q2waiwwafEXD+GXo5LmPw7jmrSDqRun9gW5KBR+DjvWD+5TVr8A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.10/sweetalert2.min.css" integrity="sha512-jtQXcnq6H9BVx+dOsdudNCZmNe2hBMqcPpnVgeZcV9L3615F4+QMQebbWW9TV2otOSk/kQgum0MpWefB3uL3pg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- style CSS -->
      <!-- Basic -->
      <meta charset="utf-8" />
@@ -47,8 +51,9 @@
     <link rel="stylesheet" href="{% static 'css/slick.css'%}">
     <!-- style CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css'%}">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
-
+ <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!--====== Vendor Css ======-->
     <link rel="stylesheet" href="{% static 'css/vendor.css' %}">
 
@@ -58,7 +63,7 @@
     <!--====== App ======-->
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
 <link rel="stylesheet" href="{% static 'css/style.css'%}">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 
 
 <body>
@@ -79,22 +84,22 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="/">Home</a>
                                 </li>
-                                <li class="nav-item dropdown">
+                                {% comment %} <li class="nav-item dropdown">
                                     <a class="nav-link " href="blog.html" 
                                         role="button"  aria-haspopup="true" aria-expanded="false">
                                       Guitar
-                                    </a>
+                                    </a> {% endcomment %}
                                     <!-- <div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
                                         <a class="dropdown-item" href="category.html"> shop category</a>
                                         <a class="dropdown-item" href="single-product.html">product details</a>
                                         
                                     </div> -->
-                                </li>
+                                {% comment %} </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link " href=" " 
                                     role="button"  aria-haspopup="true" aria-expanded="false">
                                   Piano
-                                </a>
+                                </a> {% endcomment %}
                                     <!-- <div class="dropdown-menu" aria-labelledby="navbarDropdown_2">
                                         <a class="dropdown-item" href="login.html"> login</a>
                                         <a class="dropdown-item" href="tracking.html">tracking</a>
@@ -113,7 +118,7 @@
                                 
                                         {% for i in choices %}
                                     
-                                        <a class="dropdown-item" href="blog.html">{{ i }}</a>
+                                        <a class="dropdown-item" href="{% url 'products' i.id %}">{{ i }}</a>
                                         {% endfor %}
                                     </div>
                                 </li>
@@ -121,7 +126,7 @@
                                 
                                 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="contact.html">Your account</a>
+                                    <a class="nav-link" href=" {% url 'manage_account' %}">Your account</a>
                                 </li>
                             </ul>
                         </div>
@@ -156,6 +161,9 @@
         </script>
         <!-- jQery -->
       <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+      <!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
       <!-- popper js -->
       <script src="{% static 'js/popper.min.js' %}"></script>
       <!-- bootstrap js -->
@@ -203,6 +211,7 @@
     
         <!--====== App ======-->
         <script src="{% static 'js/app.js' %}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <!--====== Vendor Js ======-->
 
     {% block content%}

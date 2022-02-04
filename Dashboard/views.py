@@ -54,14 +54,21 @@ def adminpart(request):
 # --------------------------------------------------------------------
 def admin_dashboard(request):
     if request.session.get('name'):
+        total_sum =0
         total_customer  = Usercreation.objects.all().count()
         total_product   = Product.objects.all().count()
         total_category  = Category.objects.all().count()
-        total_order     = Order.objects.all().count()    
+        total_order     = Order.objects.all().count()
+        total_earnings  = Order.objects.all()   
+        for i  in total_earnings:
+            total_sum +=i.total_prize
+
+        print(total_sum)    
         contex        = {'total_product'  : total_product,
                         'total_customer'  : total_customer,
                         'total_category'  : total_category,
                         'total_order'     : total_order,
+                        'total_sum'       :total_sum,  
                        
                         }
         return render(request,'adminpart/dashbord.html',contex)
@@ -240,10 +247,7 @@ def designManagement_View(request):
 
 def ordermangemet_view(request):
     if request.session.get('name'):   
-        page_inition=Paginator (OrderItem.objects.all(),5)
-        page = request.GET.get('page')
-        order = page_inition.get_page(page)
-       
+        order=Order.objects.all()
         contex = {'order':order}
         return render (request, 'adminpart/order-management.html',contex)
     else:

@@ -7,36 +7,36 @@
 <div class='ml-5 mt-5'>
     
 
-<table class="table">
+<table id ="example"  class="table table-striped table-bordered" style="width:100%" class="table">
     <thead>
       <tr>
-        <th  scope="col" class="border border-danger " style="color:black;">Number</th>
-        <th  scope="col" class="border border-danger " style="color:black;">Username</th>
-        <th scope="col" class="border border-danger" style="color:black;">First Name</th>
-        <th scope="col" class="border border-danger" style="color:black;">Second Name</th>
-        <th scope="col" class="border border-danger" style="color:black;">Email</th>
-        <th scope="col" class="border border-danger" style="color:black;">Phone Number</th>
-        <th scope="col" class="border border-danger" style="color:black;">Status</th>
+        <th  scope="col" class="border border-dark " style="color:black;">Number</th>
+        <th  scope="col" class="border border-dark " style="color:black;">Username</th>
+        <th scope="col" class="border border-dark" style="color:black;">First Name</th>
+        <th scope="col" class="border border-dark" style="color:black;">Second Name</th>
+        <th scope="col" class="border border-dark" style="color:black;">Email</th>
+        <th scope="col" class="border border-dark" style="color:black;">Phone Number</th>
+        <th scope="col" class="border border-dark" style="color:black;">Status</th>
       </tr>
     </thead>
     {% for i in listing  %}
     {% if i.is_superuser == 0 %}
-    <tbody class="border border-danger">
+    <tbody class="border border-dark">
       <tr>
-        <th scope="row" class="border border-danger" style="color:black;">
-            {{i.id}}
+        <th scope="row" class="border border-dark" style="color:black;">
+            {{forloop.counter |add:"-1"}}
      
         </th>
-        <th scope="row" class="border border-danger" style="color:black;">{{i.username}}</th>
-        <td class="border border-danger" style="color:black;">{{i.first_name}}</td>
-        <td class="border border-danger" style="color:black;">{{i.last_name}}</td>
-        <td class="border border-danger" style="color:black;">{{i.email}}</td>
-        <td class="border border-danger" style="color:black;">{{i.phone_number}}</td>
-        <td class="border border-danger" style="color:black;"><a class="btn btn" href="{% url 'userstatus' i.id %}" role="sumbit">
+        <th scope="row" class="border border-dark" style="color:black;">{{i.username}}</th>
+        <td class="border border-dark" style="color:black;">{{i.first_name}}</td>
+        <td class="border border-dark" style="color:black;">{{i.last_name}}</td>
+        <td class="border border-dark" style="color:black;">{{i.email}}</td>
+        <td class="border border-dark" style="color:black;">{{i.phone_number}}</td>
+        <td class="border border-dark" style="color:black;"><a class="btn btn" href="{% url 'userstatus' i.id %}" role="sumbit">
           {% if i.is_active %}
           <button type="submit" class="btn btn-outline-success">Block</button>
           {% else %}
-          <button type="submit" class="btn btn-outline-danger">blocked</button>
+          <button type="submit" class="btn btn-outline-dark">blocked</button>
           {% endif %}
         </a>
       
@@ -57,16 +57,13 @@
 
 </div>
 <div class= 'float-right mb-5'>
-{{ listing }}
 
-{% if listing.has_previous %}
-
-<button type="submit" class="btn btn-success"><a href="?page={{ listing.previous_page_number}}">Previous </a></button>
-
-{% endif %}
-{% if listing.has_next %}
-
-<button type="submit" class="btn btn-success"><a href="?page={{ listing.next_page_number}}">Next </a></button>
-</div>
-{% endif %}
+  <script>
+    $(document).ready( function () {
+        $('#example').DataTable();
+    } );
+</script>
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
 {% endblock %}

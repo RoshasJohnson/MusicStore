@@ -1,298 +1,689 @@
 {% extends 'customer/header.html' %}
 {% load static %}
-    {% block content %}
-     <div id="app">
-                                     
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--====== End - Section Content ======-->
-            </div>
-            <!--====== End - Section 2 ======-->
+{% block content %}
 
 
-            <!--====== Section 3 ======-->
-            <div class="">
+<div id="app">
+    <!--====== App Content ======-->
+    <div class="app-content">
 
-                <!--====== Section Content ======-->
-                <div class="section__content mt-5">
-                    <div class="container">
-                        <div class="checkout-f">
-                            <div class="row">
-                                <div class="col">
-   
-                                <form>
-                                 
-                                <div class="col-">
-                                    <h1 class="checkout-f__h1">ORDER SUMMARY</h1>
 
-                                    <!--====== Order Summary ======-->
-                                    <div class="o-summary">
-                                       
-                                        <div class="o-summary__section u-s-m-b-30">
-                                            <div class="o-summary__item-wrap gl-scroll">
-                                                {% for item in Buyorder %}
-                                               
-                                                
-                                                <div class="o-card">
-                                                    <div class="o-card__flex">
-                                                        <div class="o-card__img-wrap">
-                                                            {% if item.product_image %}
-                                                            <img class="u-img-fluid" src="{{item.product_image.url }}" alt=""></div>
-                                                            {% endif %}
-                                                            <div class="o-card__info-wrap mt-4">
-                                                                
-                                                                <span class="o-card__name">
-                                                                    
-                                                                    <a href="product-detail.html">{{item.product_name}}</a></span>
-                                                                    
-                                                            {% comment %} <span class="o-card__quantity text-success">Quantity x {{item.quantity}}</span> {% endcomment %}
-                                                            
-                                                            <span class="o-card__price text-danger">{{item.product_prize}}</span></div>
+        <!--====== Section 3 ======-->
+     <div class="u-s-p-b-60">
+        <form Action = "" name="myForm"  id = "form"   method="get">
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="container">
+                    <div class="checkout-f">
+                        <div class="row">
+                         
+                            <div class="col-lg-12">
+                                <h1 class="checkout-f__h1">ORDER SUMMARY</h1>
+
+                                <!--====== Order Summary ======-->
+                                <div class="o-summary">
+                                    <div class="o-summary__section u-s-m-b-30">
+                                        <div class="o-summary__item-wrap gl-scroll">
+                                        
+                                        
+                                           
+                                           {% for item in Items %}
+                                            <div   class="o-card">
+                                                <div class="o-card__flex">
+                                                    <div class="o-card__img-wrap">
+
+                                                        <img class="u-img-fluid"  src="{{item.product_image.url }}" alt=""></div>
+                                                    <div class="o-card__info-wrap">
+
+                                                        <span class="o-card__name mt-3">
+
+                                                            <a id= "product"  data-product="{{item.id}}" href="{% url 'selected_Product' item.id %}">{{item.product_name}}</a></span>
+
+                                                        <span class="o-card__quantity">Quantity x 1</span>
+
+                                                        <span class="o-card__price text-danger"> INR {{item.product_prize}}</span></div>
+                                                </div>
+
+                                                <a class="o-card__del far fa-trash-alt"></a>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="o-summary__section u-s-m-b-30">
+                                        <div class="o-summary__box">
+                                            <h1 class="checkout-f__h1">SHIPPING & BILLING</h1>
+                                            <span class="ship-b__text">Ship to: </span>
+                                            <div class="row">
+                                                {% if form %}
+                                                {% for i in form %}
+                                                <div class="col-sm-6">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">Address  {{ forloop.counter }}</h5>
+                                                            <p class="ship-b__p">{{i.first_name}} {{i.last_name}} 
+                                                                <br>{{i.house_name}} , {{i.street_name}} street 
+                                                                <br>{{i.city}} {{i.state}}<br> postal-code:{{i.post_code}}
+                                                            </p>
                                                         </div>
-                                                        
-                                                    <a class="o-card__del far fa-trash-alt"></a>
+                                                        <div class="form-check mb-2">
+                                                            <input  type="radio" name= "address" value ="{{i.id}}"  class="form-check-input address" id="ad{{forloop.counter}}"/>
+                                                            <label  class="form-check-label text-danger" for="address">
+                                                              Select Address  
+                                                            </label>
+                                                          </div>
+                                                    </div>
                                                 </div>
                                                 {% endfor %}
-                                          
-                                                
-                                              
-                                            </div>
-                                        </div>
-                    
-                                        <div class="o-summary__section u-s-m-b-30">
-                                            <div class="o-summary__box">
-                                                <table class="o-summary__table">
-                                                    <tbody>
-                                                        {% comment %} <tr>
-                                                            <td>SHIPPING</td>
-                                                            <td>$4.00</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>TAX</td>
-                                                            <td>$0.00</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>SUBTOTAL</td>
-                                                            <td>$379.00</td>
-                                                        </tr> {% endcomment %}
-                                                        <tr>
-                                                            <td class = "text-warning">GRAND TOTAL</td>
-                                                            {% for i in Buyorder%}
-                                                            <td  class = "text-warning">₹{{i.product_prize  }}</td>
-                                                            {% endfor %}
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    <div class= "checkbox">
-                                        <h1 class="checkout-f__h1">Delivery  Address</h1>
-                                        {% for i in form %}
-                                        <address class = "ml-2">
                                             
-                                     <P>{{i.first_name}} {{i.last_name}}</p>
-                                        <p>   {{i.house_name}} house <br>
-                                        <p>  {{i.street_name}} <br>
-                                       <p>   {{i.city}},{{i.state}},{{i.country}}<br>
-                                        <p> Post-code:{{i.post_code}}</p>
-          
-                                    </div>
-                                    
-                                    
-                                    {% endfor %}
-                                    <a class="btn btn-warning col-lg-2" href="#" role="button ">Change address</a>
-                                </address>
-
-                                <div class="o-summary__box">
-                                    <h1 class="checkout-f__h1">PAYMENT INFORMATION</h1>
-                                    <form class="checkout-f__payment">
-                                        <div class="u-s-m-b-10">
-
-                                            <!--====== Radio Box ======-->
-                                            <div class="radio-box">
-
-                                                <input type="radio" id="cash-on-delivery" name="payment">
-                                                <div class="radio-box__state radio-box__state--primary">
-
-                                                    <label class="radio-box__label" for="cash-on-delivery">Cash on Delivery</label></div>
                                             </div>
-                                            <!--====== End - Radio Box ======-->
-
+                                            {% else %}
+                                              <P class = "text-danger ml-2 "> You don't have an address <P>
+                                              {% endif %}
                                         </div>
-                                  
-                                  
+                                    </div><P>
+                                    <div class = "col-lg-4 mb-3">
+                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+                                            Add new address
+                                        </button>
                                         
-                                        <div class="u-s-m-b-10">
-
-                                            <!--====== Radio Box ======-->
-                                            <div class="radio-box">
-
-                                                <input type="radio" id="pay-pal" name="payment">
-                                                <div class="radio-box__state radio-box__state--primary">
-
-                                                    <label class="radio-box__label" for="pay-pal">Pay Pal</label></div>
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                  <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                  <form>
+                                                    <div class="mb-3">
+                                                      <label for="recipient-name" class="col-form-label">Recipient:</label>
+                                                      <input type="text" class="form-control" id="recipient-name">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                      <label for="message-text" class="col-form-label">Message:</label>
+                                                      <textarea class="form-control" id="message-text"></textarea>
+                                                    </div>
+                                                  </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                  <button type="button" class="btn btn-primary">Send message</button>
+                                                </div>
+                                              </div>
                                             </div>
-                                            <!--====== End - Radio Box ======-->
-
-                                        </div>
-                                                                       
-                                        <div class="u-s-m-b-10">
-
-                                            <!--====== Radio Box ======-->
-                                            <div class="radio-box">
-
-                                                <input type="radio" id="pay-pal" name="payment">
-                                                <div class="radio-box__state radio-box__state--primary">
-
-                                                    <label class="radio-box__label" for="pay-pal">Razor pay</label></div>
-                                            </div>
-                                            <!--====== End - Radio Box ======-->
-
-                                        </div>
-                                       
-                                    </form>
-                                </div>
-                                        <div class="o-summary__section u-s-m-b-30">
-                                       
-      
-                                                        </div>
-                                                        <!--====== End - Radio Box ======-->
-
-                   
-                                                    <div>
+                                          </div>
+                                    </div>
+                                    <div class="o-summary__section u-s-m-b-30">
+                                        <div class="o-summary__box">
+                                            <table class="o-summary__table">
+                                                <tbody>
+                                                   
+                                                      {% for i in Items %}
                                                         
-                                                        <a href ="{% url 'checking_address'%}"><button  class="btn btn--e-brand-b-2 bg-danger" type="submit">PROCEED TO CHECKOUT</button> </a></div>
-                                              
-                                            </div>
+                                                      <tr>
+                                                          <td>TOTAL</td>
+                                                          <td>₹ {{i.product_prize }}</td>
+                                                        </tr>
+                                                        {% endfor %}
+                         
+                                                    <tr>
+                                                        <td>DELIVERY CHARGE</td>
+                                                        <td> ₹ 40</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>TAX</td>
+                                                        <td>₹ {{tax}}</td>
+                                                    </tr>
+                                                    
+                                                 
+                                                 
+                                                    <tr>
+                                                        <td class = "text-danger" >GRAND TOTAL</td>
+                                                        
+                                                        <td  id = "prize" data-prize="{{grandtotal}}" class = "text-danger"> ₹ {{grandtotal}}</td>
+                                                      
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                               
-                                    <!--====== End - Order Summary ======-->
+                                    <div class="o-summary__section u-s-m-b-30">
+                                        <div class="o-summary__box">
+                                            <h1 class="checkout-f__h1">PAYMENT INFORMATION</h1>
+                                          
+                                                <div class="u-s-m-b-10">
+
+                                                    <!--====== Radio Box ======-->
+                                                    <div class="radio-box">
+
+                                                        <input type="radio" id="cash-on-delivery" value="cod" name="payment">
+                                                        <div class="radio-box__state radio-box__state--primary">
+
+                                                            <label class="radio-box__label" for="cash-on-delivery">Cash on Delivery</label></div>
+                                                    </div>
+                                                    <!--====== End - Radio Box ======-->
+
+                                                </div>
+                                             
+                                               
+                                               
+                                                <div class="u-s-m-b-10">
+
+                                                    <!--====== Radio Box ======-->
+                                                    <div class="radio-box">
+
+                                                        <input type="radio" id="pay-pal" value="paypal" name="payment">
+                                                        <div class="radio-box__state radio-box__state--primary ">
+
+                                                            <label class="radio-box__label" for="pay-pal">Pay Pal</label></div>
+                                                    </div>
+                                                    <!--====== End - Radio Box ======-->
+                                                    
+
+                                                </div>
+                                                <div class="u-s-m-b-10">
+
+                                                    <!--====== Radio Box ======-->
+                                                    <div class="radio-box">
+
+                                                        <input type="radio" id="razopay" value="razopay" name="payment">
+                                                        <div class="radio-box__state radio-box__state--primary ">
+
+                                                            <label class="radio-box__label" for="razopay">Razopay</label></div>
+                                                    </div>
+                                                    <!--====== End - Radio Box ======-->
+                                                    
+
+                                                </div>
+                                             
+                                                <div>
+
+                                                    <button onclick="validateForm()" class="btn btn--e-brand-b-2 bg-danger" type="button">PLACE ORDER</button></div>
+                                            
+                                        </div>
+                                    </div>
                                 </div>
-                                
-                 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--====== End - Section Content ======-->
-            </div>
-            <!--====== End - Section 3 ======-->
-        </div>
-        <!--====== End - App Content ======-->
-
-
-        <!--====== Main Footer ======-->
-        <footer>
-            <div class="outer-footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="outer-footer__content u-s-m-b-40">
-
-                                <span class="outer-footer__content-title">Contact Us</span>
-                                <div class="outer-footer__text-wrap"><i class="fas fa-home"></i>
-
-                                    <span>4247 Ashford Drive Virginia VA-20006 USA</span></div>
-                                <div class="outer-footer__text-wrap"><i class="fas fa-phone-volume"></i>
-
-                                    <span>(+0) 900 901 904</span></div>
-                                <div class="outer-footer__text-wrap"><i class="far fa-envelope"></i>
-
-                                    <span>contact@domain.com</span></div>
-                                <div class="outer-footer__social">
-                                    <ul>
-                                        <li>
-
-                                            <a class="s-fb--color-hover" href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                        <li>
-
-                                            <a class="s-tw--color-hover" href="#"><i class="fab fa-twitter"></i></a></li>
-                                        <li>
-
-                                            <a class="s-youtube--color-hover" href="#"><i class="fab fa-youtube"></i></a></li>
-                                        <li>
-
-                                            <a class="s-insta--color-hover" href="#"><i class="fab fa-instagram"></i></a></li>
-                                        <li>
-
-                                            <a class="s-gplus--color-hover" href="#"><i class="fab fa-google-plus-g"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                     
-            <div class="lower-footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="lower-footer__content">
-                                <div class="lower-footer__copyright">
-
-                                    <span>Copyright © 2018</span>
-
-                                    <a href="index.html">Reshop</a>
-
-                                    <span>All Right Reserved</span></div>
-                                <div class="lower-footer__payment">
-                                    <ul>
-                                        <li><i class="fab fa-cc-stripe"></i></li>
-                                        <li><i class="fab fa-cc-paypal"></i></li>
-                                        <li><i class="fab fa-cc-mastercard"></i></li>
-                                        <li><i class="fab fa-cc-visa"></i></li>
-                                        <li><i class="fab fa-cc-discover"></i></li>
-                                        <li><i class="fab fa-cc-amex"></i></li>
-                                    </ul>
-                                </div>
+                                <!--====== End - Order Summary ======-->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </footer>
-
-        <!--====== Modal Section ======-->
-
-
-        
-
-        <!--====== Shipping Address Add Modal ======-->
-     
-        <!--====== End - Shipping Address Add Modal ======-->
-        <!--====== End - Modal Section ======-->
+            <!--====== End - Section Content ======-->
+        </form>
+      </div>
+        <!--====== End - Section 3 ======-->
     </div>
-    <!--====== End - Main App ======-->
+    <!--====== End - App Content ======-->
 
-    <!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
-    <script>
-        window.ga = function() {
-            ga.q.push(arguments)
-        };
-        ga.q = [];
-        ga.l = +new Date;
-        ga('create', 'UA-XXXXX-Y', 'auto');
-        ga('send', 'pageview')
-    </script>
-    <script src="https://www.google-analytics.com/analytics.js" async defer></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-    <!--====== Vendor Js ======-->
-    <script src="{% static 'js/vendor.js' %}"></script>
+    <!--====== Main Footer ======-->
+    <footer>
+        <div class="outer-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="outer-footer__content u-s-m-b-40">
 
-    <!--====== jQuery Shopnav plugin ======-->
-    <script src="{% static 'js/jquery.shopnav.js' %}"></script>
+                            <span class="outer-footer__content-title">Contact Us</span>
+                            <div class="outer-footer__text-wrap"><i class="fas fa-home"></i>
 
-    <!--====== App ======-->
-    <script src="{% static 'js/app.js' %}"></script>
+                                <span>4247 Ashford Drive Virginia VA-20006 USA</span></div>
+                            <div class="outer-footer__text-wrap"><i class="fas fa-phone-volume"></i>
 
-    <script src="{% static 'js/custom.js' %}"></script>
-    <script src="{% static 'js/cart.js' %}"></script>
+                                <span>(+0) 900 901 904</span></div>
+                            <div class="outer-footer__text-wrap"><i class="far fa-envelope"></i>
 
-    <!--====== Noscript ======-->
+                                <span>contact@domain.com</span></div>
+                            <div class="outer-footer__social">
+                                <ul>
+                                    <li>
 
-</body>
-</html>
+                                        <a class="s-fb--color-hover" href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li>
+
+                                        <a class="s-tw--color-hover" href="#"><i class="fab fa-twitter"></i></a></li>
+                                    <li>
+
+                                        <a class="s-youtube--color-hover" href="#"><i class="fab fa-youtube"></i></a></li>
+                                    <li>
+
+                                        <a class="s-insta--color-hover" href="#"><i class="fab fa-instagram"></i></a></li>
+                                    <li>
+
+                                        <a class="s-gplus--color-hover" href="#"><i class="fab fa-google-plus-g"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="outer-footer__content u-s-m-b-40">
+
+                                    <span class="outer-footer__content-title">Information</span>
+                                    <div class="outer-footer__list-wrap">
+                                        <ul>
+                                            <li>
+
+                                                <a href="cart.html">Cart</a></li>
+                                            <li>
+
+                                                <a href="dashboard.html">Account</a></li>
+                                            <li>
+
+                                                <a href="shop-side-version-2.html">Manufacturer</a></li>
+                                            <li>
+
+                                                <a href="dash-payment-option.html">Finance</a></li>
+                                            <li>
+
+                                                <a href="shop-side-version-2.html">Shop</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="outer-footer__content u-s-m-b-40">
+                                    <div class="outer-footer__list-wrap">
+
+                                        <span class="outer-footer__content-title">Our Company</span>
+                                        <ul>
+                                            <li>
+
+                                                <a href="about.html">About us</a></li>
+                                            <li>
+
+                                                <a href="contact.html">Contact Us</a></li>
+                                            <li>
+
+                                                <a href="index.html">Sitemap</a></li>
+                                            <li>
+
+                                                <a href="dash-my-order.html">Delivery</a></li>
+                                            <li>
+
+                                                <a href="shop-side-version-2.html">Store</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="outer-footer__content">
+
+                            <span class="outer-footer__content-title">Join our Newsletter</span>
+                            <form class="newsletter">
+                                <div class="u-s-m-b-15">
+                                    <div class="radio-box newsletter__radio">
+
+                                        <input type="radio" id="male" name="gender">
+                                        <div class="radio-box__state radio-box__state--primary">
+
+                                            <label class="radio-box__label" for="male">Male</label></div>
+                                    </div>
+                                    <div class="radio-box newsletter__radio">
+
+                                        <input type="radio" id="female" name="gender">
+                                        <div class="radio-box__state radio-box__state--primary">
+
+                                            <label class="radio-box__label" for="female">Female</label></div>
+                                    </div>
+                                </div>
+                                <div class="newsletter__group">
+
+                                    <label for="newsletter"></label>
+
+                                    <input class="input-text input-text--only-white" type="text" id="newsletter" placeholder="Enter your Email">
+
+                                    <button class="btn btn--e-brand newsletter__btn" type="submit">SUBSCRIBE</button></div>
+
+                                <span class="newsletter__text">Subscribe to the mailing list to receive updates on promotions, new arrivals, discount and coupons.</span>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="lower-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="lower-footer__content">
+                            <div class="lower-footer__copyright">
+
+                                <span>Copyright © 2018</span>
+
+                                <a href="index.html">Reshop</a>
+
+                                <span>All Right Reserved</span></div>
+                            <div class="lower-footer__payment">
+                                <ul>
+                                    <li><i class="fab fa-cc-stripe"></i></li>
+                                    <li><i class="fab fa-cc-paypal"></i></li>
+                                    <li><i class="fab fa-cc-mastercard"></i></li>
+                                    <li><i class="fab fa-cc-visa"></i></li>
+                                    <li><i class="fab fa-cc-discover"></i></li>
+                                    <li><i class="fab fa-cc-amex"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!--====== Modal Section ======-->
+    <!--=========================== script starting ======================================-->
+             <script>
+            function validateForm() {
+
+                 if ( addressCheck() == true && paymentcheck() == true  ) {
+                   let payment = document.forms["myForm"]["payment"].value;  
+                    if (payment == 'cod'){
+                        let address = document.forms["myForm"]["address"].value;
+                        let payment = document.forms["myForm"]["payment"].value; 
+                        let product = document.getElementById('product')
+                        var productId = product.getAttribute('data-product');
+                        console.log(productId,"productid")
+                        let total= document.getElementById('prize')
+                        let num =total.getAttribute('data-prize');
+                        let get_total = parseInt(num)
+                        console.log(get_total)
+                       console.log( typeof(get_total))
+
+                     
+                       
+                        console.log('user in logged in ,sending data....')
+                        console.log(payment,address)
+                    
+                        var url = '/order_placing/'
+                        fetch(url,{
+                        method:'POST',
+                        headers:{'content-Type':'application/json',
+                        'X-CSRFToken':csrftoken,
+                        },
+                        body:JSON.stringify({'payment':payment,'address':address,
+                        productId:productId,'get_total':get_total})
+
+                        })
+                        .then((response)=>{
+                            return response.json()
+                          })
+                          .then((data)=>{
+                            console.log('data:',data)
+                            
+                            Swal.fire({
+                                title: 'Order placed successfully ',
+                                showClass: {
+                                  popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                  popup: 'animate__animated animate__fadeOutUp'
+                                }
+                              })
+                              
+                            
+                          })
+                        
+
+                       
+                    }
+                 }
+                function addressCheck(){
+                    let address = document.forms["myForm"]["address"].value;
+                    if (address == "") {
+                     
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Please select address!',  
+                          })
+                      return false;
+                    }
+                    else{
+                        return true
+                    }
+                } 
+                
+                function paymentcheck(){
+                    let payment_method = document.forms["myForm"]["payment"].value;
+                    if (payment_method == "") {
+                      
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: "You don't selected any payment methods!",  
+                          })
+                      return false;
+                    }
+                    else{
+
+                        return true
+                    }
+
+                }
+             }
+   
+            </script>
+            
+
+
+
+
+
+
+
+
+
+
+    <!--===========================script starting ======================================-->
+
+
+    <!--====== Shipping Address Add Modal ======-->
+    <div class="modal fade" id="edit-ship-address">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="checkout-modal2">
+                        <div class="u-s-m-b-30">
+                            <div class="dash-l-r">
+                                <h1 class="gl-modal-h1">Shipping Address</h1>
+                                <div class="dash__link dash__link--brand">
+
+                                    <a data-modal="modal" data-modal-id="#add-ship-address" data-dismiss="modal">Add new Address</a></div>
+                            </div>
+                        </div>
+                        <form class="checkout-modal2__form">
+                            <div class="dash__table-2-wrap u-s-m-b-30 gl-scroll">
+                                <table class="dash__table-2">
+                                    <thead>
+                                        <tr>
+                                            <th>Action</th>
+                                            <th>Full Name</th>
+                                            <th>Address</th>
+                                            <th>Region</th>
+                                            <th>Phone Number</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+
+                                                <!--====== Radio Box ======-->
+                                                <div class="radio-box">
+
+                                                    <input type="radio" id="address-1" name="default-address" checked="">
+                                                    <div class="radio-box__state radio-box__state--primary">
+
+                                                        <label class="radio-box__label" for="address-1"></label></div>
+                                                </div>
+                                                <!--====== End - Radio Box ======-->
+                                            </td>
+                                            <td>John Doe</td>
+                                            <td>4247 Ashford Drive Virginia VA-20006 USA</td>
+                                            <td>Virginia VA-20006 USA</td>
+                                            <td>(+0) 900901904</td>
+                                            <td>
+                                                <div class="gl-text">Default Shipping Address</div>
+                                                <div class="gl-text">Default Billing Address</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+
+                                                <!--====== Radio Box ======-->
+                                                <div class="radio-box">
+
+                                                    <input type="radio" id="address-2" name="default-address">
+                                                    <div class="radio-box__state radio-box__state--primary">
+
+                                                        <label class="radio-box__label" for="address-2"></label></div>
+                                                </div>
+                                                <!--====== End - Radio Box ======-->
+                                            </td>
+                                            <td>Doe John</td>
+                                            <td>1484 Abner Road</td>
+                                            <td>Eau Claire WI - Wisconsin</td>
+                                            <td>(+0) 7154419563</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="gl-modal-btn-group">
+
+                                <button class="btn btn--e-brand-b-2" type="submit">SAVE</button>
+
+                                <button class="btn btn--e-grey-b-2" type="button" data-dismiss="modal">CANCEL</button></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--====== End - Shipping Address Add Modal ======-->
+
+
+    <!--====== Shipping Address Add Modal ======-->
+    <div class="modal fade" id="add-ship-address">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="checkout-modal1">
+                        <form class="checkout-modal1__form">
+                            <div class="u-s-m-b-30">
+                                <h1 class="gl-modal-h1">Add new Shipping Address</h1>
+                            </div>
+                            <div class="gl-inline">
+                                <div class="u-s-m-b-30">
+
+                                    <label class="gl-label" for="address-fname">FIRST NAME *</label>
+
+                                    <input class="input-text input-text--primary-style" type="text" id="address-fname" placeholder="First Name"></div>
+                                <div class="u-s-m-b-30">
+
+                                    <label class="gl-label" for="address-lname">LAST NAME *</label>
+
+                                    <input class="input-text input-text--primary-style" type="text" id="address-lname" placeholder="Last Name"></div>
+                            </div>
+                            <div class="gl-inline">
+                                <div class="u-s-m-b-30">
+
+                                    <label class="gl-label" for="address-phone">PHONE *</label>
+
+                                    <input class="input-text input-text--primary-style" type="text" id="address-phone"></div>
+                                <div class="u-s-m-b-30">
+
+                                    <label class="gl-label" for="address-street">STREET ADDRESS *</label>
+
+                                    <input class="input-text input-text--primary-style" type="text" id="address-street" placeholder="House Name and Street"></div>
+                            </div>
+                            <div class="gl-inline">
+                                <div class="u-s-m-b-30">
+
+                                    <!--====== Select Box ======-->
+
+                                    <label class="gl-label" for="address-country">COUNTRY *</label><select class="select-box select-box--primary-style" id="address-country">
+                                        <option selected value="">Choose Country</option>
+                                        <option value="uae">United Arab Emirate (UAE)</option>
+                                        <option value="uk">United Kingdom (UK)</option>
+                                        <option value="us">United States (US)</option>
+                                    </select>
+                                    <!--====== End - Select Box ======-->
+                                </div>
+                                <div class="u-s-m-b-30">
+
+                                    <!--====== Select Box ======-->
+
+                                    <label class="gl-label" for="address-state">STATE/PROVINCE *</label><select class="select-box select-box--primary-style" id="address-state">
+                                        <option selected value="">Choose State/Province</option>
+                                        <option value="al">Alabama</option>
+                                        <option value="al">Alaska</option>
+                                        <option value="ny">New York</option>
+                                    </select>
+                                    <!--====== End - Select Box ======-->
+                                </div>
+                            </div>
+                            <div class="gl-inline">
+                                <div class="u-s-m-b-30">
+
+                                    <label class="gl-label" for="address-city">TOWN/CITY *</label>
+
+                                    <input class="input-text input-text--primary-style" type="text" id="address-city"></div>
+                                <div class="u-s-m-b-30">
+
+                                    <label class="gl-label" for="address-street">ZIP/POSTAL CODE *</label>
+
+                                    <input class="input-text input-text--primary-style" type="text" id="address-postal" placeholder="Zip/Postal Code"></div>
+                            </div>
+                            <div class="gl-modal-btn-group">
+
+                                <button class="btn btn--e-brand-b-2" type="submit">SAVE</button>
+
+                                <button class="btn btn--e-grey-b-2" type="button" data-dismiss="modal">CANCEL</button></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--======  Address Add Modal ======-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.10/sweetalert2.js" integrity="sha512-u9p1QPpG9YeeTQeM8Uj/TTGw8/OOLJqDFB3iUNx6HwN54HcsEyT96NCjPVn+m3B5ydE9KP7wD6Kb11n1fCt5QQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.10/sweetalert2.min.js" integrity="sha512-LwESE8nE3vcnoUWmYo6skVQ+BRT5UhqnPweGro7e22RSDLVwftCfFIPt+Ha2tm1Gg7RXvYp/jPyih3DUB06PwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.10/sweetalert2.all.js" integrity="sha512-g4BEr9uX8/EsXakUmNF2Geowd5ww8fc9bUaOblLyVJJu2okCYnge1m0pVHbHsusPKV2Dmlm7bu/i6uLisa80sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.10/sweetalert2.all.min.js" integrity="sha512-IG3jJs+NhoPszr+n3I3AHLii1LFFGEVZoorGJFkrd+flS4dgdAVL0AAGiPHlXB0ZD5mgPmcpVKm4KBybCeXLLA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    
+ 
+
+<script>
+    var exampleModal = document.getElementById('exampleModal')
+exampleModal.addEventListener('show.bs.modal', function (event) {
+  // Button that triggered the modal
+  var button = event.relatedTarget
+  // Extract info from data-bs-* attributes
+  var recipient = button.getAttribute('data-bs-whatever')
+  // If necessary, you could initiate an AJAX request here
+  // and then do the updating in a callback.
+  //
+  // Update the modal's content.
+  var modalTitle = exampleModal.querySelector('.modal-title')
+  var modalBodyInput = exampleModal.querySelector('.modal-body input')
+
+  modalTitle.textContent = 'New message to ' + recipient
+  modalBodyInput.value = recipient
+})
+</script>
+
+
+
+<!--====== End - Modal Section ======-->
+
+
+    
 {% endblock %}

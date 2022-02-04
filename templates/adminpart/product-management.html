@@ -4,41 +4,38 @@
 {% load static %}
 
 
-<div class='ml-5 mt-5 col-xm-12-lg-3'>
-    <div class="border" style="color:black;"><a class="btn btn" href="/adminpanel/add_product/"  role="sumbit"><button type="button" class="btn btn-outline-success">Add Product</button></a></div>
-
-    <table class="table">
+<div class='table table-striped table-light mt-4 '>
+  <a class="btn btn  float-right" href="/adminpanel/add_product/"  role="submit"><button type="button" class="btn btn-primary btn-lg">Add Product</button></a>
+    <table  id ="example"  class="table table-striped table-bordered" class="table">
     <thead> 
       <tr>
-        <th  scope="col" class="border border-primary " style="color:black;">Product Id</th>
-        <th  scope="col" class="border border-primary " style="color:black;">Product Name</th>
-        <th scope="col" class="border border-primary" style="color:black;">Category</th>
-        <th scope="col" class="border border-primary" style="color:black;">description</th>
-        <th scope="col" class="border border-primary" style="color:black;">Product_prize</th>
-        <th scope="col" class="border border-primary" style="color:black;">Product stock</th>
-        <th scope="col" class="border border-primary" style="color:black;">Available</th> 
-        <th scope="col" class="border border-primary" style="color:black;">Edit Product </th>
-        <th scope="col" class="border border-primary" style="color:black;"> Delete Product</th>
+        <th  scope="col" class="border border-dark " style="color:black;">Product Id</th>
+        <th  scope="col" class="border border-dark " style="color:black;">Product Name</th>
+        <th scope="col" class="border border-dark" style="color:black;">Category</th>
+        <th scope="col" class="border border-dark" style="color:black;">description</th>
+        <th scope="col" class="border border-dark" style="color:black;">Product_prize</th>
+        <th scope="col" class="border border-dark" style="color:black;">Product stock</th>
+        <th scope="col" class="border border-dark" style="color:black;">Available</th> 
+        <th scope="col" class="border border-dark" style="color:black;">Edit Product </th>
+        <th scope="col" class="border border-dark" style="color:black;"> Delete Product</th>
 
         
       </tr>
     </thead>
 
     
+     <tbody class="border border-danger">
+    
     {% for i in products  %}
-   
-    <tbody class="border border-danger">
       <tr>
-        <td class="border border-primary" style="color:black;">{{i.id }}</td>
-        <td class="border border-primary" style="color:black;">{{i.product_name }}</td>
-        <td class="border border-primary" style="color:black;">{{i.category_type}}</td>
-        <td class="border border-primary" style="color:black;">{{i.product_description}}</td>
-        <td class="border border-primary" style="color:black;">{{i.product_prize}}</td>
-        <td class="border border-primary" style="color:black;">{{i.stock}}</td>
-        <td class="border border-primary" style="color:black;">{{i.is_available  }}</td>
-        <td class="border border-primary" style="color:black;"><a class="btn btn" href="{% url 'update_product' i.id %}" role="sumbit"><button type="button" class="btn btn-outline-warning">Edit</button></a></td>
-
-          
+        <td class="border border-dark" style="color:black;">{{i.id }}</td>
+        <td class="border border-dark" style="color:black;">{{i.product_name }}</td>
+        <td class="border border-dark" style="color:black;">{{i.category_type}}</td>
+        <td class="border border-dark" style="color:black;">{{i.product_description}}</td>
+        <td class="border border-dark" style="color:black;">{{i.product_prize}}</td>
+        <td class="border border-dark" style="color:black;">{{i.stock}}</td>
+        <td class="border border-dark" style="color:black;">{{i.is_available  }}</td>
+        <td class="border border-dark" style="color:black;"><a class="btn btn" href="{% url 'update_product' i.id %}" role="sumbit"><button type="button" class="btn btn-outline-warning">Edit</button></a></td>
             <a  class=" delete" data-confirm="Are you sure to delete this item?"><td class="border border-primary" style="color:black;"><a class=" delete btn btn" data-confirm="Are you sure to delete this item?" href="{% url 'delete_product' i.id %}" role="sumbit"><button type="button" onclick=alert('Item deleted') class="btn btn-outline-danger">Delete</button></a></a>
           </div></td>
       </tr>
@@ -61,22 +58,20 @@
       });
     } 
   </script>
-  {{ products }}
+ 
 
-  {% if products.has_previous %}
-  
-  <a href="?page=1">&laquo First </a>
-  
-  <a href="?page={{ products.previous_page_number}}">Previous </a>
-  
-  {% endif %}
-  {% if products.has_next %}
-  
-  <a href="?page={{ products.next_page_number}}">Next </a>
-  
-  <a href="?page={{ products.paginator.num_pages}}">Last &raquo </a>
   </div>
 
+      
+  <script>
+    $(document).ready( function () {
+        $('#example').DataTable();
+    } );
+</script>
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
+
   
-  {% endif %}
+
   {% endblock %}

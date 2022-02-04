@@ -17,8 +17,12 @@ urlpatterns = [
     path('check_out',views.checkout_view,name  = 'check_out'),
     path('place_order/',views.place_orderView, name= 'place_order'),
     path('proccesing_order/',views.Process_orderView,name = 'proccesing_order'),
-    path('ordering/<int:id>/',views.BuyView,name = 'ordering'),
+    path('ordering/<int:id>/',views.OrderView,name = 'ordering'),
      path('placing_order/',views.Blah,name = 'placing_order'),
     path('cart_qty/', views.addcartQtyView,name = 'cart_qty'),
-    path('checking_address',views.checkingaddressview,name = 'checking_address') 
-    ]
+    path('checking_address',views.checkingaddressview,name = 'checking_address') ,
+    path('products/<int:id>/',views.productpage_View,name = "products"),
+    path('order_placing/',views.order_placingView ,name ="order_placing"),
+    path('manage_account',views.user_account_View,name = "manage_account"),
+    path('cart_items/',views.cart_item_buy_View,name= "cart_items"),
+    ] 

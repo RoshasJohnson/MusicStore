@@ -10,14 +10,13 @@
          {% block content %}
         
          <!-- slider section -->
-          <section class="slider_section ">
+          <section class="slider_section  ">
             <div class="slider_bg_box">
-               {% comment %} {% for f in  Designpage %}
-               {% if  f.Banner_image1 %}
-               <img src="{{ f.Banner_image1.url }}" alt="">
+
+              
+               <img src="https://www.google.com/imgres?imgurl=http%3A%2F%2Fonwebbox.com%2FContent%2Fonwebbox.com%2FMngt%2FRealImage%2F834Online-Banner-Maker.jpg&imgrefurl=http%3A%2F%2Fonwebbox.com%2FHome%2FBlogdetails%2F19%2Ftop-5-free-online-banner-maker-website&tbnid=md12QEMKEiC_tM&vet=12ahUKEwiLvc_P9-H1AhXGJbcAHXGdDA4QMygIegUIARDRAQ..i&docid=stnmQLAfUUi0zM&w=900&h=305&itg=1&q=banner%20image%20for%20website&ved=2ahUKEwiLvc_P9-H1AhXGJbcAHXGdDA4QMygIegUIARDRAQ" alt="">
             </div>
-            {% endif %}
-            {% endfor %}  {% endcomment %}
+         
             <div id="customCarousel1" class="carousel slide" data-ride="carousel">
                <div class="carousel-inner">
                   <div class="carousel-item active">
@@ -136,7 +135,7 @@
                               View
                            </a>
                          
-                         <button onclick= "fire()" data-product = {{i.id}} data-action = 'add'  class = 'btn_3 add-cart' type = 'submit' >
+                         <button onclick = "fire()" data-product = {{i.id}} data-action = 'add'  class = 'btn_3 add-cart' type = 'submit' >
                               Add to cart </button>
                         </div>
     {% comment %} <script>

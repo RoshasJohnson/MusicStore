@@ -29,6 +29,8 @@
     <!-- style CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css'%}">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap4.min.css">
 
     <!--====== Vendor Css ======-->
     <link rel="stylesheet" href="{% static 'css/vendor.css' %}">
@@ -152,17 +154,17 @@
            <script src="{% static  'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
            <!-- Core plugin JavaScript-->
-           <script src="%{static 'vendor/jquery-easing/jquery.easing.min.js'%}"></script>
+           <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js'%}"></script>
 
            <!-- Custom scripts for all pages-->
-           <script src="{%static 'js/sb-admin-2.min.js'%}"></script>
+           <script src="{% static 'js/sb-admin-2.min.js'%}"></script>
 
            <!-- Page level plugins -->
-           <script src="{%static 'vendor/chart.js/Chart.min.js'%}"></script>
+           <script src="{% static 'vendor/chart.js/Chart.min.js'%}"></script>
 
            <!-- Page level custom scripts -->
-           <script src="{%static 'js/demo/chart-area-demo.js'%}"></script>
-           <script src="{%static 'js/demo/chart-pie-demo.js'%}"></script>
+           <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
+           <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
            <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
            <!-- popper js -->
            <script src="{% static 'js/popper.min.js' %}"></script>
@@ -212,7 +214,8 @@
              <!--====== App ======-->
              <script src="{% static 'js/app.js' %}"></script>
 
-    
+     
+            
     <!-- side ends -->
     {% block content%}
 

@@ -39,28 +39,7 @@
 
 <body>
    <!--::header part start::-->
-  
-    <!-- Header part end-->
-
-  {% comment %} <!-- breadcrumb start-->
-  <section class="breadcrumb breadcrumb_bg">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <div class="breadcrumb_iner">
-            <div class="breadcrumb_iner_item">
-              <h2>Shop Single</h2>
-              <p>Home <span>-</span> Shop Single</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section> {% endcomment %}
-  <!-- breadcrumb start-->
-  <!--================End Home Banner Area =================-->
-
-  <!--================Single Product Area =================-->
+   <!--================Single Product Area =================-->
   {% for i in selectedProduct %}
 
 
@@ -70,30 +49,44 @@
         <div class="col-lg-7 col-xl-7">
           <div  class="product_slider_img">
             <div class='imgline' id="vertical">
-              
-              {% if i.product_image %}
-              
+          
+              {% for i in Designpage  %}
+              <img id="img_01" src="{{i.product_image.url}}" data-zoom-image="{{i.product_image.url}}"/>
 
-              <div data-thumb="{{ i.product_image.url }}">
-                <img class="f"  src="{{ i.product_image.url }}" />
+              <div id="gal1">
+               
+                <a href="#" data-image="{{ i.product_image.url }}" data-zoom-image="{{ i.product_image.url }}">
+                  <img id="img_01" src="{{ i.product_image.url }}" />
+                </a>
+              
+                <a href="#" data-image="{{ i.product_image.url }}" data-zoom-image="{{ i.product_image.url }}">
+                  <img id="img_01" src="{{ i.product_image.url }}" />
+                </a>
+              
+                <a href="#" data-image="{{ i.product_image.url }}" data-zoom-image="{{ i.product_image.url }}">
+                  <img id="img_01" src="{{ i.product_image.url }}" />
+                </a>
+              
+                <a href="#" data-image="{{ i.product_image.url }}" data-zoom-image="{{ i.product_image.url }}">
+                  <img id="img_01" src="{{ i.product_image1.url }}" />
+                </a>
+              
               </div>
-            
-              <div data-thumb="{{ i.product_image1.url }}">
-                <img class="f"  src="{{ i.product_image1.url }}" />
-              </div>
-              <div data-thumb="{{ i.product_image2.url}}">
-                <img class="f"  src="{{ i.product_image2.url }}" />
-              </div>
-              <div data-thumb="{{ i.product_image3.url}}">
-                <img class="imgkey"  src="{{ i.product_image3.url }}" />
-              </div>
-              {% endif %}
+              {% endfor %}
+          
             </div>
           </div>
         </div>
       
-    <script src = " {% static 'js/text.js' %} ">
-    
+    <script src = "js/text.js ">
+      $("#zoom_03").elevateZoom({gallery:'gallery_01', cursor: 'pointer', galleryActiveClass: 'active', imageCrossfade: true, loadingIcon: 'http://www.elevateweb.co.uk/spinner.gif'}); 
+
+//pass the images to Fancybox
+      $("#zoom_03").bind("click", function(e) {  
+        var ez =   $('#zoom_03').data('elevateZoom');	
+        $.fancybox(ez.getGalleryList());
+        return false;
+});
     </script>
         <div class="col-lg-5 col-xl-4">
           <div class="s_product_text">
@@ -114,7 +107,7 @@
             </p>
             <div class="card_area d-flex justify-content-between align-items-center input-group my-3">
              
-              <a href="{% url 'ordering' i.id %}" class="btn_3 ml-2">Buy now</a>
+              <a href="{% url 'ordering' i.id %}" type ='button' class="btn btn-danger rounded-pill btn_3 ml-2">Buy now</a>
            
                <div class = "input-group-append">
               
@@ -137,23 +130,8 @@
 
 
 <script>
-  $(function(){
-    $('.previewPane, #zoomer').css('background-image','url('+$('.imgkey').first().attr('src')+')');
-    $('.imgkey').click(function(){
-    $('.previewPane').css('background-image','url('+$(this).attr('src')+')');
-          });
-    $('.previewPane').mousemove(function(ev){
-    $('#zoomer').css('display','inline-block');
-    var img = $(this).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
-    var posX = ev.offsetX ? (ev.offsetX) : ev.pageX - $(this).offset().left;
-    var posY = ev.offsetY ? (ev.offsetY) : ev.pageY - $(this).offset().top;
-    $('#zoomer').css('background-position',((-posX * 3) + "px " + (-posY * 3) + "px"));
-    $('#zoomer').css('background-image','url('+img+')');
-          });
-    $('.previewPane').mouseleave(function(){$('#zoomer').css('display','none');});
-        });
 
-      </script>
+ </script>
         {% comment %} image zooming code ends {% endcomment %}
   <!--================End Single Product Area =================-->
 
@@ -743,6 +721,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
   <!-- jquery plugins here-->
   <!-- jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.min.js" integrity="sha512-UH428GPLVbCa8xDVooDWXytY8WASfzVv3kxCvTAFkxD2vPjouf1I3+RJ2QcSckESsb7sI+gv3yhsgw9ZhM7sDw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.js" integrity="sha512-EjW7LChk2bIML+/kvj1NDrPSKHqfQ+zxJGBUKcopijd85cGwAX8ojz+781Rc0e7huwyI3j5Bn6rkctL3Gy61qw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
   <script src="{% static 'js/jquery-1.12.1.min.js' %}"></script>
   <!-- popper js -->
   <script src="{% static 'js/popper.min.js' %}"></script>

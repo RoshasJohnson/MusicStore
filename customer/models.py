@@ -1,6 +1,7 @@
 import email
 from enum import auto
 from itertools import product
+from pyexpat import model
 from re import T
 from tkinter import CASCADE
 from tkinter.tix import Tree
@@ -8,9 +9,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django import forms
 from django.utils import timezone
-from sqlalchemy import false, true
+from sqlalchemy import false, null, true
 import os
 from twilio.rest import Client
+import uuid
 # from customer.forms import Customer
 
 # Create your models here.
@@ -24,6 +26,7 @@ class Usercreation(AbstractUser):
 
 #Choice field for category
 class Category(models.Model):
+   
     category_name = models.CharField(max_length=200)
 
     def __str__(self):
@@ -60,7 +63,7 @@ class Product(models.Model):
     class Meta:
         db_table = ''
         managed = True
-        verbose_name = 'Product'
+        verbose_name = 'Products'
         verbose_name_plural = 'Products' 
 
 
@@ -124,34 +127,49 @@ class Design(models.Model):
 
 
 
+STATUS_CHOICES = {
+    ("Accepted" , "Accepted"),
+    ("Packed" , "Packed"),
+    ("On the way" , "On the way"),
+    ("Delivered" , "Delivered"),
+    ("Canceled" , "Canceled"),
+    ("Return", "Return"),
 
+}
 class Order(models.Model):
-    Customer        =  models.ForeignKey(Usercreation,on_delete= models.SET_NULL, null = True ,blank = True )
-    date_ordered    =  models.DateField(auto_now_add= True)
-    complete        =  models.BooleanField(default= False,null = True ,blank = True )
-    transcation_id  =  models.CharField(max_length=100,null= True)   
+    user_name       = models.ForeignKey(Usercreation,on_delete= models.SET_NULL, null = True ,blank = True )
+    Customer        = models.ForeignKey(CustomerAdress,on_delete= models.SET_NULL, null = True ,blank = True )
+    date_ordered    = models.DateField(auto_now_add= True)
+    status          = models.CharField(choices=STATUS_CHOICES,max_length=100,default='pending')
+    order_product   = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
+    transcation_id  = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    payment_method  = models.CharField(max_length=10,null= True )
+    total_prize     = models.IntegerField( null = True ,blank= True)
+    quantity        = models.IntegerField(default=1,null = True ,blank= True)
+   
+    
     def __str__(self) :
-        return str(self.id)  
+        return str( self.Customer)
 
-    @property
-    def get_cart_total(self):
-        orderitems = self.orderitem_set.all()
-        total      = sum([item.get_total for item in orderitems])
-        return total
-    @property
-    def get_cart_items(self):
-        orderitems = self.orderitem_set.all()
-        total      = sum([item.quantity for item in orderitems])
-        return total
-    @property
-    def shipping(self):
-        shipping  = False
-        orderItmes = self.OrderItem_set.all()
+    # @property
+    # def get_cart_total(self):
+    #     orderitems = self.orderitem_set.all()
+    #     total      = sum([item.get_total for item in orderitems])
+    #     return total
+    # @property
+    # def get_cart_items(self):
+    #     orderitems = self.orderitem_set.all()
+    #     total      = sum([item.quantity for item in orderitems])
+    #     return total
+    # @property
+    # def shipping(self):
+    #     shipping  = False
+    #     orderItmes = self.OrderItem_set.all()
         
-        for i in orderItmes:
-            if i.product.digital  == False :
-                shipping = True 
-        return self.shipping
+    #     for i in orderItmes:
+    #         if i.product.digital  == False :
+    #             shipping = True 
+    #     return self.shipping
         
 
 
@@ -160,7 +178,6 @@ class Order(models.Model):
 class OrderItem(models.Model):
     user         = models.ForeignKey(Usercreation,on_delete= models.SET_NULL, null= True ,blank = True) 
     product     = models.ForeignKey(Product,on_delete= models.SET_NULL, null= True ,blank = True)
-    order       = models.ForeignKey(Order,on_delete= models.SET_NULL,blank = True, null= True)  
     quantity    = models.IntegerField(default=1,null = True ,blank= True)
     date_added  = models.DateField(auto_now_add=True)
     
@@ -177,16 +194,16 @@ class OrderItem(models.Model):
 
  
 
-class ShippingAddress(models.Model):
-    customer        = models.ForeignKey(Usercreation,on_delete = models.SET_NULL,blank = True, null= True) 
-    order           = models.ForeignKey(Order,on_delete = models.SET_NULL,blank = True, null= True) 
-    address         = models.CharField(max_length=200, null = True)
-    city            = models.CharField(max_length=200, null = True)
-    state           = models.CharField(max_length=200, null = True)
-    zipcode         = models.CharField(max_length=200, null = True)
-    date_added      = models.DateField(auto_now_add=True)
-    def __str__(self) :
-        return self.address
+# class ShippingAddress(models.Model):
+#     customer        = models.ForeignKey(Usercreation,on_delete = models.SET_NULL,blank = True, null= True) 
+#     order           = models.ForeignKey(Order,on_delete = models.SET_NULL,blank = True, null= True) 
+#     address         = models.CharField(max_length=200, null = True)
+#     city            = models.CharField(max_length=200, null = True)
+#     state           = models.CharField(max_length=200, null = True)
+#     zipcode         = models.CharField(max_length=200, null = True)
+#     date_added      = models.DateField(auto_now_add=True)
+#     def __str__(self) :
+#         return self.address
     
 
     

@@ -6,64 +6,65 @@
 
 
 
-<div class='ml-5 mt-5'>
+<div class='table table-striped table-light  mt-3 '>
     
 
-    <table class="table">
+    <table id ="example"  class="table table-striped table-bordered" style="width:100%">
         <thead>
           <tr>
-            <th  scope="col" class="border border-danger " style="color:black;">Order Id</th>
-            <th  scope="col" class="border border-danger " style="color:black;">Customer</th>
-            <th scope="col" class="border border-danger" style="color:black;">Product Name</th>
-            <th scope="col" class="border border-danger" style="color:black;">Category  Name</th>
-            <th scope="col" class="border border-danger" style="color:black;">Quantity</th>
-            <th scope="col" class="border border-danger" style="color:black;">Total prize</th>
-            <th scope="col" class="border border-danger" style="color:black;">Order date</th>
-            <th scope="col" class="border border-danger" style="color:black;">Order status</th>
+            <th  scope="col" class="border border-dark " style="color:black;">No:</th>
+            <th  scope="col" class="border border-dark " style="color:black;">Customer</th>
+            <th scope="col" class="border border-dark" style="color:black;">Product Name</th>
+            <th scope="col" class="border border-dark" style="color:black;">Category  Name</th>
+            <th scope="col" class="border border-dark" style="color:black;">Quantity</th>
+            <th scope="col" class="border border-dark" style="color:black;">Total prize(INR)</th>
+            <th scope="col" class="border border-dark" style="color:black;">Payment method</th>
+            <th scope="col" class="border border-dark" style="color:black;">Order date</th>
+            <th scope="col" class="border border-dark" style="color:black;">Transaction ID</th>
+            <th scope="col" class="border border-dark" style="color:black;">Order status</th>
           </tr>
-        </thead
+        </thead>
+        <tbody class="border border-danger" >
         {% for i in order  %}
-        <tbody class="border border-danger">
           <tr>
-            <th scope="row" class="border border-danger" style="color:black;">
-                {{i.id}}
+            <th scope="row" class="border border-dark" style="color:black;">
+                  {{ forloop.counter }}
          
             </th>
-            <th scope="row" class="border border-danger" style="color:black;">{{i.order.Customer  }}</th>
-            <td class="border border-danger" style="color:black;">{{i.product}}</td>
-            <td class="border border-danger" style="color:black;">{{i.product.category_type}}</td>
-            <td class="border border-danger" style="color:black;">{{i.quantity}}</td>
-            <td class="border border-danger" style="color:black;">{{i.get_total}}</td>
-            <td class="border border-danger" style="color:black;">{{i.order.date_ordered}}</td>
-            <td class="border border-danger" style="color:black;">{{i.order.complete}}</td>
+            <th scope="row" class="border border-dark" style="color:black;">{{i.Customer}}</th>
+            <td class="border border-dark" style="color:black;">{{i.order_product}}</td>
+            <td class="border border-dark" style="color:black;">{{i.order_product.category_type}}</td>
+            <td class="border border-dark" style="color:black;">{{i.quantity}}</td>
+            <td class="border border-dark" style="color:black;">{{i.total_prize}}</td>
+            <td class="border border-dark" style="color:black;">{{i.payment_method}}</td>
+            <td class="border border-dark" style="color:black;">{{i.date_ordered}}</td>
+            <td class="border border-dark" style="color:black;">{{i.transcation_id  }}</td>
+            <td class="border border-dark" style="color:black;">{{i.status }}</td>
             {% comment %} <td class="border border-danger" style="color:black;"><a class="btn btn" href="{% url 'userstatus' i.id %}" role="sumbit"> {% endcomment %}
             </a>
           
           </tr>
-        
-      {% endfor %}
-        
+          
+          {% endfor %}
         </tbody>
+        
       </table>
      
-    </div>
+</div>
       
     
-
+    <script>
+      $(document).ready( function () {
+          $('#example').DataTable();
+      } );
+  </script>
+  <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
     <br>
     <div class= ' mb-5'>
-    {{ order }}
-    
-    {% if order.has_previous %}
-    
-    <button type="submit" class="btn btn-success"><a href="?page={{ order.previous_page_number}}">Previous </a></button>
-    
-    {% endif %}
-    {% if order.has_next %}
-    
-    <button type="submit" class="btn btn-success"><a href="?page={{ order.next_page_number}}">Next </a></button>
-    </div>
-    {% endif %}
+  
+   
 
 
 {% endblock %}
