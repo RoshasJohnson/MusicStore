@@ -114,8 +114,8 @@
                   {% comment %} <input type = "hidden" class = "product-id" value = "{{ i.id }}" />
                   <input type = "hidden" class = "product-title" value = "{{i.product_name }}" />
                   <input type = "hidden" class = "product-prize" value = "{{i.product_prize }}" /> {% endcomment %}
-                 <button onclick= "fire()" data-product = {{i.id}} data-action = 'add'  class = 'btn_3 add-cart' type = 'submit' >
-                  Add to cart </button>
+                  <button onclick = "addcart('{{i.id}}','add ')" data-product = {{i.id}} data-action = 'add'  class = 'btn_3 add-cart-button' type = 'button' >
+                    Add to cart </button>
               </div> 
              
             </div>
@@ -130,7 +130,37 @@
 
 
 <script>
+  function  addcart(productId,action){
+    console.log('user in logged in ,sending data....')
+    var url = '/update_item/'
+    fetch(url,{
+       method:'POST',
+       headers:{'content-Type':'application/json',
+       'X-CSRFToken':csrftoken,
+    },
+    body:JSON.stringify({'productId':productId,'action':action})
 
+    })
+    .then((response)=>{
+       return response.json()
+    })
+    .then((data)=>{
+       console.log('data:',data)
+ 
+       Swal.fire({
+        position: 'top-end',
+      
+        icon: 'success',
+        title: 'Added to cart',
+        showConfirmButton: false,
+        timer: 1500,
+      })
+      setTimeout(() => {
+         window.location.reload()
+      }, 1000);
+       
+    })
+ }
  </script>
         {% comment %} image zooming code ends {% endcomment %}
   <!--================End Single Product Area =================-->
@@ -323,16 +353,16 @@
             <div class="col-lg-6">
               <div class="review_box">
                 <h4>Post a comment</h4>
-                <form class="row contact_form" action="contact_process.php" method="post" id="contactForm"
+                <form  autocapitalize="off"  class="row" action="contact_process.php" method="post" id="">
                   novalidate="novalidate">
                   <div class="col-md-12">
                     <div class="form-group">
-                      <input type="text" class="form-control" id="name" name="name" placeholder="Your Full name" />
+                      <input type="text" class="" autocapitalize="off" id="name" name="name" placeholder="Your Full name" />
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
-                      <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" />
+                      <input type="email"  autocapitalize="off"  class="form-control" id="email" name="email" placeholder="Email Address" />
                     </div>
                   </div>
                   <div class="col-md-12">
@@ -492,7 +522,7 @@
                     </a>
                   </li>
                   <li>
-                    <a href="#">
+                    <a href="">
                       <i class="fa fa-star"></i>
                     </a>
                   </li>

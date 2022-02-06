@@ -82,9 +82,12 @@
                                         </div>
                                     </div><P>
                                     <div class = "col-lg-4 mb-3">
-                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+                                        {% for i in Items  %}
+                                        
+                                        <a type="button" href = "{% url 'new_address' i.id %}" class="btn btn-warning btn-sm">
                                             Add new address
-                                        </button>
+                                        </a>
+                                        {% endfor %}
                                         
                                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -422,8 +425,12 @@
                                 },
                                 hideClass: {
                                   popup: 'animate__animated animate__fadeOutUp'
-                                }
+                                },
+                                timer: 1500000,
                               })
+                              setTimeout(() => {
+                                window.location.href = "/manage_account"
+                             }, 1000);
                               
                             
                           })

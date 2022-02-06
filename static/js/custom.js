@@ -553,7 +553,7 @@ Swal.fire({
   position: 'top-end',
 
   icon: 'success',
-  title: 'Your item has been added',
+  title: 'Added to cart',
   showConfirmButton: false,
   timer: 1500,
 })

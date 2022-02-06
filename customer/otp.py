@@ -19,4 +19,4 @@ def otpverification(id):
             to='+917012598205'
         )
     print(message.sid)
- 
+       

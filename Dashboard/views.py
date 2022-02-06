@@ -10,7 +10,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth import authenticate
 from customer.forms import *
 from Dashboard.forms import * 
-
+ 
 
 get_page = 5 
 # Create your views here.

@@ -56,17 +56,17 @@
                                             <div class="row">
                                                 {% if form %}
                                                 {% for i in form %}
-                                                <div class="col-sm-6">
+                                                <div class="col-sm-6 mt-2">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <h5 class="card-title">address  {{ forloop.counter }}</h5>
+                                                            <h5 class="card-title">Address  {{ forloop.counter }}</h5>
                                                             <p class="ship-b__p">{{i.first_name}} {{i.last_name}} 
                                                                 <br>{{i.house_name}} , {{i.street_name}} street 
                                                                 <br>{{i.city}} {{i.state}}<br> postal-code:{{i.post_code}}
                                                             </p>
                                                             <div class="form-check">
                                                             <input class="form-check-input" value="{{i.id}}"  type="radio" name="address" id="i.id">
-                                                                <label class="form-check-label text-dark" for="address">
+                                                                <label class="form-check-label text-warning" for="address">
                                                                     select address 
                                                                 </label>
                                                                 
@@ -83,7 +83,7 @@
                                         </div>
                                     </div><P>
                                     <div class = "col-lg-4 mb-3">
-                                        <a class="btn btn-warning btn-sm" href="#" role="button">
+                                        <a class="btn btn-warning btn-sm" href="{% url 'address' %}" role="button">
                                             Add new address
                                         </a>
                                     </div>
@@ -136,10 +136,12 @@
                                                     <!--====== Radio Box ======-->
                                                     <div class="radio-box">
 
-                                                        <input type="radio" value="paypal" id="pay-pal" name="payment">
+                                                        <input type="radio" value="paypal" id="paypal-button-container" name="payment">
                                                         <div class="radio-box__state radio-box__state--primary ">
 
-                                                            <label class="radio-box__label" for="pay-pal">Pay Pal</label></div>
+                                                            <label class="radio-box__label" for="pay-pal">Pay with  PayPal<span class="material-icons-outlined">
+                                                                
+                                                                </span></label></div>
                                                     </div>
                                                     <!--====== End - Radio Box ======-->
 
@@ -152,7 +154,7 @@
                                                         <input type="radio" value="razorpay" id="razorpay" name="payment">
                                                         <div class="radio-box__state radio-box__state--primary ">
 
-                                                            <label class="radio-box__label" for="pay-pal">Razo Pay</label></div>
+                                                            <label class="radio-box__label" for="pay-pal"> Pay with  RazorPay</label></div>
                                                     </div>
                                                     <!--====== End - Radio Box ======-->
 
@@ -337,6 +339,7 @@
             </div>
         </div>
     </footer>
+    <script src ="https://www.paypal.com/sdk/js?client-id=AfSwrqdw9iZ7cIQ70G_UVI0utJQF5w_qLFUQFg2YwI-qTmhaguPw5HhR4OaSoUhjRhB3k4uzls3k6FU4&currency=USD&disable-funding=credit,card"></script>
 
     <!--====== Modal Section ======-->
     <!--=========================== script starting ======================================-->
@@ -386,31 +389,78 @@
                                         },
                                         hideClass: {
                                           popup: 'animate__animated animate__fadeOutUp'
-                                        }
+                                        },
+                                        timer: 1500000,
                                       })
+                                      setTimeout(() => {
+                                        window.location.href = "/manage_account"
+                                     }, 1000);
                                       
                                     
-                                  })
-                                
-        
-                               
+                                  })  
                             }
                             else if(payment == 'razorpay'){
-                                alert(payment)
-                            }
+                                let address = document.forms["myForm"]["address"].value;
+                            let payment = document.forms["myForm"]["payment"].value; 
+                            let product = document.getElementById('product')
+                            var productId = product.getAttribute('data-product');
+                            console.log(productId,"produfffctid")
+                            let total= document.getElementById('prize')
+                            let num =total.getAttribute('data-prize');
+                            let get_total = parseInt(num)
+                            console.log(get_total,address,payment,product,productId)
+                            console.log( typeof(get_total))
+                           onlinepayment(address,payment,productId,get_total)
+                         }
+                         else if (payment = 'paypal'){
+                            let address = document.forms["myForm"]["address"].value;
+                            let payment = document.forms["myForm"]["payment"].value; 
+                            let product = document.getElementById('product')
+                            var productId = product.getAttribute('data-product');
+                            console.log(productId,"produfffctid")
+                            let total= document.getElementById('prize')
+                            let num =total.getAttribute('data-prize');
+                            let get_total = parseInt(num)
+                            console.log(get_total,address,payment,product,productId)
+                            console.log( typeof(get_total))
+                           onlinepayment(address,payment,productId,get_total)
+
                          }
 
 
+                        }
+                        
+                        function onlinepayment(address,payment,productId,get_total){
+                            alert(address,payment,productId,get_total)
+                            console.log(get_total,'total')
+                            alert('{{grandtotal}}')
+                            alert(get_total )
+                            
+
+
+
+                            paypal.Buttons({
+                                createOrder: function(data, actions) {
+                                  // Set up the transaction
+                                  return actions.order.create({
+                                    purchase_units: [{
+                                      amount: {
+                                        value: '{{grandtotal}}'
+                                      }
+                                    }]
+                                  });
+                                }
+                              }).render('#paypal-button-container');
+                              alert('blah')
+                    
+                        }
 
 
 
 
 
 
-
-
-
-
+                    
 
 
 
@@ -449,7 +499,10 @@
                             }
         
                         }
-                     }
+                    
+                    }
+
+
            
                     </script>
 

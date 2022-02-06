@@ -18,11 +18,13 @@ urlpatterns = [
     path('place_order/',views.place_orderView, name= 'place_order'),
     path('proccesing_order/',views.Process_orderView,name = 'proccesing_order'),
     path('ordering/<int:id>/',views.OrderView,name = 'ordering'),
-     path('placing_order/',views.Blah,name = 'placing_order'),
     path('cart_qty/', views.addcartQtyView,name = 'cart_qty'),
     path('checking_address',views.checkingaddressview,name = 'checking_address') ,
     path('products/<int:id>/',views.productpage_View,name = "products"),
     path('order_placing/',views.order_placingView ,name ="order_placing"),
     path('manage_account',views.user_account_View,name = "manage_account"),
     path('cart_items/',views.cart_item_buy_View,name= "cart_items"),
+    path('address',views. add_new_address_View,name = 'address'),
+    path('new_address/<int:id>/',views.add_new_addresforEachOrder_View,name = 'new_address'),
+    path('new_address_adding/<int:id>/',views.newaddress_save_view,name = "new_address_adding")
     ] 

@@ -28,9 +28,10 @@
 
                                                         <img class="aspect__img" src="{{i.product_image.url}}" alt=""></a>
                                    
-                                                    <div class="product-m__add-cart">
+                                                    <div class="product-m__add-cart text-center">
 
-                                                        <a class="btn--e-brand bg-danger text-white" >Add to Cart</a></div>
+                                                        <button onclick = "addcart('{{i.id}}','add ')" data-product = {{i.id}} data-action = 'add'  class = 'btn_3 add-cart-button ' type = 'button' >
+                                                            Add to cart </button></div>
                                                 </div>
                                                 <div class="product-m__content">
                                                     <div class="product-m__category">
@@ -39,9 +40,9 @@
                                                     <div class="product-m__name">
 
                                                         <a href="product-detail.html">{{i.product_name}}</a></div>
-                                                    <div class="product-m__rating gl-rating-style"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                         
 
-                                                        <span class="product-m__review">(23)</span></div>
+                                                     
                                                     <div class="product-m__price">₹ {{i.product_prize}}</div>
                                                     <div class="product-m__hover">
                                                         <div class="product-m__preview-description">
@@ -89,7 +90,39 @@
         </div>
         <!--====== End - App Content ======-->
 
-
+        <script>
+            function  addcart(productId,action){
+              console.log('user in logged in ,sending data....')
+              var url = '/update_item/'
+              fetch(url,{
+                 method:'POST',
+                 headers:{'content-Type':'application/json',
+                 'X-CSRFToken':csrftoken,
+              },
+              body:JSON.stringify({'productId':productId,'action':action})
+          
+              })
+              .then((response)=>{
+                 return response.json()
+              })
+              .then((data)=>{
+                 console.log('data:',data)
+           
+                 Swal.fire({
+                  position: 'top-end',
+                
+                  icon: 'success',
+                  title: 'Added to cart',
+                  showConfirmButton: false,
+                  timer: 1500,
+                })
+                setTimeout(() => {
+                   window.location.reload()
+                }, 1000);
+                 
+              })
+           }
+           </script>
         <!--====== Main Footer ======-->
         <footer>
             <div class="outer-footer">
@@ -1275,6 +1308,10 @@
 
     <!--====== App ======-->
     <script src=" {% static 'js/app.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.10/sweetalert2.min.js" integrity="sha512-LwESE8nE3vcnoUWmYo6skVQ+BRT5UhqnPweGro7e22RSDLVwftCfFIPt+Ha2tm1Gg7RXvYp/jPyih3DUB06PwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.10/sweetalert2.all.js" integrity="sha512-g4BEr9uX8/EsXakUmNF2Geowd5ww8fc9bUaOblLyVJJu2okCYnge1m0pVHbHsusPKV2Dmlm7bu/i6uLisa80sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.10/sweetalert2.all.min.js" integrity="sha512-IG3jJs+NhoPszr+n3I3AHLii1LFFGEVZoorGJFkrd+flS4dgdAVL0AAGiPHlXB0ZD5mgPmcpVKm4KBybCeXLLA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.10/sweetalert2.js" integrity="sha512-u9p1QPpG9YeeTQeM8Uj/TTGw8/OOLJqDFB3iUNx6HwN54HcsEyT96NCjPVn+m3B5ydE9KP7wD6Kb11n1fCt5QQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!--====== Noscript ======-->
     <noscript>
