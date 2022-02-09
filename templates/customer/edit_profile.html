@@ -1,0 +1,31 @@
+{% extends 'customer/header.html' %}
+{% load static %}
+{% block content %}
+<div class=" d-flex justify-content-center ">
+
+	<div class="  ">
+		<div class=" w-100 ">
+<div class="main">
+    <!-- Create a Form -->
+    <form action =" {% url 'edit_profile' %}" method="POST">
+        <!-- Security token by Django -->
+        {% csrf_token %}
+ 
+        {% for f in update_form %}
+        <div class = 'form-group'>
+
+            {{f.label_tag}} {{f}} <p style= 'color:red'> {{update_form.errors|striptags}}</p>
+
+        </div>
+        
+        {% endfor %}
+        <button type="submit" class="btn btn-warning  w-100  btn-lg"> Update</button>
+    </form>
+ 
+</div>
+
+</div> 
+</div> 
+</div>
+
+{% endblock %}

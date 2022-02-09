@@ -1,0 +1,84 @@
+
+{% extends 'customer/header.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="container mt-2">
+
+<div class="col-lg-12 col-md-12">
+    <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white">
+        <div class="dash__pad-2">
+            <h1 class="dash__h1 u-s-m-b-14">Add New Address</h1>
+           
+            <span class="dash__text u-s-m-b-30">We need an address where we could deliver products.</span>
+            <form class="dash-address-manipulation"  method = "POST" action = {% url 'add_new_address' %}>
+                <div class="gl-inline">
+                    {% csrf_token %}
+                    <div class="u-s-m-b-30">
+
+                        <label class="gl-label" for="address-fname">FIRST NAME *</label>
+                        {{form.first_name}}
+                        </div>
+                    <div class="u-s-m-b-30">
+                    
+                        <label class="gl-label" for="address-lname">LAST NAME *</label>
+
+                        {{form.last_name}}</div>
+                </div>
+                <div class="gl-inline">
+                    <div class="u-s-m-b-30">
+
+                        <label class="gl-label" for="address-phone">PHONE *</label>
+
+                        {{form.phone_number }}</div>
+                    <div class="u-s-m-b-30">
+
+                        <label class="gl-label" for="address-street">HOUSE NAME *</label>
+
+                        {{form.house_name   }}</div>
+                </div>
+                <div class="gl-inline">
+                <div class="u-s-m-b-30">
+
+                    <label class="gl-label" for="address-street">STREET ADDRESS *</label>
+
+                    {{form.street_name}}</div>
+                </div>
+                <div class="gl-inline">
+                    <div class="u-s-m-b-30">
+
+                        <label class="gl-label" for="address-phone">TOWN/CITY *</label>
+
+                        {{form.city }}</div>
+                    <div class="u-s-m-b-30">
+
+                        <label class="gl-label" for="address-street">STATE/PROVINCE *</label>
+
+                        {{form.state   }}</div>
+                </div>
+               
+                <div class="gl-inline">
+                    <div class="u-s-m-b-30">
+
+                        <label class="gl-label" for="address-city">COUNTRY *</label>
+
+            {{form.country}}</div>
+                    <div class="u-s-m-b-30">
+
+                        <label class="gl-label" for="address-street">ZIP/POSTAL CODE *</label>
+
+                       {{form.post_code}}</div>
+                </div>
+            <div class = "text-center">
+                    <button type="sumbit" class="btn btn-warning btn-lg col-12 mb-4"> SAVE ADDRESS</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+{% endblock %}

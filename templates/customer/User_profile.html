@@ -1,0 +1,89 @@
+{% extends 'customer/header.html' %}
+{% load static %}
+{% block content %}
+
+
+
+
+
+
+<div class="col-lg-9 col-md-12 container mt-3">
+    <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+        <div class="dash__pad-2">
+            <h1 class=" mb-4 text-danger h3">My Profile</h1>
+            
+           
+            <div class="row">
+                {% for i in form  %}
+                <div class="col-lg-4 u-s-m-b-30">
+                    <h2 class="dash__h2 u-s-m-b-8">Full Name</h2>
+                    
+                    <span class="dash__text">{{i.first_name}} {{i.last_name}}</span>
+                </div>
+            <div class="col-lg-4 u-s-m-b-30">
+                    <h2 class="dash__h2 u-s-m-b-8">E-mail</h2>
+                    
+                    <span class="dash__text">{{i.email}}</span>
+                    
+                </div> 
+                <div class="col-lg-4 u-s-m-b-30">
+                    <h2 class="dash__h2 u-s-m-b-8">Phone Number</h2>
+                    
+                    <span class="dash__text">{{i.phone_number}}</span>
+                </div> 
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col-lg-12 mt-3">
+
+                    <div class="u-s-m-b-16 text-center">
+
+                        <a class="btn btn-warning btn-lg w-50" href="{% url 'edit_profile' %}  ">Edit Profile</a></div>
+                </div>
+            </div>
+            <h1 class="dash__h1 u-s-m-b-14">My Address</h1>
+            <a class="btn  btn-outline-warning btn-lg text-dark" href="{% url 'add_new_address' %}">Add new Addres</a>
+
+            
+            <div class="row">
+                {% if address %}
+                {% for i in address %}
+            <div class="col-sm-6 mt-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Address  {{ forloop.counter }}</h5>
+                        <p class="ship-b__p">{{i.first_name}} {{i.last_name}} 
+                            <br>{{i.house_name}} , {{i.street_name}}
+                            <br>{{i.city}} {{i.state}}<br> postal-code:{{i.post_code}}
+                        </p>
+                        <a class="btn  btn-outline-danger btn-sm" href="{% url 'delete_address' i.id %}">Delete Addres</a>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+            {% else %}
+            <p> You have no address</p> 
+
+            {% endif %}
+            <script>
+                export default {
+                  // ...
+                  beforeMount() {
+                    window.addEventListener("beforeunload", event => {
+                      if (!this.isEditing) return
+                      event.preventDefault()
+                      // Chrome requires returnValue to be set.
+                      event.returnValue = ""
+                    })
+                  }
+                }
+                </script>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

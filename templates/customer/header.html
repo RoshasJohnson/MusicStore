@@ -33,15 +33,15 @@
      <meta name="description" content="" />
      <meta name="author" content="" />
      <link rel="shortcut icon" href="images/favicon.png" type="">
-     <title>Famms - Fashion HTML Template</title>
+     <title>Mystore </title>
      <!-- bootstrap core css -->
-     <link rel="stylesheet" type="text/css" href="{% static '' %}css/bootstrap.css" />
+     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
      <!-- font awesome style -->
-     <link href="{% static '' %}css/font-awesome.min.css" rel="stylesheet" />
+     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
      <!-- Custom styles for this template -->
-     <link href="{% static '' %}css/home.css" rel="stylesheet" />
+     <link href="{% static 'css/home.css' %}" rel="stylesheet" />
      <!-- responsive style -->
-     <link href="{% static '' %}css/responsive.css" rel="stylesheet" />
+     <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
      <!-- flaticon CSS -->
     <link rel="stylesheet" href="{% static 'css/flaticon.css'%}">
     <link rel="stylesheet" href="{% static 'css/themify-icons.css'%}">
@@ -140,16 +140,23 @@
                             </ul>
                         </div>
                         <div class="hearer_icon d-flex">
-                         
                             <a href="/cart/"><i class="fas fa-cart-plus">    {% if cartcount %} <span class="total-item-round bg-primary ">{{cartcount}}</span> {% endif %} </i></a>
+                            {% if user %}
+                            {% else %}
+                            <a href="/signin/"> <i class="fas fa-sign-in-alt ml-5"></i></a>
+                            {% endif %}
+                          
                           
 
-                            <a href="/signin/"> <i class="fas fa-sign-in-alt ml-5"></i></a>
                         </div>
                     </nav> 
                 </div>
             </div>   
         </div> 
+        {% block content%}
+
+        {% endblock%}
+    
         <script type = "text/javascript" >
            
             function getCookie(name) {
@@ -224,9 +231,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <!--====== Vendor Js ======-->
 
-    {% block content%}
 
-    {% endblock%}
-
-</body>
-
+  
+        </body>
+        </html>

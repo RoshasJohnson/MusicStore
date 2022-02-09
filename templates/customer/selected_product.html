@@ -1,5 +1,3 @@
-<!doctype html>
-<html lang="zxx">
 
 {% extends 'customer/header.html' %}
 
@@ -8,12 +6,6 @@
 {% block content %}
 
 
-<head>
-  {% load static %}
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>aranoz</title>
   <link rel="icon" href="">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href=" {% static 'css/bootstrap.min.css' %}">
@@ -22,17 +14,7 @@
   <!-- owl carousel CSS -->
   <link rel="stylesheet" href=" {% static 'css/owl.carousel.min.css' %}">
   <link rel="stylesheet" href=" {% static 'css/lightslider.min.css' %}">
-  <!-- font awesome CSS -->
-  <link rel="stylesheet" href=" {% static 'css/all.css' %}">
-  <!-- flaticon CSS -->
-  <link rel="stylesheet" href=" {% static 'css/flaticon.css' %}">
-  <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
-  <!-- font awesome CSS -->
-  <link rel="stylesheet" href=" {% static 'css/magnific-popup.css' %}">
-  <!-- style CSS -->
-  <link rel="stylesheet" href="{% static 'css/text.css' %} ">
-  <!-- style CSS -->
-  <link rel="stylesheet" href=" {% static 'css/style.css' %}">
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
@@ -50,35 +32,35 @@
           <div  class="product_slider_img">
             <div class='imgline' id="vertical">
           
-              {% for i in Designpage  %}
-              <img id="img_01" src="{{i.product_image.url}}" data-zoom-image="{{i.product_image.url}}"/>
+     
+              <img id="zoom_04" src="{{i.product_image.url }}"
+              data-zoom-image="{{i.product_image1.url }}"/>
 
               <div id="gal1">
                
-                <a href="#" data-image="{{ i.product_image.url }}" data-zoom-image="{{ i.product_image.url }}">
+                
+                  <img id="img_01" src="{{i.product_image.url }}" />
+                
+              
+                
                   <img id="img_01" src="{{ i.product_image.url }}" />
                 </a>
               
-                <a href="#" data-image="{{ i.product_image.url }}" data-zoom-image="{{ i.product_image.url }}">
+           
                   <img id="img_01" src="{{ i.product_image.url }}" />
                 </a>
               
-                <a href="#" data-image="{{ i.product_image.url }}" data-zoom-image="{{ i.product_image.url }}">
-                  <img id="img_01" src="{{ i.product_image.url }}" />
-                </a>
               
-                <a href="#" data-image="{{ i.product_image.url }}" data-zoom-image="{{ i.product_image.url }}">
                   <img id="img_01" src="{{ i.product_image1.url }}" />
-                </a>
-              
               </div>
-              {% endfor %}
+       
           
             </div>
           </div>
         </div>
       
     <script src = "js/text.js ">
+      $("#img_01").ezPlus();
       $("#zoom_03").elevateZoom({gallery:'gallery_01', cursor: 'pointer', galleryActiveClass: 'active', imageCrossfade: true, loadingIcon: 'http://www.elevateweb.co.uk/spinner.gif'}); 
 
 //pass the images to Fancybox
@@ -87,6 +69,37 @@
         $.fancybox(ez.getGalleryList());
         return false;
 });
+
+$(function(){
+  $('.previewPane, #zoomer').css('background-image','url('+$('.imgkey').first().attr('src')+')');
+  $('.imgkey').click(function(){
+  $('.previewPane').css('background-image','url('+$(this).attr('src')+')');
+              });
+  $('.previewPane').mousemove(function(ev){
+  $('#zoomer').css('display','inline-block');
+  var img = $(this).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
+  var posX = ev.offsetX ? (ev.offsetX) : ev.pageX - $(this).offset().left;
+  var posY = ev.offsetY ? (ev.offsetY) : ev.pageY - $(this).offset().top;
+  $('#zoomer').css('background-position',((-posX * 3) + "px " + (-posY * 3) + "px"));
+  $('#zoomer').css('background-image','url('+img+')');
+              });
+  $('.previewPane').mouseleave(function(){$('#zoomer').css('display','none');});
+          });
+
+          
+var deleteLinks = document.querySelectorAll('.delete');
+
+for (var i = 0; i < deleteLinks.length; i++) {
+deleteLinks[i].addEventListener('click', function(event) {
+    event.preventDefault();
+
+    var choice = confirm(this.getAttribute('data-confirm'));
+
+    if (choice) {
+      window.location.href = this.getAttribute('href');
+    }
+});
+} 
     </script>
         <div class="col-lg-5 col-xl-4">
           <div class="s_product_text">
@@ -750,41 +763,15 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
   <!-- jquery plugins here-->
   <!-- jquery -->
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.min.js" integrity="sha512-UH428GPLVbCa8xDVooDWXytY8WASfzVv3kxCvTAFkxD2vPjouf1I3+RJ2QcSckESsb7sI+gv3yhsgw9ZhM7sDw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.js" integrity="sha512-EjW7LChk2bIML+/kvj1NDrPSKHqfQ+zxJGBUKcopijd85cGwAX8ojz+781Rc0e7huwyI3j5Bn6rkctL3Gy61qw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   
   <script src="{% static 'js/jquery-1.12.1.min.js' %}"></script>
   <!-- popper js -->
-  <script src="{% static 'js/popper.min.js' %}"></script>
-  <!-- bootstrap js -->
-  <script src="{% static 'js/bootstrap.min.js' %}"></script>
-  <!-- easing js -->
-  <script src="{% static 'js/jquery.magnific-popup.js' %}"></script>
-  <!-- swiper js -->
-  <script src="{% static 'js/lightslider.min.js' %}"></script>
-  <!-- swiper js -->
-  <script src="{% static 'js/masonry.pkgd.js' %}"></script>
-  <!-- particles js -->
-  <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-  <script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
-  <!-- slick js -->
-  <script src="{% static 'js/slick.min.js' %}"></script>
-  <script src="{% static 'js/swiper.jquery.js' %}"></script>
-  <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
-  <script src="{% static 'js/waypoints.min.js' %}"></script>
-  <script src="{% static 'js/contact.js' %}"></script>
-  <script src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
-  <script src="{% static 'js/jquery.form.js' %}"></script>
-  <script src="{% static 'js/jquery.validate.min.js' %}"></script>
-  <script src="{% static 'js/mail-script.js' %}"></script>
-  <script src="{% static 'js/stellar.js' %}"></script>
-  <!-- custom js -->
-  <script src="{% static 'js/theme.js' %}"></script>
-  <script src="{% static 'js/custom.js' %}"></script>
-  <script src="{% static 'js/text.js' %}"></script>
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</body>
 
-</html>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 {% endblock %}

@@ -1,6 +1,8 @@
 from dataclasses import fields
 from pyexpat import model
-from .models import AbstractUser, CustomerAdress, Design
+
+from pyparsing import Or
+from .models import AbstractUser, CustomerAdress, Design, Order
 from .models import Usercreation
 from django import forms
 from django.contrib.auth.forms import  UserCreationForm
@@ -11,16 +13,13 @@ class Customer(UserCreationForm):
         model = Usercreation
         fields =['first_name','last_name','username','email','phone_number','password1','password2']
 
-        
-class sign(UserCreationForm):
+
+
+class Edit_Profile(UserCreationForm):
     class Meta:
-        model = Usercreation
-        fields = ['username','password']
-
-
-
-
-
+         model = Usercreation
+         fields =['first_name','last_name','username','email','phone_number']
+      
 
 
 
@@ -35,4 +34,12 @@ class CustomerAdressForm(forms.ModelForm):
         model = CustomerAdress 
         fields = ['first_name','last_name','email','phone_number','house_name','street_name','city'
         ,'state','country','post_code']  
-      
+
+
+        
+class OrderForm(forms.ModelForm):
+    class Meta :
+        model = Order 
+        fields = ['status']
+
+            

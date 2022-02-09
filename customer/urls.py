@@ -3,7 +3,7 @@ from django.urls import path,include
 from . import views
 from.views import checkout_view, inclusiontag
 
-
+ 
 urlpatterns = [
     path('',views.homepage_view,name='homepage_view'),
     path('inctag', inclusiontag),
@@ -26,5 +26,11 @@ urlpatterns = [
     path('cart_items/',views.cart_item_buy_View,name= "cart_items"),
     path('address',views. add_new_address_View,name = 'address'),
     path('new_address/<int:id>/',views.add_new_addresforEachOrder_View,name = 'new_address'),
-    path('new_address_adding/<int:id>/',views.newaddress_save_view,name = "new_address_adding")
+    path('new_address_adding/<int:id>/',views.newaddress_save_view,name = "new_address_adding"),
+    path('my_profile',views.my_profile_view, name = "my_profile"),
+    path('delete_address/<int:id>/',views.delete_address_View,name = "delete_address"),
+    path('add_new_address',views.add_new_addressfor_userProfile_View,name = "add_new_address"),
+    path('cancel_order/<int:id>/',views.cancel_order_view,name = "cancel_order"),
+    path('edit_profile',views.editprofile_View,name = 'edit_profile'),
+    path('tracking_order/<int:id>/',views.tracking_order_View,name = "tracking_order")
     ] 

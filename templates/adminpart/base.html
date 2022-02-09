@@ -102,7 +102,7 @@
 
             <!-- Coupen Mangement -->
                     <li class="nav-item">
-                        <a class="nav-link" href="tables.html">
+                        <a class="nav-link" href="{% url 'coupen_management' %}">
                             <i class="fas fa-fw fa-table"></i>
                         <span>Coupen Management</span></a>
                     </li>
@@ -152,6 +152,9 @@
             <!-- Sidebar Message -->
             
         </ul>
+        {% block content%}
+
+        {% endblock%}
            <!-- Bootstrap core JavaScript-->
            <script src="{% static 'vendor/jquery/jquery.min.js'%}"></script>
            <script src="{% static  'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -220,9 +223,7 @@
      
             
     <!-- side ends -->
-    {% block content%}
-
-    {% endblock%}
+   
 </body>
 
 </html>

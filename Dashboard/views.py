@@ -1,5 +1,7 @@
 import imp
+from multiprocessing import context
 from unicodedata import category
+from urllib import request
 from django.shortcuts import render,redirect,get_object_or_404
 from django.shortcuts import render,redirect
 from httplib2 import RedirectLimit
@@ -10,6 +12,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth import authenticate
 from customer.forms import *
 from Dashboard.forms import * 
+from django.core.exceptions import ValidationError
  
 
 get_page = 5 
@@ -149,7 +152,6 @@ def update_product(request,id):
     else:
         if request.session.get('name'):
             update= Product.objects.get(id = id)
-            print(update,'=======================================================')
             form = Update_form(instance= update)
             return render(request,'adminpart/update_product.html',{'form':form,'update':update})
         else:
@@ -183,10 +185,6 @@ def userStatusview(request,id):
     else:
         return redirect('/adminpanel/login/')    
 
-# def addcategory_view(request):
-#     form =Category_form()
-#     return render(request,'adminpart/AddCategory.html',{'form':form})   
-
 
 
 
@@ -194,7 +192,6 @@ def addcategory_view(request):
     form =Category_form()
     if request.method == 'POST':
                 category =Category_form(request.POST)
-                print('---------------------------------------------')
                 if category.is_valid():
                     category.save()
                     return redirect('categorymanagement')           
@@ -247,16 +244,44 @@ def designManagement_View(request):
 
 def ordermangemet_view(request):
     if request.session.get('name'):   
-        order=Order.objects.all()
+        order = Order.objects.all().order_by('-date_ordered')
         contex = {'order':order}
         return render (request, 'adminpart/order-management.html',contex)
     else:
         return redirect('/adminpanel/login/')
+
+
+
+def edit_status_View(request,id):
+    if request.session.get('name'):
+        user = request.session.get('name')
+        username = Usercreation.objects.get(username = user)
+        edit_status = Order.objects.get(id = id)
+        print(edit_status)
+        if edit_status.status   == 'Processing':
+            print(edit_status.status)
+            edit_status.status  = "Packed"
+            print(edit_status.status,'fds')
+        elif edit_status.status == 'Packed':
+            edit_status.status  = "Delivered"
+        edit_status.save()         
+        return redirect ('/adminpanel/order_management')
+
+def coupen_management_View(request):
+    if request.session.get('name'):
+        coupen  = Coupen.objects.all()
+        context = {'coupen':coupen}
+        return render(request,'adminpart/coupen-management.html',context)
+
+
+
+
+    
 #log out admin_----------------------------------------------------------------------------------------------- 
-   
 
 
 def adminlogout_view(request):
     del request.session['name']
+    
     return redirect('/adminpanel/login/')
-     
+      

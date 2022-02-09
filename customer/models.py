@@ -40,7 +40,16 @@ class Category(models.Model):
 
 
 # _______________________________________
-
+class Coupen(models.Model):
+    Coupencode   = models.IntegerField(max_length=200, null = True,blank = True)
+    Coupen_offer = models.CharField(max_length=200,null = True)
+    
+    def __str__(self):
+        return self.Coupen_offer
+        class Meta:
+            verbose_name =  'category'
+            verbose_name_plural =  'categorys'
+# _____________________________________________
 
 # created product table
 class Product(models.Model):
@@ -49,8 +58,8 @@ class Product(models.Model):
     product_prize       =  models.FloatField(max_length=200, null = True)
     stock               = models.IntegerField(max_length=200,null= True)
     is_available        = models.BooleanField(default=True)
-    digital             = models.BooleanField(default=False,null= True,blank = True)
     category_type       = models.ForeignKey(Category,on_delete=models.CASCADE,null = True)
+    Coupen_offer        = models.ForeignKey(Coupen,on_delete=models.SET_NULL ,null=True )
     product_image       = models.ImageField(null= True,blank = True,upload_to ='images/')
     product_image1      = models.ImageField(null= True,blank = True,upload_to ='images/')
     product_image2      = models.ImageField(null= True,blank = True,upload_to ='images/')
@@ -60,16 +69,9 @@ class Product(models.Model):
         return self.product_name
          
  
-    class Meta:
-        db_table = ''
-        managed = True
-        verbose_name = 'Products'
-        verbose_name_plural = 'Products' 
 
 
 
-
-# ______________________________________________________
 
 #created category table   
 
@@ -91,8 +93,6 @@ class CustomerAdress(models.Model):
     country         = models.CharField(max_length=200, null = True)
     post_code       = models.IntegerField(max_length=200, null = True)
 
-    
- 
 
     def __str__(self):
         return str(self.user)
@@ -103,16 +103,7 @@ class CustomerAdress(models.Model):
         verbose_name = 'CustomerAdress'
         verbose_name_plural = 'CustomerAdress'
 
-
-class Sms(models.Model):
-    result = models.PositiveIntegerField(max_length=4)
-
-    def __str__(self):
-        return str(self.result)
-        
-    
-
-
+  
 
 class Design(models.Model):
     Icon_image    = models.ImageField(null= True,blank = True,upload_to ='images/')
@@ -128,9 +119,8 @@ class Design(models.Model):
 
 
 STATUS_CHOICES = {
-    ("Accepted" , "Accepted"),
+   
     ("Packed" , "Packed"),
-    ("On the way" , "On the way"),
     ("Delivered" , "Delivered"),
     ("Canceled" , "Canceled"),
     ("Return", "Return"),
@@ -140,7 +130,7 @@ class Order(models.Model):
     user_name       = models.ForeignKey(Usercreation,on_delete= models.SET_NULL, null = True ,blank = True )
     Customer        = models.ForeignKey(CustomerAdress,on_delete= models.SET_NULL, null = True ,blank = True )
     date_ordered    = models.DateField(auto_now_add= True)
-    status          = models.CharField(choices=STATUS_CHOICES,max_length=100,default='pending')
+    status          = models.CharField(choices=STATUS_CHOICES,max_length=100,default='Processing')
     order_product   = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
     transcation_id  = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     payment_method  = models.CharField(max_length=10,null= True )
