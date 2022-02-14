@@ -1,10 +1,19 @@
+from __future__ import unicode_literals
+from builtins import print
+from datetime import datetime
+from email.errors import ObsoleteHeaderDefect
+import encodings
 import imp
 from multiprocessing import context
-from unicodedata import category
-from urllib import request
+from turtle import st
+from builtins import KeyError, float, int, len, print,str
+
+from urllib import request, response
+from django import http
 from django.shortcuts import render,redirect,get_object_or_404
 from django.shortcuts import render,redirect
 from httplib2 import RedirectLimit
+from sqlalchemy import column
 from Dashboard.forms import Update_form
 from customer.forms import *
 from customer.models import *
@@ -13,11 +22,13 @@ from django.contrib.auth import authenticate
 from customer.forms import *
 from Dashboard.forms import * 
 from django.core.exceptions import ValidationError
- 
+from django.http import HttpResponse, JsonResponse
+import csv
+import xlwt
+
 
 get_page = 5 
 # Create your views here.
-
 
 
 
@@ -35,11 +46,17 @@ def adminpart(request):
                         total_customer  = Usercreation.objects.all().count()
                         total_product   = Product.objects.all().count()
                         total_category  = Category.objects.all().count()
-                        total_order     = Order.objects.all().count()    
+                        total_order     = Order.objects.all().count()
+                        cancel_order    = Order.objects.filter(status ='Canceled').count()   
+ 
+                     
+
+                        print(cancel_order)
                         contex          = {'total_product'  : total_product,
-                                        'total_customer'  : total_customer,
-                                        'total_category'  : total_category,
-                                        'total_order'     : total_order,
+                                        'total_customer'    : total_customer,
+                                        'total_category'    : total_category,
+                                        'total_order'       : total_order,
+                                        'cancel_order'      :cancel_order  ,
                                     
                                         }
 
@@ -63,6 +80,8 @@ def admin_dashboard(request):
         total_category  = Category.objects.all().count()
         total_order     = Order.objects.all().count()
         total_earnings  = Order.objects.all()   
+        cancel_order     = Order.objects.filter(status ='Canceled').count()  
+        delivered_order = Order.objects.filter(status ='Delivered').count()  
         for i  in total_earnings:
             total_sum +=i.total_prize
 
@@ -71,7 +90,9 @@ def admin_dashboard(request):
                         'total_customer'  : total_customer,
                         'total_category'  : total_category,
                         'total_order'     : total_order,
-                        'total_sum'       :total_sum,  
+                        'total_sum'       :total_sum, 
+                        'cancel_order'    :cancel_order ,
+                         'delivered_order':delivered_order    
                        
                         }
         return render(request,'adminpart/dashbord.html',contex)
@@ -275,13 +296,90 @@ def coupen_management_View(request):
 
 
 
+def edit_coupen_View(request,id):
+    if request.session.get('name'):
+        if request.method == 'POST':
+            data= Coupen.objects.get(pk = id)
+            form = CoupenForm(request.POST,instance = data )
+            if form.is_valid():
+                form.save()
+                return redirect('/adminpanel/coupen_management')
 
+        else:
+            update= Coupen.objects.get(id = id)           
+            edit = Coupen.objects.get(id = id)
+            form = CoupenForm(instance= edit)
+            contex = {'form':form,'update':update}
     
-#log out admin_----------------------------------------------------------------------------------------------- 
+            return render (request,'adminpart/edit_coupen.html',contex)
+    else :
+        return redirect('adminpanel/login')
 
+def delete_coupen_view(request,id):
+    delete_coupen = Coupen.objects.get(id = id)
+    delete_coupen.delete()
+    return redirect('/adminpanel/coupen_management')
+
+
+def add_coupen_View(request):
+     if request.session.get('name'):
+        if request.method == 'POST':
+           
+            form  = CoupenForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('/adminpanel/coupen_management')
+
+        else:
+            form   = CoupenForm()
+            contex = {'form':form}
+    
+            return render (request,'adminpart/add_coupen.html',contex)
+     else:
+         return redirect('adminpanel/login')
+def cancel_status_view(request,id):
+    cancel_status = Order.objects.get(id = id)        
+    cancel_status.status = "Canceled"
+    cancel_status.save()
+    return redirect('/adminpanel/order_management')
+
+
+
+
+def sales_report_view(request):
+    if request.session.get('name'):
+        Items   = Order.objects.all()
+        context = {'Items':Items}
+        return render(request,'adminpart/sales_reports.html',context)
+
+#log out admin_----------------------------------------------------------------------------------------------- 
+def export_as_excel_view(request):
+    if request.session.get('name'):
+        response == HttpResponse(content_type = 'application/ms-excel')
+        d = datetime.strptime(strftime, '%Y-%m-%d %H:%M:%S')
+        response['content-Disposition'] = 'attachment; filename = Expenses' + \
+            str(datetime.now()) +'.xls'
+        wb  = xlwt.Workbook(encoding = 'utf-8')
+        ws =  wb.add_sheet('Expenses')
+        row_num  = 0
+        font_style  = xlwt.XFStyle()
+        font_style.font.b = old=True
+        columns  = ['user_name','order_product','quantity','total_prize','Date order','transcation_id']
+        for col_num in  range(len(column)):
+            ws.write(row_num,col_num,columns[col_num],font_style)
+        font_style.font.bold  = True
+
+        rows  = Order.objects.all().values_list('user_name','order_product','quantity','total_prize','Date order','transcation_id')
+        for row in rows:
+            row_num += 1
+            for col_num in range(len(row)):
+                ws.write(row_num,col_num,str(row[col_num]),font_style)
+
+        ws.save(response)
+        return response
 
 def adminlogout_view(request):
     del request.session['name']
     
     return redirect('/adminpanel/login/')
-      
+       

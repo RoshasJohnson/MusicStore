@@ -1,4 +1,4 @@
-from pyexpat import model
+
 from tkinter.tix import Form
 from attr import field
 from django import forms
@@ -19,3 +19,7 @@ class Category_form(forms.ModelForm):
 
        
 
+class CoupenForm(forms.ModelForm):
+    class Meta:
+        model = Coupen
+        fields = '__all__'

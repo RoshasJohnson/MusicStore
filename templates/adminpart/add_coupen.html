@@ -1,0 +1,32 @@
+{% extends 'adminpart/base.html' %}
+
+{% load static%}
+{% block content %}
+<div style  = "margin-left: 25%; margin-top: 15%;" >
+
+	<div class="container  ">
+		<div class=" w-100 ">
+<div class="main">
+    <!-- Create a Form -->
+
+    <form action ="{% url 'add_coupen' %}" method="POST">
+        <!-- Security token by Django -->
+        {% csrf_token %}
+ 
+        {% for f in form %}
+        <div class = 'form-group'>
+
+            {{f.label_tag}} {{f}} <p style= 'color:red'> {{update_form.errors|striptags}}</p>
+
+        </div>
+        
+        {% endfor %}
+        <button type="submit" class="btn btn-warning  w-100  btn-lg"> Add coupen</button>
+    </form>
+ 
+</div>
+
+</div> 
+</div> 
+</div>
+{% endblock %}

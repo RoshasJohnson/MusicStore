@@ -1,10 +1,14 @@
+
+from builtins import int, property, sum
+from locale import str
 import email
 from enum import auto
-from itertools import product
-from pyexpat import model
+
+from builtins import KeyError, float, int, len, print,str
 from re import T
 from tkinter import CASCADE
 from tkinter.tix import Tree
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django import forms
@@ -18,16 +22,24 @@ import uuid
 # Create your models here.
 class Usercreation(AbstractUser):
     phone_number = models.CharField(max_length=50)
-
-
+    coupen       = models.CharField(max_length=50 ,null=True)  
+    
 # --------------------------------   
-
- 
+class Coupen(models.Model):
+    
+    Coupencode   = models.IntegerField(max_length=200, null = True,blank = True)
+    Coupen_offer = models.IntegerField(max_length=200,null = True)
+    
+    def __str__(self):
+        return str(self.Coupencode)
+       
+    
 
 #Choice field for category
 class Category(models.Model):
    
-    category_name = models.CharField(max_length=200)
+    category_name   =  models.CharField(max_length=200)
+    Category_offer  =  models.IntegerField(max_length=200, null = True)
 
     def __str__(self):
         return self.category_name
@@ -40,37 +52,43 @@ class Category(models.Model):
 
 
 # _______________________________________
-class Coupen(models.Model):
-    Coupencode   = models.IntegerField(max_length=200, null = True,blank = True)
-    Coupen_offer = models.CharField(max_length=200,null = True)
-    
-    def __str__(self):
-        return self.Coupen_offer
-        class Meta:
-            verbose_name =  'category'
-            verbose_name_plural =  'categorys'
-# _____________________________________________
+
 
 # created product table
 class Product(models.Model):
     product_name        = models.CharField(max_length=200, null = True)
     product_description = models.TextField(max_length=10000, null = True)
-    product_prize       =  models.FloatField(max_length=200, null = True)
+    product_prize       = models.IntegerField(max_length=200, null = True)
     stock               = models.IntegerField(max_length=200,null= True)
     is_available        = models.BooleanField(default=True)
     category_type       = models.ForeignKey(Category,on_delete=models.CASCADE,null = True)
-    Coupen_offer        = models.ForeignKey(Coupen,on_delete=models.SET_NULL ,null=True )
+    product_offer       = models.IntegerField(max_length=200,null= True,default=0)
     product_image       = models.ImageField(null= True,blank = True,upload_to ='images/')
     product_image1      = models.ImageField(null= True,blank = True,upload_to ='images/')
     product_image2      = models.ImageField(null= True,blank = True,upload_to ='images/')
     product_image3      = models.ImageField(null= True,blank = True,upload_to ='images/')
-   
     def __str__(self):
         return self.product_name
          
  
+    @property
+    def get_Total_prize(self):
+        tax             = 18 
+        shipping_charge = 40
+        total_prize = int((self.get_coupen_offer_prize  ) /tax) + int((self.get_coupen_offer_prize  ) +shipping_charge)
+        return total_prize
 
 
+    @property
+    def get_coupen_offer_prize(self):
+        if self.product_offer == 0:
+            coupen_offer_prize = self.product_prize         
+        elif self.product_offer > self.category_type.Category_offer:  
+            coupen_offer_prize    = int(self.product_prize)  - int((self.product_prize) * int((self.product_offer))/100)
+        else:
+            coupen_offer_prize    = int(self.product_prize)  - int((self.product_prize) * int((self.category_type.Category_offer))/100)            
+        return coupen_offer_prize
+     
 
 
 #created category table   
@@ -138,9 +156,14 @@ class Order(models.Model):
     quantity        = models.IntegerField(default=1,null = True ,blank= True)
    
     
-    def __str__(self) :
-        return str( self.Customer)
+    def __str__(self):
+         return str(self.user_name)
+       
 
+    def order_total(self):
+        total_prize  = self.order_product.get_coupen_offer_prize *  self.quantity
+        return total_prize
+ 
     # @property
     # def get_cart_total(self):
     #     orderitems = self.orderitem_set.all()
@@ -173,7 +196,7 @@ class OrderItem(models.Model):
     
     @property
     def get_total(self): 
-        total =self.product.product_prize * self.quantity
+        total =self.product.get_coupen_offer_prize * self.quantity
         return total
     @property    
     def get_cart_total(self):

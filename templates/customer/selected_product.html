@@ -29,32 +29,20 @@
     <div class="container">
       <div class="row s_product_inner justify-content-between">
         <div class="col-lg-7 col-xl-7">
-          <div  class="product_slider_img">
-            <div class='imgline' id="vertical">
-          
-     
-              <img id="zoom_04" src="{{i.product_image.url }}"
-              data-zoom-image="{{i.product_image1.url }}"/>
-
-              <div id="gal1">
-               
-                
-                  <img id="img_01" src="{{i.product_image.url }}" />
-                
-              
-                
-                  <img id="img_01" src="{{ i.product_image.url }}" />
-                </a>
-              
-           
-                  <img id="img_01" src="{{ i.product_image.url }}" />
-                </a>
-              
-              
-                  <img id="img_01" src="{{ i.product_image1.url }}" />
+          <div class="product_slider_img">
+            <div id="vertical">
+              <div data-thumb="{{i.product_image.url}}">
+                <img src="{{i.product_image.url}}" />
               </div>
-       
-          
+              <div data-thumb="{{i.product_image.url}}">
+                <img src="{{i.product_image.url}}" />
+              </div>
+              <div data-thumb="{{i.product_image.url}}">
+                <img src="{{i.product_image.url}}" />
+              </div>
+              <div data-thumb="{{i.product_image.url}}">
+                <img src="{{i.product_image.url}}" />
+              </div>
             </div>
           </div>
         </div>
@@ -70,21 +58,6 @@
         return false;
 });
 
-$(function(){
-  $('.previewPane, #zoomer').css('background-image','url('+$('.imgkey').first().attr('src')+')');
-  $('.imgkey').click(function(){
-  $('.previewPane').css('background-image','url('+$(this).attr('src')+')');
-              });
-  $('.previewPane').mousemove(function(ev){
-  $('#zoomer').css('display','inline-block');
-  var img = $(this).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
-  var posX = ev.offsetX ? (ev.offsetX) : ev.pageX - $(this).offset().left;
-  var posY = ev.offsetY ? (ev.offsetY) : ev.pageY - $(this).offset().top;
-  $('#zoomer').css('background-position',((-posX * 3) + "px " + (-posY * 3) + "px"));
-  $('#zoomer').css('background-image','url('+img+')');
-              });
-  $('.previewPane').mouseleave(function(){$('#zoomer').css('display','none');});
-          });
 
           
 var deleteLinks = document.querySelectorAll('.delete');
@@ -102,17 +75,26 @@ deleteLinks[i].addEventListener('click', function(event) {
 } 
     </script>
         <div class="col-lg-5 col-xl-4">
+          {% if i.product_offer > 0 and i.product_offer > i.category_type.Category_offer %}
+          <p  style="color: green;" >{{i.product_offer}} % off</p>
+          {% elif  i.product_offer < i.category_type.Category_offer %}
+          <p  style="color: green;" > {{i.category_type.Category_offer}} % off</p>
+          {% endif %}
           <div class="s_product_text">
+     
+            <h3>{{ i.product_name }}  </h3>
+            <h2 class = 'text-danger'><span class = 'text-dark'>₹</span>     {% if i.product_offer > 0 %}
+              {{i.get_coupen_offer_prize}} <del style="color: red;" class=" h6"> 
+                 ₹{{i.product_prize}}</del>{% else %}   {{i.product_prize}} </h2> 
 
-            <h3>{{ i.product_name }} </h3>
-            <h2 class = 'text-danger'><span class = 'text-dark'>₹</span>{{i.product_prize}}</h2>
+            {% endif %}
             <ul class="list">
               <li>
-                <a class="active" href="#">
+                <a class="">
                   <span>Category</span> :{{i.category_type}}</a>
               </li>
               <li>
-                <a href="#"> <span>Availibility</span> : In Stock</a>
+                <a class=""> <span>Availibility</span> : In Stock</p>
               </li>
             </ul>
             <p>
@@ -120,14 +102,14 @@ deleteLinks[i].addEventListener('click', function(event) {
             </p>
             <div class="card_area d-flex justify-content-between align-items-center input-group my-3">
              
-              <a href="{% url 'ordering' i.id %}" type ='button' class="btn btn-danger rounded-pill btn_3 ml-2">Buy now</a>
+              <a href="{% url 'ordering' i.id %}" type ='button' style="background-color: red; color: white;" class="btn  rounded-pill btn_3 ml-2">Buy now</a>
            
                <div class = "input-group-append">
               
                   {% comment %} <input type = "hidden" class = "product-id" value = "{{ i.id }}" />
                   <input type = "hidden" class = "product-title" value = "{{i.product_name }}" />
                   <input type = "hidden" class = "product-prize" value = "{{i.product_prize }}" /> {% endcomment %}
-                  <button onclick = "addcart('{{i.id}}','add ')" data-product = {{i.id}} data-action = 'add'  class = 'btn_3 add-cart-button' type = 'button' >
+                  <button onclick = "addcart('{{i.id}}','add ')" data-product = {{i.id}} data-action = 'add'  style="background-color: red; color: white;"  class = 'btn_3 add-cart-button' type = 'button' >
                     Add to cart </button>
               </div> 
              

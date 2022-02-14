@@ -126,6 +126,11 @@
                 <span>Design Management</span></a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="/adminpanel/sales_report/">
+                    <i class="fas fa-fw fa-table"></i>
+                <span>Sales report</span></a>
+            </li>
 
 
             {% comment %} Design Management
@@ -152,9 +157,7 @@
             <!-- Sidebar Message -->
             
         </ul>
-        {% block content%}
-
-        {% endblock%}
+       
            <!-- Bootstrap core JavaScript-->
            <script src="{% static 'vendor/jquery/jquery.min.js'%}"></script>
            <script src="{% static  'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -219,11 +222,17 @@
          
              <!--====== App ======-->
              <script src="{% static 'js/app.js' %}"></script>
+             <script src="{% static 'js/html2pdf.bundle.js' %}"></script>
 
      
-            
+             <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+             <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+             <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
     <!-- side ends -->
    
 </body>
 
 </html>
+{% block content%}
+
+{% endblock%}

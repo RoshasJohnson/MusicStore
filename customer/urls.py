@@ -1,4 +1,4 @@
-from unicodedata import name
+
 from django.urls import path,include
 from . import views
 from.views import checkout_view, inclusiontag
@@ -32,5 +32,6 @@ urlpatterns = [
     path('add_new_address',views.add_new_addressfor_userProfile_View,name = "add_new_address"),
     path('cancel_order/<int:id>/',views.cancel_order_view,name = "cancel_order"),
     path('edit_profile',views.editprofile_View,name = 'edit_profile'),
-    path('tracking_order/<int:id>/',views.tracking_order_View,name = "tracking_order")
+    path('tracking_order/<int:id>/',views.tracking_order_View,name = "tracking_order"),
+    path('coupen_check/',views.coupen_check_view,name = "coupen_check")
     ] 

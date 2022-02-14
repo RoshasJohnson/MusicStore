@@ -41,7 +41,7 @@
 
                                                         <span class="o-card__quantity">Quantity x 1</span>
 
-                                                        <span class="o-card__price text-danger"> INR {{item.product_prize}}</span></div>
+                                                        <span class="o-card__price text-danger"> INR {{item.get_coupen_offer_prize}}</span></div>
                                                 </div>
 
                                                 <a class="o-card__del far fa-trash-alt"></a>
@@ -89,33 +89,30 @@
                                         </a>
                                         {% endfor %}
                                         
-                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                              <div class="modal-content">
-                                                <div class="modal-header">
-                                                  <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                  <form>
-                                                    <div class="mb-3">
-                                                      <label for="recipient-name" class="col-form-label">Recipient:</label>
-                                                      <input type="text" class="form-control" id="recipient-name">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                      <label for="message-text" class="col-form-label">Message:</label>
-                                                      <textarea class="form-control" id="message-text"></textarea>
-                                                    </div>
-                                                  </form>
-                                                </div>
-                                                <div class="modal-footer">
-                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                  <button type="button" class="btn btn-primary">Send message</button>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
+                                       
                                     </div>
+
+                                    <div class="o-summary__section u-s-m-b-30 col-lg">
+                                      <div class="o-summary__box">
+                                        <button style="background-color: red;" type="button"  onclick="coupen()" value = "  Have a Coupen ? "  class="btn btn--e-brand-b-2  btn-sm w-25" >
+                                        
+                                        </button> <p style="color: red;">{{ not_existing_coupen }} {{message_for_exiting_coupen}}</p>
+                                      <div style="display: none;" id="coupenDiv">
+
+                                        {% for i in  Items %}
+                                          
+                                        <form action= "{% url 'ordering' i.id %}"  method="post" id = 'coupenForm'>
+                                          <div class="input-group mt-3">
+                                            
+                                            <input name="coupen" required type="text" id = "coupen" class="form-control">
+                                           </div>
+                                           <button type="submit" class="btn btn-sm btn-warning mt-2" onclick="coupenFform()"> Apply Coupen</button>
+                                          </div>
+                                          {% endfor %}
+                                      </form>
+                                      </div>
+                                    </div>
+
                                     <div class="o-summary__section u-s-m-b-30">
                                         <div class="o-summary__box">
                                             <table class="o-summary__table">
@@ -125,10 +122,9 @@
                                                         
                                                       <tr>
                                                           <td>TOTAL</td>
-                                                          <td>₹ {{i.product_prize }}</td>
+                                                          <td>₹ {{i.get_coupen_offer_prize }}</td>
                                                         </tr>
-                                                        {% endfor %}
-                         
+                                                       
                                                     <tr>
                                                         <td>DELIVERY CHARGE</td>
                                                         <td> ₹ 40</td>
@@ -142,14 +138,65 @@
                                                  
                                                     <tr>
                                                         <td class = "text-danger" >GRAND TOTAL</td>
-                                                        
+                                                        {% if grandtotal %}
                                                         <td  id = "prize" data-prize="{{grandtotal}}" class = "text-danger"> ₹ {{grandtotal}}</td>
+
+                                                        {% else %}
+                                    
+                                                        <td  id = "prize" data-prize="{{i.get_Total_prize}}" class = "text-danger"> ₹ {{i.get_Total_prize}}</td>
+                                                        {% endif %}
                                                       
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                            {% endfor %}
+                         
                                         </div>
                                     </div>
+                                   
+
+
+                                    <script>
+                                              function coupen() {
+                                                var x = document.getElementById("coupenDiv");
+                                                  x.style.display = "block";
+                                                  
+                                              }
+                                              function  coupenForm(){
+                                                let coupen = document.forms["myForm"]["coupen"].value;
+                                                
+                                            
+                                                  console.log('user in logged in ,sending data....')
+                                          
+                                              var url = '/coupen_check/'
+                                            fetch(url,{
+                                            method:'POST',
+                                            headers:{'content-Type':'application/json',
+                                            'X-CSRFToken':csrftoken,
+                                             },
+                                             body:JSON.stringify({'coupen':coupen,
+                                            })
+
+                                           })
+                                           .then((response)=>{
+                                           return response.json()
+                                            })
+                                           .then((data)=>{
+                                              console.log('data:',data)
+                                           alert('hehehheeheheh')
+                                           })
+                        
+                                              }
+                                              
+                                            
+                                      </script>
+
+
+
+
+
+
+
                                     <div class="o-summary__section u-s-m-b-30">
                                         <div class="o-summary__box">
                                             <h1 class="checkout-f__h1">PAYMENT INFORMATION</h1>
@@ -168,7 +215,7 @@
 
                                                 </div>
                                              
-                                               
+                                              
                                                
                                                 <div class="u-s-m-b-10">
 
@@ -189,7 +236,7 @@
                                                     <!--====== Radio Box ======-->
                                                     <div class="radio-box">
 
-                                                        <input type="radio" id="razopay" value="razopay" name="payment">
+                                                        <input type="radio" id="razopay" onclick="showDiv()" value="razorpay" name="payment">
                                                         <div class="radio-box__state radio-box__state--primary ">
 
                                                             <label class="radio-box__label" for="razopay">Razopay</label></div>
@@ -202,7 +249,7 @@
                                              
 
                                                     <div id = "placeorder">
-                                                        <input onclick="validateForm()" class="btn btn--e-brand-b-2 bg-danger"  value="PLACE ORDER" type="button"></div>
+                                                        <input style="background-color: red;" onclick="validateForm()" class="btn btn--e-brand-b-2 "  value="PLACE ORDER" type="button"></div>
 
                                                         <div>
                                                             <div id="myDIV">
@@ -215,9 +262,41 @@
                                                         <div id="smart-button-container">
                                                             <div style="text-align: center;">
                                                             <div id="paypal-button-container"></div>
-                                                            </div>
+                                                            </div>  
                                                         </div>
                                                         </div>
+                                                        <!-- razor pay -->
+                                                        <div id="razorpaydiv"  style="display:none;" class="answer_list" >
+                                                          <form  method="POST">
+                                                            <script
+                                                            
+                                                                src="https://checkout.razorpay.com/v1/checkout.js"
+                                                                data-key="rzp_test_yN1bLHNR0eQavW" // Enter the Test API Key ID generated from Dashboard → Settings → API Keys
+                                                                data-amount="29935" // Amount is in currency subunits. Hence, 29935 refers to 29935 paise or ₹299.35.
+                                                                data-currency="INR"// You can accept international payments by changing the currency code. Contact our Support Team to enable International for your account
+                                                                data-order_id="{{payment.id}}"// Replace with the order_id generated by you in the backend.
+                                                                data-buttontext="Pay with Razorpay"
+                                                                data-name="Acme Corp"
+                                                                data-description="A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami"
+                                                                data-image="https://example.com/your_logo.jpg"
+                                                                data-prefill.name="Gaurav Kumar"
+                                                                data-prefill.email="gaurav.kumar@example.com"
+                                                                data-theme.color="#F37254"
+                                                                send_data_to_backend()
+                                                            ></script>
+                                                            <input style="background-color: red;" id="razorpay" type="hidden"  custom="Hidden Element" name="hidden">
+                                                            </form> 
+                  
+                                                      </div>
+                                                      </div>
+                                                      <script>
+                                                        document.getElementById("razorpay").addEventListener("click", function(event){
+                                                          event.preventDefault()
+                                                          send_data_to_backend()
+                                                        
+                                                         
+                                                        });
+                                                      </script>
                                         </div>
                                     </div>
                                 </div>
@@ -232,8 +311,9 @@
       </div>
         <!--====== End - Section 3 ======-->
     </div>
+    
     <!--====== End - App Content ======-->
-
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src ="https://www.paypal.com/sdk/js?client-id=AXFtIbQiSj8ugYxqBxOyQEXV2pXBoTdlWk10t1nHTf2LAqqapZd3isxVNHGtUIUFKJKjD43ooSxq-dal&currency=USD&disable-funding=credit,card" data-sdk-integration-source="button-factory"></script>
        
                         
@@ -253,9 +333,9 @@
 
                         }
                         else{
-                    
                         document.getElementById('paypaldiv').style.display = "block";
                         document.getElementById('placeorder').style.display = "none";
+                        document.getElementById('razorpaydiv').style.display = "none";
                     }
                         
                        
@@ -265,7 +345,15 @@
                     else if (payment == "cod"){
                     document.getElementById('paypaldiv').style.display = "none";
                     document.getElementById('placeorder').style.display = "block";
+                    document.getElementById('razorpaydiv').style.display = "none";
                    
+
+                     }
+                     else if (payment == 'razorpay'){
+                      document.getElementById('razorpaydiv').style.display = "block";
+                        document.getElementById('placeorder').style.display = "none";
+                        document.getElementById('paypaldiv').style.display = "none";
+                        
 
                      }
                     
@@ -294,7 +382,7 @@
                               alert('Transaction completed by ' + details.payer.name.given_name + '!');
                       
                               send_data_to_backend()
-                              alert("hi" )
+                             
                             });
                           },
                       
@@ -321,17 +409,16 @@
                         let payment = document.forms["myForm"]["payment"].value; 
                         let product = document.getElementById('product')
                         var productId = product.getAttribute('data-product');
-                        console.log(productId,"productid")
+                       
                         let total= document.getElementById('prize')
                         let num =total.getAttribute('data-prize');
                         let get_total = parseInt(num)
-                        console.log(get_total)
-                       console.log( typeof(get_total))
+                        alert(get_total)
+                      
 
                      
                        
-                        console.log('user in logged in ,sending data....')
-                        console.log(payment,address)
+                        
                     
                         var url = '/order_placing/'
                         fetch(url,{
@@ -411,17 +498,15 @@
                 let payment = document.forms["myForm"]["payment"].value; 
                 let product = document.getElementById('product')
                 var productId = product.getAttribute('data-product');
-                console.log(productId,"productid")
+              
                 let total= document.getElementById('prize')
                 let num =total.getAttribute('data-prize');
                 let get_total = parseInt(num)
-                console.log(get_total)
-               console.log( typeof(get_total))
+               
 
              
                
-                console.log('user in logged in ,sending data....')
-                console.log(payment,address)
+               
             
                 var url = '/order_placing/'
                 fetch(url,{
@@ -456,7 +541,17 @@
                     
                   })
               }
-            </script>   
+
+
+
+
+
+
+
+
+        
+            </script>  
+            
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.10/sweetalert2.js" integrity="sha512-u9p1QPpG9YeeTQeM8Uj/TTGw8/OOLJqDFB3iUNx6HwN54HcsEyT96NCjPVn+m3B5ydE9KP7wD6Kb11n1fCt5QQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.10/sweetalert2.min.js" integrity="sha512-LwESE8nE3vcnoUWmYo6skVQ+BRT5UhqnPweGro7e22RSDLVwftCfFIPt+Ha2tm1Gg7RXvYp/jPyih3DUB06PwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.3.10/sweetalert2.all.js" integrity="sha512-g4BEr9uX8/EsXakUmNF2Geowd5ww8fc9bUaOblLyVJJu2okCYnge1m0pVHbHsusPKV2Dmlm7bu/i6uLisa80sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>    

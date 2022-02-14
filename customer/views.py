@@ -1,13 +1,17 @@
+from turtle import pd
+from distutils.core import setup
+import razorpay
+from builtins import KeyError, float, int, len, print
 from audioop import add
 from cgi import print_environ
-from copy import error
-from itertools import product
-import json
+from copy import error 
+
+import json 
 from logging import exception
 from multiprocessing import context
 from os import name
 from ssl import HAS_TLSv1_1
-from unicodedata import category
+
 from urllib import request
 from urllib.request import Request
 from venv import create
@@ -16,7 +20,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 import re
 from django.views.decorators.csrf import csrf_protect
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from pyparsing import replaceWith
 from sqlalchemy import false, null 
 import customer
@@ -25,6 +29,7 @@ from .models import *
 from .forms import *
 from django.contrib.auth import authenticate
 from django import template
+from django.views.decorators.cache import never_cache
 import os
 from twilio.rest import Client
 from twilio.rest import TwilioRestClient
@@ -32,7 +37,6 @@ num = ''
 
 
 # Create your views here.
-
 
 
 register = template.Library()
@@ -60,9 +64,9 @@ def send_otp(number):
                                 .create(to=num, channel='sms')
     print('is it ?')                            
     print(verification.status)
+
   
 
-    
  
 def Otp_Verification(otp):
     global num
@@ -93,6 +97,8 @@ def Otp_Verification(otp):
 
 
 # This function for registring the user 
+
+@never_cache
 def usersignupView (request):
     if request.method == 'POST':
         form = Customer(request.POST)
@@ -102,7 +108,7 @@ def usersignupView (request):
                 print(num)
                 number       = '+91'+num
                 print(number)
-                # send_otp(number)
+                send_otp(number)
                 form.save()                 
                 return render(request,'customer/otp.html')                  
     else:
@@ -111,7 +117,7 @@ def usersignupView (request):
     contex   = {'form':form,'choices': choices}    
     return render(request,'customer/register.html',contex)
 
- 
+  
 #-----------------------------------------------------------------------------------      
 # home page view function
 def homepage_view(request):
@@ -130,6 +136,7 @@ def homepage_view(request):
         'Designpage':Designpage,
         'choices':choices,
         'cartcount':cartcount,'cartitems':cartitems,'user':user}
+       
         return render(request,'customer/index.html',contex)
 
     else:
@@ -160,9 +167,9 @@ def selected_Product_view(request,id):
         return render(request,'customer/selected_product.html',contex)
     else:
         selectedProduct = Product.objects.filter(id= id) 
-        choices =Category.objects.all()
+        choices = Category.objects.all()
         # cartcount=  OrderItem.objects.all().count()
-        contex = {'selectedProduct':selectedProduct,'choices':choices,'shipping ':False}
+        contex   = {'selectedProduct':selectedProduct,'choices':choices,'shipping ':False}
         return render(request,'customer/selected_product.html',contex)
 
  
@@ -171,6 +178,7 @@ def selected_Product_view(request,id):
 # sign in view funciton
 
 
+@never_cache
 def signIcon_view(request):
     form = Customer()
     form = Customer(request.POST or None,request.FILES or None)
@@ -203,6 +211,7 @@ def signIcon_view(request):
 # user sign in view
 
 
+@never_cache
 def register_USer_View(request):
     choices =   Category.objects.all()
     form    = Customer()
@@ -222,7 +231,7 @@ def cart_View(request):
         items      = OrderItem.objects.filter( user = customer)
         sum        = 0
         for i in items:
-            sum += i.quantity  * i.product.product_prize 
+            sum += i.quantity  * i.product.get_coupen_offer_prize 
       
     else:   
         items = [] 
@@ -236,29 +245,70 @@ def cart_View(request):
 
 
 
+@never_cache
 def checkout_view(request):         
-    choices       =   Category.objects.all()
-    if  request.session.get('name'): 
-        customer  = request.session.get('name')
-        user      = Usercreation.objects.get(username= customer)
-        Items     = OrderItem.objects.filter(user = user)
-        form      = CustomerAdress.objects.filter(user = user)
-        cartcount =  OrderItem.objects.filter(user = user  ).count()
-        sum = 0
+    coupen_offer               =  0
+    sum                        =  0 
+    message_for_exiting_coupen = ""
+    not_existing_coupen        = ""
+    choices                    = Category.objects.all()
+    user                       = request.session.get('name')
+    username                   = Usercreation.objects.get(username = user)
+    Items                      = OrderItem.objects.filter(user = username)
+    form                       = CustomerAdress.objects.filter(user = username) 
+    cartcount                  =  OrderItem.objects.filter(user = username  ).count()
+    try:
+        if request.method == 'GET':
+            coupen    = request.GET['coupen']
+            print(coupen)
+            if  Coupen.objects.filter(Coupencode = coupen).exists():
+                if Usercreation.objects.filter(username = user,coupen = coupen).exists():
+                    message_for_exiting_coupen = 'This coupen you have been already used'
+                    print(message_for_exiting_coupen)
+                    print('Existing')
+                else:
+                    print('Not existing')
+                    tax              = 18   
+                    coupen_code      = Coupen.objects.get(Coupencode = coupen)
+                    coupen_offer     = coupen_code.Coupen_offer  
+                    print(coupen_code,coupen_offer)
+                    user             = request.session.get('name')   
+                    print(user,)
+                    print('first step finished')
+                    for i in Items:
+                        sum += i.quantity  * i.product.get_coupen_offer_prize
+                    tax = int(sum/18)
+                    grandtotal       = tax+sum+40
+                    print(grandtotal,'this is grand total first')
+                    grandtotal       = grandtotal - (grandtotal*coupen_offer)/100
+                    print(grandtotal,'this is grand total')
+                    print('second step finished')
+                    Usercreation.objects.filter(username = username ).update(coupen = coupen)
+                    print('success')
+                    
+                      
+            else:
+                not_existing_coupen  =    "Invalid Coupen code"
+                print(not_existing_coupen)
+            context = {'Items':Items,'form':form,'tax':tax,
+            'grandtotal':grandtotal,'choices':choices,'cartcount':cartcount,
+            'coupen_offer':coupen_offer,'not_existing_coupen':not_existing_coupen,
+            'message_for_exiting_coupen':message_for_exiting_coupen,'sum':sum}    
+            return render(request,'customer/checkout.html',context)    
+           
+    except:
+        pass
 
+
+    if  request.session.get('name'): 
+        sum = 0
         for i in Items:
-                sum += i.quantity  * i.product.product_prize
-        print(sum)
+                sum += i.quantity  * i.product.get_coupen_offer_prize
         tax = int(sum/18)
         grandtotal = tax+sum+40
-        print(tax)
-        print(grandtotal)
-
-
-        
     else:
         return redirect('cart/')
-    contex = {'Items':Items,'choices':choices,'form':form,'tax':tax,'grandtotal':grandtotal,'cartcount': cartcount}  
+    contex = {'Items':Items,'choices':choices,'form':form,'tax':tax,'grandtotal':grandtotal,'cartcount': cartcount,'sum':sum}  
     return render(request,'customer/checkout.html',contex)
 
 
@@ -273,12 +323,10 @@ def updateItem(request):
         data       = json.loads(request.body)    
         productId  = data['productId']
         action     = data['action']
-        
-        print(action,'_-------------________________--------------------------------')
-        customer = request.session.get('name')
-        print(customer,'fffffffffffffffffffffffffffffffffffff')
-        user = Usercreation.objects.get(username = customer)
-        product = Product.objects.get(id = productId  ) 
+    
+        customer    = request.session.get('name')
+        user        = Usercreation.objects.get(username = customer)
+        product     = Product.objects.get(id = productId  ) 
         OrderItem.objects.create(product = product ,user = user )
         return JsonResponse('item was added', safe = False)    
 
@@ -311,26 +359,84 @@ def place_orderView(request):
 def Process_orderView(request):
     data   = json.loads(request.body)
     action = data['action']
-    return JsonResponse('ddddd', safe = False) 
+    return JsonResponse('something haapened', safe = False) 
        
-
+@csrf_protect
+@never_cache
 def OrderView(request,id):
-    choices       = Category.objects.all()
-    if request.session.get('name'):
-        user      = request.session.get('name')   
-        Items     = Product.objects.filter(id = id)
-        user1     = Usercreation.objects.get(username = user)
-        form      = CustomerAdress.objects.filter(user = user1)
-        cartcount = OrderItem.objects.filter(user = user1).count()
-        
-        for i in Items:
-            tax =int(( i.product_prize)/18)
-            grandtotal  = tax+i.product_prize +40 
-           
+    coupen_offer               =  0
+    discount_prize             =  0 
+    message_for_exiting_coupen = ""
+    not_existing_coupen        = ""
+    choices         = Category.objects.all()
+    user          = request.session.get('name')
+    username      = Usercreation.objects.get(username = user)
+    try: 
+        if request.method == 'GET':
+            coupen    = request.GET['coupen']  
+            print(coupen)
+            if  Coupen.objects.filter(Coupencode = coupen).exists():
+                if Usercreation.objects.filter(username = user,coupen = coupen).exists():
+                    message_for_exiting_coupen = 'This coupen you have been already used'
+                    print(message_for_exiting_coupen)
+                else:
+                    tax              = 18   
+                    coupen_code      = Coupen.objects.get(Coupencode = coupen)
+                    coupen_offer     = coupen_code.Coupen_offer  
+                    user             = request.session.get('name')   
+                    Items            = Product.objects.filter(id = id)
+                    for i  in Items:
+                        total_prize  = i.get_Total_prize
+                        print(total_prize)
+                    tax              = int(total_prize/18)       
+                    grandtotal       =  total_prize -(total_prize*coupen_offer/100)
+                    username         = Usercreation.objects.get(username = user)
+                    form             = CustomerAdress.objects.filter(user = username)
+                    cartcount        = OrderItem.objects.filter(user = username).count()
+                    Usercreation.objects.filter(username = username ).update(coupen = coupen)
+                    print('success')
+
+            else:
+                not_existing_coupen  =    "Invalid Coupen code"
+                print(not_existing_coupen)    
+        client = razorpay.Client(auth=("rzp_test_yN1bLHNR0eQavW", "pupIlbxc6s8JT5qUAmGZFHTf"))
+        DATA = {
+            "amount": 100,
+            "currency": "INR",
+            "receipt": "receipt#1",
+            "notes": {
+                "key1": "value3",
+                "key2": "value2"
+            } 
+                }
+        payment  = client.order.create(data=DATA)
         context = {'Items':Items,'form':form,'tax':tax,
-        'grandtotal':grandtotal,'choices':choices,'cartcount':cartcount} 
-        print(grandtotal)
-        return render(request,'customer/checkout-2.html',context) 
+        'grandtotal':grandtotal,'choices':choices,'cartcount':cartcount,
+        'coupen_offer':coupen_offer,'discount_prize':discount_prize,'not_existing_coupen':not_existing_coupen,
+        'message_for_exiting_coupen':message_for_exiting_coupen,'payment':payment}   
+
+        return render(request,'customer/checkout-2.html',context)             
+
+                        
+    except:
+        pass
+            # not_existing_coupen  =    "Invalid Coupen code"
+            # print(not_existing_coupen) 
+
+    if request.session.get('name'):    
+            Items     = Product.objects.filter(id = id)
+            form      = CustomerAdress.objects.filter(user = username)
+            cartcount = OrderItem.objects.filter(user = username).count()
+            for i in Items:
+                tax         = int(( i.get_coupen_offer_prize)/18)
+                grandtotal  = tax+i.get_coupen_offer_prize +40  
+            
+    context = {'Items':Items,'form':form,'tax':tax,
+        'grandtotal':grandtotal,'choices':choices,'cartcount':cartcount,
+        'coupen_offer':coupen_offer,'discount_prize':discount_prize,'not_existing_coupen':not_existing_coupen,
+        'message_for_exiting_coupen':message_for_exiting_coupen} 
+
+    return render(request,'customer/checkout-2.html',context) 
    
 
   
@@ -355,6 +461,7 @@ def addcartQtyView(request):
    
 
 
+@never_cache
 def checkingaddressview(request):
     if request.session.get('name'):
     #     user1 = request.session.get('name')
@@ -476,6 +583,7 @@ def cart_item_buy_View(request):
 
 
 
+@never_cache
 def add_new_address_View(request):
     form  = CustomerAdressForm()
     if request.method == 'POST':
@@ -514,6 +622,7 @@ def add_new_address_View(request):
 
 
 
+@never_cache
 def add_new_addresforEachOrder_View(request,id):
     form            = CustomerAdressForm() 
     if request.session.get('name'):
@@ -524,6 +633,7 @@ def add_new_addresforEachOrder_View(request,id):
 
 
 
+@never_cache
 def newaddress_save_view(request,id):
      choices = Category.objects.all()
      if request.method == 'POST':
@@ -569,6 +679,7 @@ def my_profile_view(request):
         return render(request,'customer/User_profile.html',context)
 
 
+
 def delete_address_View(request,id):
      choices    = Category.objects.all()
      if request.session.get('name'):
@@ -582,7 +693,7 @@ def delete_address_View(request,id):
         cartcount =  OrderItem.objects.filter(user = username).count()
         context   = {'form':form,'address':address,'choices':choices}
         print(address)
-        return render(request,'customer/User_profile.html',context)
+        return redirect('/my_profile')
      else:
          return redirect('/')
 
@@ -610,19 +721,14 @@ def add_new_addressfor_userProfile_View(request):
         ,phone_number = phone_number,house_name = house_name
         ,street_name  = street_name,city = city,state = state,country = country,
             post_code = post_code )
-        print('success')
-        cartcount    = OrderItem.objects.filter(user   = user).count()
-        form         = Usercreation.objects.filter(username  = user)
-        username     = Usercreation.objects.get(username = user)
-        address      = CustomerAdress.objects.filter(user = username)
-        context      = {'form':form,'address':address,'choices':choices,'cartcount':cartcount}
-        print(address)
-        return render(request,'customer/User_profile.html',context)
+        return redirect('my_profile')
+
     if request.session.get('name'):
             context = {'form':form} 
             return render (request,'customer/Add_address-3.html',context)
  
-
+    else:
+        return redirect('/')
 
 
 
@@ -683,10 +789,36 @@ def editprofile_View(request):
 
 def tracking_order_View(request,id):
     if request.session.get('name'):
-        track_order = Order.objects.filter(id = id)
         dt = datetime.now()
         td = timedelta(days=4)
         est_date_delvery = dt + td
-        context     = {'track_order':track_order,'est_date_delvery':est_date_delvery}
+        delveried = datetime.now()
+
+        track_order = Order.objects.filter(id = id)
+        for i in track_order:
+            if i.status == 'Delivered':
+                delveried = datetime.now()
+            else:  
+                dt = datetime.now()
+                td = timedelta(days=4)
+                est_date_delvery = dt + td
+        context     = {'track_order':track_order,'est_date_delvery':est_date_delvery,'delveried':delveried}
 
     return render(request,'customer/track_order.html',context)  
+
+@csrf_protect
+def coupen_check_view(request):
+    if request.session.get('name'):
+        data          = json.loads(request.body)    
+        coupen        = data['coupen']
+        user          = request.session.get('name')
+        username      = Usercreation.objects.get(username  = user)
+        print(coupen)
+        coupen_check  = Coupen.objects.all()
+        if  Coupen.objects.filter(Coupencode = coupen).exists():
+            return JsonResponse('item was added', safe = False)   
+
+    else:
+        return redirect ('/')       
+
+     

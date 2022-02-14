@@ -1,5 +1,4 @@
-from curses import panel
-from unicodedata import name
+
 from django.urls import path
 from.import views
 
@@ -23,6 +22,11 @@ urlpatterns = [
     path('admin_logout/',views.adminlogout_view,name = 'admin_logout'),
     path('order_management',views.ordermangemet_view,name = "order_management"),
     path('edit_status/<int:id>/',views.edit_status_View,name = "edit_status"),
-    path('coupen_management',views.coupen_management_View,name = 'coupen_management')
-
+    path('coupen_management',views.coupen_management_View,name = 'coupen_management'),
+    path('edit_coupen/<int:id>/',views.edit_coupen_View, name = 'edit_coupen'),
+    path('delete_coupen/<int:id>/',views.delete_coupen_view,name = 'delete_coupen'),
+    path('add_coupen',views.add_coupen_View,name = "add_coupen"),
+    path('cancel_status/<int:id>',views.cancel_status_view,name = "cancel_status"),
+    path('sales_report/',views.sales_report_view,name = "sales_report"),
+    path('export_as_excel',views.export_as_excel_view,name = "export_as_excel")
 ]
