@@ -16,47 +16,74 @@
   <link rel="stylesheet" href=" {% static 'css/lightslider.min.css' %}">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ 
 </head>
-
+<style>
+  .heart {
+    width: 100px;
+    height: 100px;
+    background: url("heart.png") no-repeat;
+    background-position: 0 0;
+    cursor: pointer;
+    transition: background-position 1s steps(28);
+    transition-duration: 0s;
+  }
+  .heart.is-active {
+    transition-duration: 1s;
+    background-position: -2800px 0;
+  }
+  
+  
+  
+  .stage {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+  }
+  </style>
 
 <body>
+  <div class="stage">
+    <div class="heart"></div>
+  </div>
    <!--::header part start::-->
    <!--================Single Product Area =================-->
   {% for i in selectedProduct %}
 
+  
 
   <div class="product_image_area section_padding">
     <div class="container">
       <div class="row s_product_inner justify-content-between">
         <div class="col-lg-7 col-xl-7">
           <div class="product_slider_img">
-            <div id="vertical">
-              <div data-thumb="{{i.product_image.url}}">
-                <img src="{{i.product_image.url}}" />
+            
+            <div class="imgline" id="vertical">
+              <div class="previewPane" data-thumb="{{i.product_image.url}}">
+                <img class="imagekey" src="{{i.product_image.url}}" />
               </div>
               <div data-thumb="{{i.product_image.url}}">
-                <img src="{{i.product_image.url}}" />
+                <img  src="{{i.product_image.url}}" />
               </div>
               <div data-thumb="{{i.product_image.url}}">
-                <img src="{{i.product_image.url}}" />
+                <img  src="{{i.product_image.url}}" />
               </div>
               <div data-thumb="{{i.product_image.url}}">
-                <img src="{{i.product_image.url}}" />
+                <img  src="{{i.product_image.url}}" />
+              
               </div>
+              <img id="zoom_04" src="{{i.product_image.url}}"
+              data-zoom-image="{{i.product_image.url}}"/>
+              
             </div>
+       <div id="zoomer"></div>
           </div>
         </div>
-      
-    <script src = "js/text.js ">
-      $("#img_01").ezPlus();
-      $("#zoom_03").elevateZoom({gallery:'gallery_01', cursor: 'pointer', galleryActiveClass: 'active', imageCrossfade: true, loadingIcon: 'http://www.elevateweb.co.uk/spinner.gif'}); 
 
-//pass the images to Fancybox
-      $("#zoom_03").bind("click", function(e) {  
-        var ez =   $('#zoom_03').data('elevateZoom');	
-        $.fancybox(ez.getGalleryList());
-        return false;
-});
+    <script src = "js/text.js ">
+  
 
 
           
@@ -82,7 +109,7 @@ deleteLinks[i].addEventListener('click', function(event) {
           {% endif %}
           <div class="s_product_text">
      
-            <h3>{{ i.product_name }}  </h3>
+            <h3>{{ i.product_name }}  </h3>   
             <h2 class = 'text-danger'><span class = 'text-dark'>₹</span>     {% if i.product_offer > 0 %}
               {{i.get_coupen_offer_prize}} <del style="color: red;" class=" h6"> 
                  ₹{{i.product_prize}}</del>{% else %}   {{i.product_prize}} </h2> 
@@ -109,8 +136,8 @@ deleteLinks[i].addEventListener('click', function(event) {
                   {% comment %} <input type = "hidden" class = "product-id" value = "{{ i.id }}" />
                   <input type = "hidden" class = "product-title" value = "{{i.product_name }}" />
                   <input type = "hidden" class = "product-prize" value = "{{i.product_prize }}" /> {% endcomment %}
-                  <button onclick = "addcart('{{i.id}}','add ')" data-product = {{i.id}} data-action = 'add'  style="background-color: red; color: white;"  class = 'btn_3 add-cart-button' type = 'button' >
-                    Add to cart </button>
+                  <button onclick = "wishlist('{{i.id}}','add ')" data-product = {{i.id}} data-action = 'add'  style="background-color: red; color: white;"  class = 'btn_3 add-cart-button' type = 'button' >
+                     My wishlist </button>
               </div> 
              
             </div>
@@ -125,9 +152,9 @@ deleteLinks[i].addEventListener('click', function(event) {
 
 
 <script>
-  function  addcart(productId,action){
+  function  wishlist(productId,action){
     console.log('user in logged in ,sending data....')
-    var url = '/update_item/'
+    var url = '/add_to_wishlist/'
     fetch(url,{
        method:'POST',
        headers:{'content-Type':'application/json',
@@ -146,7 +173,7 @@ deleteLinks[i].addEventListener('click', function(event) {
         position: 'top-end',
       
         icon: 'success',
-        title: 'Added to cart',
+        title: 'Add to wish list',
         showConfirmButton: false,
         timer: 1500,
       })
@@ -745,6 +772,16 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
   <!-- jquery plugins here-->
   <!-- jquery -->
+  <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+  <script>
+    $(function() {
+    $(".heart").on("click", function() {
+      $(this).toggleClass("is-active");
+    });
+  });
+    </script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

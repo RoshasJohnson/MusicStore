@@ -8,6 +8,7 @@ from builtins import KeyError, float, int, len, print,str
 from re import T
 from tkinter import CASCADE
 from tkinter.tix import Tree
+from unicodedata import category
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -33,7 +34,6 @@ class Coupen(models.Model):
     def __str__(self):
         return str(self.Coupencode)
        
-    
 
 #Choice field for category
 class Category(models.Model):
@@ -49,6 +49,7 @@ class Category(models.Model):
         managed = True
         verbose_name =  'category'
         verbose_name_plural =  'categorys'
+
 
 
 # _______________________________________
@@ -95,7 +96,28 @@ class Product(models.Model):
 
     
 
+class Offer(models.Model):
+     product_offer      =  models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
+     category_offer     =   models.ForeignKey(Category,on_delete=models.SET_NULL,null = True)
 
+     @property
+     def get_Total_prize(self):
+        tax             = 18 
+        shipping_charge = 40
+        total_prize = int((self.get_coupen_offer_prize  ) /tax) + int((self.get_coupen_offer_prize  ) +shipping_charge)
+        return total_prize
+
+
+     @property
+     def get_coupen_offer_prize(self):
+        if self.product_offer == 0:
+            coupen_offer_prize = self.product_prize         
+        elif self.product_offer > self.category_type.Category_offer:  
+            coupen_offer_prize    = int(self.product_prize)  - int((self.product_prize) * int((self.product_offer))/100)
+        else:
+            coupen_offer_prize    = int(self.product_prize)  - int((self.product_prize) * int((self.category_type.Category_offer))/100)            
+        return coupen_offer_prize
+     
   
 
 class CustomerAdress(models.Model):
@@ -219,6 +241,30 @@ class OrderItem(models.Model):
 #         return self.address
     
 
-    
+ 
+
+
+
+
+
+
+
+
+
+class MyWishList(models.Model):
+    username         = models.ForeignKey(Usercreation,on_delete= models.SET_NULL, null= True ,blank = True) 
+    product     = models.ForeignKey(Product,on_delete= models.SET_NULL, null= True ,blank = True)
+    def __str__(self):
+         return str(self.user)
 
     
+    @property
+    def get_total(self): 
+        total =self.product.get_coupen_offer_prize * self.quantity
+        return total
+    @property    
+    def get_cart_total(self):
+        orderitems = self.orderitem_set.all()
+        total      = sum([item.get_total for item in orderitems])
+        return total      
+        

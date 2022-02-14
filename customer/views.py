@@ -28,7 +28,7 @@ from .models import AbstractUser, Product
 from .models import *
 from .forms import *
 from django.contrib.auth import authenticate
-from django import template
+from django import template, views
 from django.views.decorators.cache import never_cache
 import os
 from twilio.rest import Client
@@ -751,7 +751,7 @@ def cancel_order_view(request,id):
             cancel_all  = Order.objects.filter (user_name =  username,status = 'Canceled').count()
             contex = {'order_all':order_all,'orders':orders,'cartcount':cartcount,
             'choices':choices,'user': user,'cancel_all':cancel_all,'return_all':return_all} 
-            return render(request,'customer/user_account.html' ,contex)
+            return redirect('/manage_account')
 
         else:
             return redirect('/')
@@ -814,11 +814,34 @@ def coupen_check_view(request):
         user          = request.session.get('name')
         username      = Usercreation.objects.get(username  = user)
         print(coupen)
-        coupen_check  = Coupen.objects.all()
+        coupen_check  = Coupen.objects.all() 
         if  Coupen.objects.filter(Coupencode = coupen).exists():
             return JsonResponse('item was added', safe = False)   
 
     else:
         return redirect ('/')       
 
-     
+def mywishlist_view(request):
+    if request.session.get('name'):
+        user = request.session.get('name')
+        username = Usercreation.objects.get(username = user)
+        wishlist = MyWishList.objects.filter(username = username)
+        context  = {'wishlist':wishlist}
+        return render(request,'customer/wishlist.html',context)
+
+
+  
+@csrf_protect
+def add_to_wishlist_view(request):
+      if request.session.get('name'): 
+        data       = json.loads(request.body)    
+        productId  = data['productId']
+        action     = data['action']
+    
+        customer    = request.session.get('name')
+        user        = Usercreation.objects.get(username = customer)
+        product     = Product.objects.get(id = productId  ) 
+        MyWishList.objects.create(product = product ,username = user )
+        return JsonResponse('item was added', safe = False)   
+
+ 

@@ -41,6 +41,10 @@
                                                 <li>
 
                                                     <a href="{% url 'my_profile' %}">My Profile</a></li>
+                                                    <li>
+
+                                                        <a href="{% url 'my_wishlist' %}">My Wishlist</a></li>
+                                                    
                                                 
                                             
                                                     <li>
@@ -134,7 +138,7 @@
                                                                     <span class="manage-o__badge badge--processing bg-primary text-light">{{i.status}}</span><a type="button" href = "{% url 'cancel_order' i.id %}" onclick="call()" class="btn btn-outline-danger text-dark ml-3">Cancel order</a>
                                                                     
                                                                     {% elif i.status == 'Packed' %}
-                                                                    <span class="manage-o__badge badge--processing bg-warning text-light">{{i.status}}</span><a type="button" href = "{% url 'cancel_order' i.id %}" class="btn btn-outline-danger text-dark ml-3">Cancel order</a> 
+                                                                    <span class="manage-o__badge badge--processing bg-warning text-light">Shipped</span><a type="button" href = "{% url 'cancel_order' i.id %}" class="btn btn-outline-danger text-dark ml-3">Cancel order</a> 
                                                                    
                                                                     {% elif i.status == 'Delivered' %}
                                                                     <span class="manage-o__badge badge--processing bg-success text-light">{{i.status}}</span><a type="button" href = "{% url 'cancel_order' i.id %}" class="btn btn-outline-danger text-dark mt-2 ml-3">Return  order</a>
@@ -201,7 +205,7 @@
                 $('#example').DataTable();
             } );
 function call(){
-    alert('blahh')
+ 
             swal({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",

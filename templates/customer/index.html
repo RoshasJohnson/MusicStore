@@ -54,8 +54,8 @@
                      <div class="option_container">
                         <div class="options">
                            
-                           <a href="{% url 'selected_Product' i.id %}" class="btn_3 ">
-                              View
+                           <a  href="{% url 'ordering' i.id %}"  class="btn_3 ">
+                            Buy now
                            </a>
                          {% if cartitms %}
                          <button onclick = "addcart('{{i.id}}','add ')" data-product = {{i.id}} data-action = 'add'  class = 'btn_3 add-cart-button' type = 'button' >
