@@ -5,6 +5,7 @@ from.import views
 # coding patterns here
 
 urlpatterns = [
+
     path('login/',views.adminpart, name = 'login'),
     path('',views.admin_dashboard, name ='adminpanel'),
     path('usermanagement/',views.user_view ,name='usermanagement'),
@@ -28,5 +29,8 @@ urlpatterns = [
     path('add_coupen',views.add_coupen_View,name = "add_coupen"),
     path('cancel_status/<int:id>',views.cancel_status_view,name = "cancel_status"),
     path('sales_report/',views.sales_report_view,name = "sales_report"),
-    path('export_as_excel',views.export_as_excel_view,name = "export_as_excel")
+    path('export_as_excel',views.export_as_excel_view,name = "export_as_excel"),
+    path('offer_management',views.offer_management_view ,name = "offer_management"), 
+    path('date-wise-report' ,views.date_wise_report_view,name ="date-wise-report") 
+
 ]

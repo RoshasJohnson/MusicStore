@@ -7,22 +7,22 @@
     <a type="button" href ="{% url 'add_coupen'  %}" class="btn btn-primary btn-lg float-right">Add Coupen</a>
   
   
-      <table  id ="example"  class="table table-striped table-bordered " style="width:100%">
+      <table  id ="example"  class="table table-bordered table-dark " style="width:100%">
         <thead> 
           <tr>
-            <th  scope="col" class="border border-dark " style="color:black;">Coupen Code</th>
-            <th  scope="col" class="border border-dark " style="color:black;">Coupen Offer</th>
-            <th  scope="col" class="border border-dark " style="color:black;">Edit Coupen</th>
-            <th  scope="col" class="border border-dark " style="color:black;"> Delete Coupen </th>
+            <th  scope="col" class="border border-dark " style="color:white;">Coupen Code</th>
+            <th  scope="col" class="border border-dark " style="color:white;">Coupen Offer</th>
+            <th  scope="col" class="border border-dark " style="color:white;">Edit Coupen</th>
+            <th  scope="col" class="border border-dark " style="color:white;"> Delete Coupen </th>
           </tr>
         </thead>
           <tbody class="border border-danger" >
             {% for i in coupen  %}
             <tr>
-              <td class="border border-dark" style="color:black;">{{i.Coupencode }}</td>
-              <td class="border border-dark" style="color:black;">{{i.Coupen_offer }}</td>
-              <td class="border border-dark" style="color:black;"><a class="btn btn" href="{% url 'edit_coupen' i.id %}" role="sumbit"><button type="button" class="btn btn-outline-warning">Edit</button></a></td>
-              <td class="border border-dark" style="color:black;"><a class="btn btn delete" data-confirm="Are you sure to delete this item?" href="{% url 'delete_coupen' i.id %}" role="sumbit"><button type="button" class="btn btn-outline-danger">Delete</button></a></td>
+              <td class="border border-dark" style="color:white;">{{i.Coupencode }}</td>
+              <td class="border border-dark" style="color:white;">{{i.Coupen_offer }}</td>
+              <td class="border border-dark" style="color:white;"><a class="btn btn" href="{% url 'edit_coupen' i.id %}" role="sumbit"><button type="button" class="btn btn-outline-warning">Edit</button></a></td>
+              <td class="border border-dark" style="color:white;"><a class="btn btn delete" data-confirm="Are you sure to delete this item?" href="{% url 'delete_coupen' i.id %}" role="sumbit"><button type="button" class="btn btn-outline-danger">Delete</button></a></td>
             </tr>
             
             {% endfor %}

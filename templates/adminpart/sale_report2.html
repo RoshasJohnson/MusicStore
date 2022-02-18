@@ -1,0 +1,155 @@
+{% extends 'adminpart/base.html' %}
+
+{% load static%}
+{% block content %}
+
+
+
+
+<div class='table table-striped table-light  mt-3 '>
+    <button  id="dl-pdf"  class="btn btn-primary btn-lg ml-3 mb-3"> Download as pdf</button><span> <a  id="dl-pdf" href=" {% url 'export_as_excel' %}" class="btn btn-primary btn-lg ml-3 mb-3"> Download as Excel</a></span>
+    <form nonvalidate name="form" method = "get" action=" {% url 'date-wise-report' %}">
+      <h3>Sort with date wise</h3>
+      <label for="birthday">Date wise:</label>
+      <input type="date" id="date" name="date">
+      <button  id=""  class="btn btn-primary btn-lg "> Find</button>
+
+     
+
+      <label for="birthday">Month wise:</label>
+      <input type="month" id="date_report" name="month">
+      <button  id=""  class="btn btn-primary btn-lg "> Find</button>
+      <label for="birthday">Year wise:</label>
+      <select name="year" id="ddlYears" value = "...."> </select>
+      <button  id=""  class="btn btn-primary btn-lg "> Find</button>
+    </form>
+    <div>
+    {% include "adminpart/alert.html" %}
+  </div>
+    <table id ="example"  class="table table-bordered table-dark" style="width:100%">
+        <thead>
+          <tr>
+            <th  scope="col" class="border border-dark " style="color:white;">No:</th>
+            <th  scope="col" class="border border-dark " style="color:white;">Customer</th>
+            <th scope="col" class="border border-dark" style="color:white;">Product Name</th>
+            <th scope="col" class="border border-dark" style="color:white;">Category  Name</th>
+            <th scope="col" class="border border-dark" style="color:white;">Quantity</th>
+            <th scope="col" class="border border-dark" style="color:white;">Total prize(INR)</th>
+            <th scope="col" class="border border-dark" style="color:white;">Payment method</th>
+            <th scope="col" class="border border-dark" style="color:white;">Order date</th>
+            <th scope="col" class="border border-dark" style="color:white;">Transaction ID</th>
+            <th scope="col" class="border border-dark" style="color:white;">Order status</th>
+          </tr>
+        </thead>
+        <tbody class="border border-danger" >
+        {% for i in result %}
+          <tr>
+            <th scope="row" class="border border-dark" style="color:white;">
+                  {{ forloop.counter }}
+         
+            </th>
+            <th scope="row" class="border border-dark" style="color:white;">{{i.user_name}}</th>
+            <td class="border border-dark" style="color:white;">{{i.order_product}}</td>
+            <td class="border border-dark" style="color:white;">{{i.order_product.category_type}}</td>
+            <td class="border border-dark" style="color:white;">{{i.quantity}}</td>
+            <td class="border border-dark" style="color:white;">{{i.total_prize}}</td>
+            <td class="border border-dark" style="color:white;">{{i.payment_method}}</td>
+            <td class="border border-dark" style="color:white;">{{i.date_ordered}}</td>
+            <td class="border border-dark" style="color:white;">{{i.transcation_id  }}</td>
+         
+            <td class="border border-dark" style="color:white;"> {{i.status}}</td >
+             
+          
+          </tr>
+          
+          {% endfor %}
+        </tbody>
+        
+      </table>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+      <script type="text/javascript">
+          document.getElementById('dl-pdf').onclick = function(){
+              var element  = document.getElementById('example')
+              var opt = {
+                  margin : 1 ,
+                  filename: 'myfile.pdf',
+                  image    : {type: 'jpeg',quality :0.98},
+                  html2canvas :{scale :2},
+                  jsPDF : {unit: 'in',format: 'letter',orientation:'portrait'}
+
+              };
+              html2pdf(element,opt);
+          };
+
+      </script>
+    
+    <script>
+      $(document).ready( function () {
+          $('#example').DataTable();
+      } );
+  </script>
+  <script>
+    $(document).ready(function() {
+      $('#date').datepicker();
+      $('#date').datepicker('setDate', 'today');
+  });
+  
+  </script>
+
+
+  <script type="text/javascript">
+    window.onload = function () {
+        //Reference the DropDownList.
+        var ddlYears = document.getElementById("ddlYears");
+ 
+        //Determine the Current Year.
+        var currentYear = (new Date()).getFullYear();
+ 
+        //Loop and add the Year values to DropDownList.
+        for (var i = 2022; i >= 1950; i--) {
+            var option = document.createElement("OPTION");
+            option.innerHTML = i;
+            option.value = i;
+            ddlYears.appendChild(option);
+        }
+    };
+</script>
+  <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
+    <br>
+    <div class= ' mb-5'>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

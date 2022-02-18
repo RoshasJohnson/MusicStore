@@ -10,7 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-from pathlib import Path,os
+
+from pathlib import Path,os 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,8 +41,7 @@ INSTALLED_APPS = [
     'customer',
     'Dashboard',
     'crispy_forms',
-     'django.contrib.sites', # Add this
-
+    'django.contrib.sites', # Add this
     # Add the following django-allauth apps
     'allauth',
     'allauth.account',
@@ -127,7 +127,7 @@ AUTH_USER_MODEL  = 'customer.Usercreation'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -160,12 +160,12 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend'
 ]
 
-SITE_ID = 2
+SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 
 # Additional configuration settings
 SOCIALACCOUNT_QUERY_EMAIL = True
-ACCOUNT_LOGOUT_ON_GET= True
+ACCOUNT_LOGOUT_ON_GET= True 
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 

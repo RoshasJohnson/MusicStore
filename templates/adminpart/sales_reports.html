@@ -8,39 +8,56 @@
 
 <div class='table table-striped table-light  mt-3 '>
     <button  id="dl-pdf"  class="btn btn-primary btn-lg ml-3 mb-3"> Download as pdf</button><span> <a  id="dl-pdf" href=" {% url 'export_as_excel' %}" class="btn btn-primary btn-lg ml-3 mb-3"> Download as Excel</a></span>
+    <form nonvalidate name="form" method = "get" action=" {% url 'date-wise-report' %}">
+      <h3>Sort with date wise</h3>
+      <label for="birthday">Date wise:</label>
+      <input type="date" id="date" name="date">
+      <button  id=""  class="btn btn-primary btn-lg "> Find</button>
 
-    <table id ="example"  class="table table-striped table-bordered" style="width:100%">
+     
+
+      <label for="birthday">Month wise:</label>
+      <input type="month" id="date_report" name="month">
+      <button  id=""  class="btn btn-primary btn-lg "> Find</button>
+      <label for="birthday">Year wise:</label>
+      <select name="year" id="ddlYears"></select>
+      <button  id=""  class="btn btn-primary btn-lg "> Find</button>
+    </form>
+    <div>
+    {% include "adminpart/alert.html" %}
+  </div>
+    <table id ="example"  class="table table-bordered table-dark" style="width:100%">
         <thead>
           <tr>
-            <th  scope="col" class="border border-dark " style="color:black;">No:</th>
-            <th  scope="col" class="border border-dark " style="color:black;">Customer</th>
-            <th scope="col" class="border border-dark" style="color:black;">Product Name</th>
-            <th scope="col" class="border border-dark" style="color:black;">Category  Name</th>
-            <th scope="col" class="border border-dark" style="color:black;">Quantity</th>
-            <th scope="col" class="border border-dark" style="color:black;">Total prize(INR)</th>
-            <th scope="col" class="border border-dark" style="color:black;">Payment method</th>
-            <th scope="col" class="border border-dark" style="color:black;">Order date</th>
-            <th scope="col" class="border border-dark" style="color:black;">Transaction ID</th>
-            <th scope="col" class="border border-dark" style="color:black;">Order status</th>
+            <th  scope="col" class="border border-dark " style="color:white;">No:</th>
+            <th  scope="col" class="border border-dark " style="color:white;">Customer</th>
+            <th scope="col" class="border border-dark" style="color:white;">Product Name</th>
+            <th scope="col" class="border border-dark" style="color:white;">Category  Name</th>
+            <th scope="col" class="border border-dark" style="color:white;">Quantity</th>
+            <th scope="col" class="border border-dark" style="color:white;">Total prize(INR)</th>
+            <th scope="col" class="border border-dark" style="color:white;">Payment method</th>
+            <th scope="col" class="border border-dark" style="color:white;">Order date</th>
+            <th scope="col" class="border border-dark" style="color:white;">Transaction ID</th>
+            <th scope="col" class="border border-dark" style="color:white;">Order status</th>
           </tr>
         </thead>
         <tbody class="border border-danger" >
         {% for i in Items  %}
           <tr>
-            <th scope="row" class="border border-dark" style="color:black;">
+            <th scope="row" class="border border-dark" style="color:white;">
                   {{ forloop.counter }}
          
             </th>
-            <th scope="row" class="border border-dark" style="color:black;">{{i.user_name}}</th>
-            <td class="border border-dark" style="color:black;">{{i.order_product}}</td>
-            <td class="border border-dark" style="color:black;">{{i.order_product.category_type}}</td>
-            <td class="border border-dark" style="color:black;">{{i.quantity}}</td>
-            <td class="border border-dark" style="color:black;">{{i.total_prize}}</td>
-            <td class="border border-dark" style="color:black;">{{i.payment_method}}</td>
-            <td class="border border-dark" style="color:black;">{{i.date_ordered}}</td>
-            <td class="border border-dark" style="color:black;">{{i.transcation_id  }}</td>
+            <th scope="row" class="border border-dark" style="color:white;">{{i.user_name}}</th>
+            <td class="border border-dark" style="color:white;">{{i.order_product}}</td>
+            <td class="border border-dark" style="color:white;">{{i.order_product.category_type}}</td>
+            <td class="border border-dark" style="color:white;">{{i.quantity}}</td>
+            <td class="border border-dark" style="color:white;">{{i.total_prize}}</td>
+            <td class="border border-dark" style="color:white;">{{i.payment_method}}</td>
+            <td class="border border-dark" style="color:white;">{{i.date_ordered}}</td>
+            <td class="border border-dark" style="color:white;">{{i.transcation_id  }}</td>
          
-            <td class="border border-dark" style="color:black;"> {{i.status}}</td >
+            <td class="border border-dark" style="color:white;"> {{i.status}}</td >
              
           
           </tr>
@@ -88,6 +105,13 @@
           $('#example').DataTable();
       } );
   </script>
+  <script>
+    $(document).ready(function() {
+      $('#date').datepicker();
+      $('#date').datepicker('setDate', 'today');
+  });
+  
+  </script>
   <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
@@ -103,7 +127,23 @@
 
 
 
-
+      <script type="text/javascript">
+        window.onload = function () {
+            //Reference the DropDownList.
+            var ddlYears = document.getElementById("ddlYears");
+     
+            //Determine the Current Year.
+            var currentYear = (new Date()).getFullYear();
+     
+            //Loop and add the Year values to DropDownList.
+            for  (var i = 2022; i >= 1950; i--) {
+                var option = document.createElement("OPTION");
+                option.innerHTML = i;
+                option.value = i;
+                ddlYears.appendChild(option);
+            }
+        };
+    </script>
 
 
 

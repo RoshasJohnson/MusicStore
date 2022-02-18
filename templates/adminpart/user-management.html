@@ -7,40 +7,40 @@
 <div class='ml-5 mt-5'>
     
 
-<table id ="example"  class="table table-striped table-bordered" style="width:100%" class="table">
+<table id ="example"  class="table table-bordered table-dark" style="width:100%" class="table">
     <thead>
       <tr>
-        <th  scope="col" class="border border-dark " style="color:black;">Number</th>
-        <th  scope="col" class="border border-dark " style="color:black;">Username</th>
-        <th scope="col" class="border border-dark" style="color:black;">First Name</th>
-        <th scope="col" class="border border-dark" style="color:black;">Second Name</th>
-        <th scope="col" class="border border-dark" style="color:black;">Email</th>
-        <th scope="col" class="border border-dark" style="color:black;">Phone Number</th>
-        <th scope="col" class="border border-dark" style="color:black;">Status</th>
+        <th  scope="col" class=" " style="color:white;">Number</th>
+        <th  scope="col" class=" " style="color:white;">Username</th>
+        <th scope="col" class="" style="color:white;">First Name</th>
+        <th scope="col" class="" style="color:white;">Second Name</th>
+        <th scope="col" class="" style="color:white;">Email</th>
+        <th scope="col" class="" style="color:white;">Phone Number</th>
+        <th scope="col" class="" style="color:white;">Status</th>
         
       </tr>
     </thead>
     {% for i in listing  %}
     {% if i.is_superuser == 0 %}
-    <tbody class="border border-dark">
+    <tbody class="">
       <tr>
-        <th scope="row" class="border border-dark" style="color:black;">
+        <th scope="row" class="" style="color:white;">
             {{forloop.counter |add:"-1"}}
      
         </th>
-        <th scope="row" class="border border-dark" style="color:black;">{{i.username}}</th>
-        <td class="border border-dark" style="color:black;">{{i.first_name}}</td>
-        <td class="border border-dark" style="color:black;">{{i.last_name}}</td>
-        <td class="border border-dark" style="color:black;">{{i.email}}</td>
-        <td class="border border-dark" style="color:black;">{{i.phone_number}}</td>
-        <td class="border border-dark" style="color:black;"><a class="btn btn" href="{% url 'userstatus' i.id %}" role="sumbit">
+        <th scope="row" class="" style="color:white;">{{i.username}}</th>
+        <td class="" style="color:white;">{{i.first_name}}</td>
+        <td class="" style="color:white;">{{i.last_name}}</td>
+        <td class="" style="color:white;">{{i.email}}</td>
+        <td class="" style="color:white;">{{i.phone_number}}</td>
+        <td class="" style="color:white;"><a class="btn btn"role="button">
           {% if i.is_active %}
-          <button type="submit" class="btn btn-outline-success">Block</button>
+          <button type="button" id = "status" data-status= "{{i.id}}" onclick="check()" class="btn btn-outline-success">Block</button>
           {% else %}
-          <button type="submit" class="btn btn-outline-danger">Unblock</button>
+          <a  id = "status"  data-status= "{{i.id}}" onclick="setStatus()"  class="btn btn-outline-danger" > Unblock</a>
           {% endif %}
         </a>
-      
+        <input data-status= "{{i.id}}" type="hidden" id="Url" data-url="{% url 'userstatus' i.id %}" />
       </tr>
       {% endif %}
   {% endfor %}
@@ -63,7 +63,81 @@
     $(document).ready( function () {
         $('#example').DataTable();
     } );
+
+    window.addEventListener("beforeunload", () => { debugger }, false);
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+      }
+    })
+
+    
+  
 </script>
+<script>
+  function check(){
+  let product = document.getElementById('status')
+ var productId = product.getAttribute('data-status');
+ let url = document.getElementById('Url')
+ var locationUrl = url.getAttribute('data-url');
+
+
+ Swal.fire({
+  title: 'Are you sure?',
+  text: "You want block this user!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, block it!'
+}).then((result) => {
+  if (result.isConfirmed) {
+  window.location.href = locationUrl
+  }
+})
+
+
+  }
+  function setStatus(){
+    let product = document.getElementById('status')
+   var productId = product.getAttribute('data-status');
+   let url = document.getElementById('Url')
+   var locationUrl = url.getAttribute('data-url');
+  
+  
+   Swal.fire({
+    title: 'Are you sure?',
+    text: "You want unblock this user!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, Unblock it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+    window.location.href = locationUrl
+    }
+  })
+  
+  
+    }
+</script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="sweetalert2.all.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>

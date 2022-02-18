@@ -30,8 +30,10 @@
                                    
                                                     <div class="product-m__add-cart text-center">
 
-                                                        <button onclick = "addcart('{{i.product.id}}','add ')" data-product = {{i.product.id}} data-action = 'add'  class = 'btn_3 add-cart-button ' type = 'button' >
-                                                            Add to cart </button></div>
+                                                        <button onclick = "addcart('{{i.product.id}}','add ')" data-product = {{i.product.id}} data-action = 'add'  class = 'btn_3 add-cart-button mb-3 ' type = 'button' >
+                                                            Add to cart </button>
+                                                            <a  href = "{% url 'remove_wish_list' i.id %}" class = 'btn btn-danger btn-sm  rounded-pill ' type = 'button' >
+                                                               Remove from wishlist </a></div>
                                                 </div>
                                                 <div class="product-m__content">
                                                     <div class="product-m__category">
@@ -40,10 +42,17 @@
                                                     <div class="product-m__name">
 
                                                         <a href="product-detail.html">{{i.product.product_name}}</a></div>
-                         
+                                                        
 
                                                      
-                                                    <div class="product-m__price">₹ {{i.product.product_prize}}</div>
+                                                        {% if i.product.get_coupen_offer_prize == i.product.product_prize %}
+                     
+                                                        <span style="color: red;" class = 'h5'>₹ {{i.product.product_prize}} </span> 
+                                                        {% else %}
+                                                        <span style="color: red;" class = 'h5'>₹ {{i.product.get_coupen_offer_prize}} </span> 
+                                                        <del style="color: red;" class=" p"> 
+                                                         ₹ {{ i.product.product_prize}}</del>  </h2> 
+                                                         {% endif %}
                                                     <div class="product-m__hover">
                                                         <div class="product-m__preview-description">
 

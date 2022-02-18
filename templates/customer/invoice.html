@@ -1,0 +1,145 @@
+
+
+{% extends 'customer/header.html' %}
+{% load static %}
+
+{% block content %}
+    <div  class="container mt-5 mb-5">
+        <div  class="row d-flex justify-content-center">
+            <div  class="col-md-8">
+                <div class="card"> 
+                    {% for i  in order %}
+                    
+                   
+                    <div style="background-color: rgb(178, 198, 198);"  class="invoice p-5">
+
+                        <div class="payment border-top mt-3 mb-3 border-bottom table-responsive">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="py-2"> <span class="d-block text-muted">Order Date</span>
+                                                <span>{{i.date_ordered}}</span>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="py-2"> <span class="d-block text-muted">Name</span>
+                                                <span>{{i.Customer.first_name}} {{i.Customer.last_name}} </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="py-2"> <span class="d-block text-muted">Phone number</span>
+                                                <span>{{i.Customer.phone_number}}</span>
+                                            </div>
+                                        </td>
+
+
+                                        <td>
+                                            <div class="py-2"> <span class="d-block text-muted">Shiping Address</span>
+                                                <span>{{i.Customer.house_name}} {{i.Customer.street_name}} po {{i.Customer.street_name}}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="product border-bottom table-responsive">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td width="20%"> <img src="{{i.order_product.product_image.url }}" width="90"> </td>
+                                        <td width="60%"> <span class="font-weight-bold">{{i.order_product.product_name}}</span>
+                                            <div class="product-qty"> <span class="d-block text-dark">Quantity:1</span>
+                                            </div>
+                                        </td>
+                                        <td width="20%">
+                                            <div class="text-right"> <span class="font-weight-bold">{{i.product_prize}}</span> </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row d-flex justify-content-end">
+                            <div class="col-md-5">
+                                <table class="table table-borderless">
+                                    <tbody class="totals">
+                                        {% comment %} <tr>
+                                            <td>
+                                                <div class="text-left"> <span class="text-muted">Total</span> </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-right"> <span></span> </div>
+                                            </td>
+                                        </tr>
+
+
+                                        <tr>
+                                            <td>
+                                                <div class="text-left"> <span class="text-muted">Discount</span> </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-right"> <span class="text-success"></span>
+                                                </div>
+                                            </td>
+                                        </tr> {% endcomment %}
+                                        <tr class="border-top border-bottom">
+                                            <td>
+                                                <div class="text-left"> <span class="font-weight-bold">Total</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-right"> <span class="font-weight-bold">{{i.order_product.get_Total_prize}}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+        body {
+            background-color: #ffffff;
+            font-family: 'Montserrat', sans-serif
+        }
+
+        .card {
+            border: none
+        }
+
+        .logo {
+            background-color: #eeeeeea8
+        }
+
+        .totals tr td {
+            font-size: 13px
+        }
+
+        .footer {
+            background-color: #eeeeeea8
+        }
+
+        .footer span {
+            font-size: 12px
+        }
+
+        .product-qty span {
+            font-size: 12px;
+            color: #dedbdb
+        }
+    </style>
+
+</body>
+{% endblock %}

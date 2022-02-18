@@ -1,0 +1,50 @@
+{% extends 'adminpart/base.html' %}
+
+{% load static%}
+{% block content %}
+
+
+
+
+<div class='table table-striped table-light mt-4  '>
+  <a type="button" href ="{% url 'addcategory'  %}" class="btn btn-primary btn-lg float-right">Add Category</a>
+
+
+    <table  id ="example"  class="table table-striped table-bordered " style="width:100%">
+      <thead> 
+        <tr>
+          <th  scope="col" class="border border-dark " style="color:black;">Category Name</th>
+          <th  scope="col" class="border border-dark " style="color:black;">Edit Category</th>
+          <th  scope="col" class="border border-dark " style="color:black;"> Delete Category </th>
+        </tr>
+      </thead>
+        <tbody class="border border-danger" >
+          {% for i in categories  %}
+          <tr>
+            <td class="border border-dark" style="color:black;">{{i.category_name }}</td>
+            <td class="border border-dark" style="color:black;"><a class="btn btn" href="{% url 'editcategory' i.id %}" role="sumbit"><button type="button" class="btn btn-outline-warning">Edit</button></a></td>
+            <td class="border border-dark" style="color:black;"><a class="btn btn delete" data-confirm="Are you sure to delete this item?" href="{% url 'deletecategory' i.id %}" role="sumbit"><button type="button" class="btn btn-outline-danger">Delete</button></a></td>
+          </tr>
+          
+          {% endfor %}
+        </tbody>
+        
+      </table>
+</div>
+      
+    
+    <script>
+      $(document).ready( function () {
+          $('#example').DataTable();
+      } );
+  </script>
+  <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
+    <br>
+    <div class= ' mb-5'>
+  
+   
+
+
+{% endblock %}

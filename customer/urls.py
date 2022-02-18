@@ -35,5 +35,8 @@ urlpatterns = [
     path('tracking_order/<int:id>/',views.tracking_order_View,name = "tracking_order"),
     path('coupen_check/',views.coupen_check_view,name = "coupen_check"),
     path('my_wishlist',views.mywishlist_view,name = "my_wishlist"), 
-    path('add_to_wishlist/',views.add_to_wishlist_view,name = "add_to_wishlist")
+    path('add_to_wishlist/',views.add_to_wishlist_view,name = "add_to_wishlist"),
+    path('remove_wish_list/<int:id>/',views.delete_wish_list_view,name = "remove_wish_list"),
+    path('remove_cart_item/<int:id>/',views.remove_cart_item_View,name ="remove_cart_item"),
+    path('order_placed/<int:id>/',views.invoice_view ,name = "order_placed")
     ] 

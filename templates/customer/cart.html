@@ -26,23 +26,32 @@
                                 <td>
                                   <div class="product_count">
 
-                                    <button onclick="changeqty('plus')" data-product = "{{item.id}}"  data-action="add" class="btn btn-light ti-angle-up changeqty" id="plus" ></button>
+                                    <button type="button" onclick="change()"  data-product = "{{item.id}}"  data-action="add" class="btn btn-light ti-angle-up" id="action" ></button>
                                     <button class = "btn btn-primary" >{{item.quantity}}</button>
-                                    <button onclick="changeqty('minus')" data-product = "{{item.id}}"  data-action="remove" class="btn btn-light ti-angle-down changeqty" id="minus" ></button>
-                                       
                                   
+                                {% if qty > 1 %}
+                                <button type="button"  onclick="changeRemove()" data-product = "{{item.id}}" data-action="minus" class="btn btn-light ti-angle-down" id="actiominus"></button>                                       
+                                   
+                                {% else %}
+                                <button  class="btn btn-light ti-angle-down "></button> 
+                                {% endif %}
+                                
+                                    
                                   </div>
                                 </td>
                                 <td>
                                     <div class="media-body mt-4">
-                                  <h5 class = "h5"> Total =  INR {{item.get_total}}</h5> </div>
+                                  <h5 class = "h5"> Total : ₹ {{item.get_total}}</h5> </div>
+                                </td>
+                                <td>
+                                  <a href="{% url 'remove_cart_item' item.id %}" class="o-card__del far fa-trash-alt"></a>
                                 </td>
                               </tr>
                              {% endfor %}
                                 
                             </td>
                             
-                                   
+                           
                             </tbody>
                           </table>
                           {% comment %} <div class="checkout_btn_inner ">
@@ -115,14 +124,6 @@
                               
     <!--====== End - Main App ======-->
 
-    {% comment %} <script>
-       function changeqty(id){
-           typeval = $("#"+id).attr('data-product')
-           
-           alert(typeval)
-       }
-    </script> {% endcomment %}
-
 
     <!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
     <script>
@@ -133,6 +134,45 @@
         ga.l = +new Date;
         ga('create', 'UA-XXXXX-Y', 'auto');
         ga('send', 'pageview')
+
+function changeRemove(){
+  product  = document.getElementById('actiominus')
+  var productId = product.getAttribute('data-product');
+  var action = product.getAttribute('data-action');
+  updateuserOrder(productId,action)
+
+}
+
+function change(){ 
+  product  = document.getElementById('action')
+  var productId = product.getAttribute('data-product');
+  var action = product.getAttribute('data-action');
+  updateuserOrder(productId,action)
+
+}
+
+
+
+function updateuserOrder(productId,action){
+  console.log('user in logged in ,sending data....')
+  var url = '/cart_qty/'
+  fetch(url,{
+    method:'POST',
+    headers:{'content-Type':'application/json',
+    'X-CSRFToken':csrftoken,
+  },
+  body:JSON.stringify({'productId':productId,'action':action})
+
+  })
+  .then((response)=>{
+    return response.json()
+  })
+  .then((data)=>{
+    console.log('data:',data)
+    location.reload()
+    
+  })
+}
     </script>
     <script src="https://www.google-analytics.com/analytics.js" async defer></script>
 

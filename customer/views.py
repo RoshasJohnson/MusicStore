@@ -1,3 +1,5 @@
+from email import message
+from statistics import quantiles
 from turtle import pd
 from distutils.core import setup
 import razorpay
@@ -5,7 +7,7 @@ from builtins import KeyError, float, int, len, print
 from audioop import add
 from cgi import print_environ
 from copy import error 
-
+from django.contrib import messages
 import json 
 from logging import exception
 from multiprocessing import context
@@ -46,37 +48,33 @@ def inclusiontag(request):
     choices =Category.objects.all()
     contex = {'choices': choices}
     return render(request, "customer/header.html",  contex )
-#-----------------------------------------------------------------------------------  
+# ========================================================================================================================================= 
 def send_otp(number):
     global num 
     num = number
-    print(num)
-   
-    account_sid = os.environ['TWILIO_ACCOUNT_SID'] = "ACd4a2de1fd0a5c88226ee5ac56a0a7537"
-    print('hi')
-    auth_token = os.environ['TWILIO_AUTH_TOKEN'] = "d727068391b561c96969eaf9e13ee3b0"
-    print('hello')
-    client = Client(account_sid, auth_token)
-    print('hello world')
-    verification = client.verify \
-                                .services('MG3f5e19a03bfe66999d0cc3e3ade29c23') \
-                                .verifications \
-                                .create(to=num, channel='sms')
-    print('is it ?')                            
-    print(verification.status)
+    try:
+        account_sid = os.environ['TWILIO_ACCOUNT_SID'] = 'AC51cdd5843330ee1cf751808c6edbe8a7'
+        auth_token = os.environ['TWILIO_AUTH_TOKEN'] = 'bb6221a023d864d40515b82a771c53ff'
+        client = Client(account_sid, auth_token)
 
-  
+        verification = client.verify \
+                                        .services('ZSab91b73696fd3d541f734310d98c7fd2') \
+                                        .verifications \
+                                        .create(to=number, channel='sms')
+        return True
+    except:
+        return False
 
  
 def Otp_Verification(otp):
     global num
     
-    account_sid = os.environ['TWILIO_ACCOUNT_SID'] = "AC36f1ef84ddb97566b6ffa82bdaa66a92"
-    auth_token = os.environ['TWILIO_AUTH_TOKEN'] = "07764f0972ae242906357de25f058630"
+    account_sid = os.environ['TWILIO_ACCOUNT_SID'] = "AC51cdd5843330ee1cf751808c6edbe8a7"
+    auth_token = os.environ['TWILIO_AUTH_TOKEN'] = "bb6221a023d864d40515b82a771c53ff"
     client = Client(account_sid, auth_token)
 
     verification_check = client.verify \
-                            .services('VA4291d9583481a66d33b553ff12d639c1') \
+                            .services('ZSab91b73696fd3d541f734310d98c7fd2') \
                             .verification_checks \
                             .create(to=num, code=otp)
     print(verification_check.status)
@@ -94,7 +92,7 @@ def Otp_Verification(otp):
 
 
 
-
+# ========================================================================================================================================= 
 
 # This function for registring the user 
 
@@ -108,8 +106,9 @@ def usersignupView (request):
                 print(num)
                 number       = '+91'+num
                 print(number)
-                send_otp(number)
-                form.save()                 
+                if send_otp(number):
+                    form.save()   
+
                 return render(request,'customer/otp.html')                  
     else:
         form = Customer()
@@ -118,13 +117,13 @@ def usersignupView (request):
     return render(request,'customer/register.html',contex)
 
   
-#-----------------------------------------------------------------------------------      
+# =========================================================================================================================================     
 # home page view function
 def homepage_view(request):
     Designpage= Design.objects.all()    
     print(len(Designpage))     
     if request.session.get('name'):
-        user        = request.session.get('name')
+        user         = request.session.get('name')
         customer     = request.session.get('name')
         user         = Usercreation.objects.get(username = customer)
         everyproduct = Product.objects.all()
@@ -152,29 +151,49 @@ def homepage_view(request):
         return render(request,'customer/index.html',contex)
 
 
-#------------------------ -----------------------------------------------------------
+# ========================================================================================================================================= 
 # select Prdoucted view function
   
   
 def selected_Product_view(request,id):
     if request.session.get('name'):
+        product_offer = 0
+        category_offer = 0
         selectedProduct = Product.objects.filter(id= id) 
         choices         = Category.objects.all()
         customer        = request.session.get('name')
         user            = Usercreation.objects.get(username = customer)
         cartcount       =  OrderItem.objects.filter(user = user  ).count()
-        contex          = {'selectedProduct':selectedProduct,'choices':choices,'cartcount':cartcount }
+        wishlist        = [i.product for i in MyWishList.objects.filter(username = user)]
+        # try:
+        #     for i in selectedProduct:
+        #         product_name = i.id
+        #         category = i.category_type
+        #     category = categoryOffer.objects.get(category = category )
+        #     product  = ProductOffer.objects.get( product = product_name)
+        #     print(category,product)
+        #     for i in product:
+        #         product_offer = i.product_offer
+        #     for i in category:
+        #         category_offer = i.category_offer
+           
+        # except:
+        #     pass 
+        print(category_offer,product_offer,'tttttttttttttttttttttttttttttttttttttttttttt')
+        contex          = {'selectedProduct':selectedProduct,'choices':choices,'cartcount':cartcount,'wishlist':wishlist,
+        'product_offer':product_offer,'category_offer':category_offer }
         return render(request,'customer/selected_product.html',contex)
     else:
         selectedProduct = Product.objects.filter(id= id) 
         choices = Category.objects.all()
-        # cartcount=  OrderItem.objects.all().count()
-        contex   = {'selectedProduct':selectedProduct,'choices':choices,'shipping ':False}
+   
+        
+        contex   = {'selectedProduct':selectedProduct,'choices':choices,'product_offer':product_offer,'category_offer':category_offer}
         return render(request,'customer/selected_product.html',contex)
 
  
 
-#-----------------------------------------------------------------------------------  
+# =========================================================================================================================================  
 # sign in view funciton
 
 
@@ -206,8 +225,7 @@ def signIcon_view(request):
     
 
     
-
-#-----------------------------------------------------------------------------------  
+# ========================================================================================================================================= 
 # user sign in view
 
 
@@ -219,8 +237,7 @@ def register_USer_View(request):
 
 
  
-#-----------------------------------------------------------------------------------  
-
+# ========================================================================================================================================= 
 def cart_View(request): 
 
     choices        =   Category.objects.all()
@@ -230,27 +247,27 @@ def cart_View(request):
         cartcount  =  OrderItem.objects.filter(user = customer).count()
         items      = OrderItem.objects.filter( user = customer)
         sum        = 0
+        qty        =  0
         for i in items:
             sum += i.quantity  * i.product.get_coupen_offer_prize 
+            qty  = i.quantity
+        print(qty,'jjjjjjjjjjjjjjjjjjjjjjjjjjjjj')        
       
     else:   
         items = [] 
         error = "you have'nt carts"
         return render(request,'customer/cart.html',{'error':error, 'choices':choices})
-    contex = {'items':items, 'choices':choices,'cartcount': cartcount,'sum':sum}
+    contex = {'items':items, 'choices':choices,'cartcount': cartcount,'sum':sum,'qty':qty}
     return render (request,'customer/cart.html', contex)
 
  
  
-
-
+# ========================================================================================================================================= 
 
 @never_cache
 def checkout_view(request):         
     coupen_offer               =  0
     sum                        =  0 
-    message_for_exiting_coupen = ""
-    not_existing_coupen        = ""
     choices                    = Category.objects.all()
     user                       = request.session.get('name')
     username                   = Usercreation.objects.get(username = user)
@@ -263,8 +280,7 @@ def checkout_view(request):
             print(coupen)
             if  Coupen.objects.filter(Coupencode = coupen).exists():
                 if Usercreation.objects.filter(username = user,coupen = coupen).exists():
-                    message_for_exiting_coupen = 'This coupen you have been already used'
-                    print(message_for_exiting_coupen)
+                    messages.error(request,'This coupen you have been already used')
                     print('Existing')
                 else:
                     print('Not existing')
@@ -288,12 +304,12 @@ def checkout_view(request):
                     
                       
             else:
-                not_existing_coupen  =    "Invalid Coupen code"
-                print(not_existing_coupen)
+                messages.error(request,'Invalid coupen code')
+               
             context = {'Items':Items,'form':form,'tax':tax,
             'grandtotal':grandtotal,'choices':choices,'cartcount':cartcount,
-            'coupen_offer':coupen_offer,'not_existing_coupen':not_existing_coupen,
-            'message_for_exiting_coupen':message_for_exiting_coupen,'sum':sum}    
+            'coupen_offer':coupen_offer,
+            'sum':sum}    
             return render(request,'customer/checkout.html',context)    
            
     except:
@@ -315,7 +331,7 @@ def checkout_view(request):
 
 
  
- 
+#=================================================================================================================================== 
 
 @csrf_protect
 def updateItem(request):
@@ -330,6 +346,9 @@ def updateItem(request):
         OrderItem.objects.create(product = product ,user = user )
         return JsonResponse('item was added', safe = False)    
 
+
+        
+# ========================================================================================================================================= 
 
 
 @csrf_protect
@@ -360,25 +379,26 @@ def Process_orderView(request):
     data   = json.loads(request.body)
     action = data['action']
     return JsonResponse('something haapened', safe = False) 
+
+#=============================================================================================================    
        
 @csrf_protect
 @never_cache
 def OrderView(request,id):
-    coupen_offer               =  0
-    discount_prize             =  0 
-    message_for_exiting_coupen = ""
-    not_existing_coupen        = ""
-    choices         = Category.objects.all()
-    user          = request.session.get('name')
-    username      = Usercreation.objects.get(username = user)
+    if request.session.get('name'):
+        coupen_offer               =  0
+        discount_prize             =  0 
+        choices         = Category.objects.all()
+        user          = request.session.get('name')
+        username      = Usercreation.objects.get(username = user)
     try: 
         if request.method == 'GET':
             coupen    = request.GET['coupen']  
             print(coupen)
             if  Coupen.objects.filter(Coupencode = coupen).exists():
                 if Usercreation.objects.filter(username = user,coupen = coupen).exists():
-                    message_for_exiting_coupen = 'This coupen you have been already used'
-                    print(message_for_exiting_coupen)
+                    messages.error(request,'This coupen you have been already used')
+                    
                 else:
                     tax              = 18   
                     coupen_code      = Coupen.objects.get(Coupencode = coupen)
@@ -397,8 +417,7 @@ def OrderView(request,id):
                     print('success')
 
             else:
-                not_existing_coupen  =    "Invalid Coupen code"
-                print(not_existing_coupen)    
+                messages.error(request,'Invalid Coupen code')
         client = razorpay.Client(auth=("rzp_test_yN1bLHNR0eQavW", "pupIlbxc6s8JT5qUAmGZFHTf"))
         DATA = {
             "amount": 100,
@@ -412,8 +431,8 @@ def OrderView(request,id):
         payment  = client.order.create(data=DATA)
         context = {'Items':Items,'form':form,'tax':tax,
         'grandtotal':grandtotal,'choices':choices,'cartcount':cartcount,
-        'coupen_offer':coupen_offer,'discount_prize':discount_prize,'not_existing_coupen':not_existing_coupen,
-        'message_for_exiting_coupen':message_for_exiting_coupen,'payment':payment}   
+        'coupen_offer':coupen_offer,'discount_prize':discount_prize,
+       'payment':payment}   
 
         return render(request,'customer/checkout-2.html',context)             
 
@@ -423,23 +442,24 @@ def OrderView(request,id):
             # not_existing_coupen  =    "Invalid Coupen code"
             # print(not_existing_coupen) 
 
-    if request.session.get('name'):    
-            Items     = Product.objects.filter(id = id)
-            form      = CustomerAdress.objects.filter(user = username)
-            cartcount = OrderItem.objects.filter(user = username).count()
-            for i in Items:
+    if request.session.get('name'): 
+        Items     = Product.objects.filter(id = id)
+        form      = CustomerAdress.objects.filter(user = username)
+        cartcount = OrderItem.objects.filter(user = username).count()
+        for i in Items:
                 tax         = int(( i.get_coupen_offer_prize)/18)
                 grandtotal  = tax+i.get_coupen_offer_prize +40  
             
-    context = {'Items':Items,'form':form,'tax':tax,
+        context = {'Items':Items,'form':form,'tax':tax,
         'grandtotal':grandtotal,'choices':choices,'cartcount':cartcount,
-        'coupen_offer':coupen_offer,'discount_prize':discount_prize,'not_existing_coupen':not_existing_coupen,
-        'message_for_exiting_coupen':message_for_exiting_coupen} 
+        'coupen_offer':coupen_offer,'discount_prize':discount_prize,
+     } 
+        return render(request,'customer/checkout-2.html',context) 
+    else:
+        return redirect('/signin/')        
 
-    return render(request,'customer/checkout-2.html',context) 
-   
 
-  
+#=====================================================================================================================  
  
 def addcartQtyView(request):
     if request.session.get('name'):
@@ -447,9 +467,10 @@ def addcartQtyView(request):
         action    = data['action']
         productid = data['productId']
         orderItem = OrderItem.objects.get(id  = productid)
+        print(action,'actionnnnnnn')
         if action == 'add':
             orderItem.quantity =(orderItem.quantity  + 1)
-        elif action  == 'remove':
+        elif action  == 'minus':
             orderItem.quantity =(orderItem.quantity  - 1)
             orderItem.delete()
         if productid in data:    
@@ -460,7 +481,7 @@ def addcartQtyView(request):
         return JsonResponse('success', safe = False) 
    
 
-
+#==========================================================================================================================
 @never_cache
 def checkingaddressview(request):
     if request.session.get('name'):
@@ -490,7 +511,7 @@ def checkingaddressview(request):
     #     # context = {'Buyorder':Buyorder}
         return render(request,'customer/checkout-2.html') 
 
-
+# ========================================================================================================================================= 
 
 def productpage_View(request,id):
     if request.session.get('name'):
@@ -512,7 +533,7 @@ def productpage_View(request,id):
 
 
 
-
+# ========================================================================================================================================= 
 
 @csrf_protect
 def order_placingView(request):
@@ -531,7 +552,7 @@ def order_placingView(request):
          user_name = username,payment_method = payment_method ,total_prize =get_total)
          return JsonResponse('cash on delery', safe = False) 
    
-        
+ # =========================================================================================================================================        
 
 def user_account_View(request):
     form = Customer()
@@ -551,7 +572,7 @@ def user_account_View(request):
         return render(request,'customer/signin.html',context)
     contex      = {'order_all':order_all,'orders':orders,'cartcount':cartcount,'choices':choices,'user': user,'cancel_all':cancel_all,'return_all':return_all}  
     return render(request,'customer/user_account.html' ,contex)
-
+# ========================================================================================================================================= 
      
 def cart_item_buy_View(request):
      if request.session.get('name'):
@@ -575,13 +596,11 @@ def cart_item_buy_View(request):
              quantity  = i.quantity ,total_prize =get_total).save()
 
              product.delete()
-
-
          return JsonResponse('cash-on-delevery for cart items' ,safe=False)
 
 
 
-
+# ========================================================================================================================================= 
 
 @never_cache
 def add_new_address_View(request):
@@ -621,6 +640,7 @@ def add_new_address_View(request):
 
 
 
+# ========================================================================================================================================= 
 
 @never_cache
 def add_new_addresforEachOrder_View(request,id):
@@ -631,7 +651,7 @@ def add_new_addresforEachOrder_View(request,id):
         return render (request,'customer/Add_address-2.html',context)
 
 
-
+# ========================================================================================================================================= 
 
 @never_cache
 def newaddress_save_view(request,id):
@@ -664,7 +684,7 @@ def newaddress_save_view(request,id):
         'grandtotal':grandtotal,'choices':choices,'cartcount':cartcount} 
         return render (request,'customer/checkout-2.html', context)
 
-
+# ========================================================================================================================================= 
 
 def my_profile_view(request):
     choices =Category.objects.all()
@@ -679,6 +699,7 @@ def my_profile_view(request):
         return render(request,'customer/User_profile.html',context)
 
 
+# ========================================================================================================================================= 
 
 def delete_address_View(request,id):
      choices    = Category.objects.all()
@@ -698,7 +719,7 @@ def delete_address_View(request,id):
          return redirect('/')
 
  
-
+# ========================================================================================================================================= 
 
 
 def add_new_addressfor_userProfile_View(request):
@@ -729,7 +750,7 @@ def add_new_addressfor_userProfile_View(request):
  
     else:
         return redirect('/')
-
+# ========================================================================================================================================= 
 
 
 def cancel_order_view(request,id):
@@ -786,6 +807,7 @@ def editprofile_View(request):
     else:
         return redirect('/')
 
+#================================================================================================================================
 
 def tracking_order_View(request,id):
     if request.session.get('name'):
@@ -804,7 +826,9 @@ def tracking_order_View(request,id):
                 est_date_delvery = dt + td
         context     = {'track_order':track_order,'est_date_delvery':est_date_delvery,'delveried':delveried}
 
-    return render(request,'customer/track_order.html',context)  
+    return render(request,'customer/track_order.html',context) 
+
+# =======================================================================================================================     
 
 @csrf_protect
 def coupen_check_view(request):
@@ -820,6 +844,8 @@ def coupen_check_view(request):
 
     else:
         return redirect ('/')       
+# ======================================================================================================================================
+
 
 def mywishlist_view(request):
     if request.session.get('name'):
@@ -830,18 +856,47 @@ def mywishlist_view(request):
         return render(request,'customer/wishlist.html',context)
 
 
-  
+# ======================================================================================================================================  
+
 @csrf_protect
 def add_to_wishlist_view(request):
       if request.session.get('name'): 
         data       = json.loads(request.body)    
         productId  = data['productId']
         action     = data['action']
-    
         customer    = request.session.get('name')
         user        = Usercreation.objects.get(username = customer)
         product     = Product.objects.get(id = productId  ) 
         MyWishList.objects.create(product = product ,username = user )
         return JsonResponse('item was added', safe = False)   
+#=========================================================================================================================================
+def delete_wish_list_view(request,id):
+    if request.session.get('name'):
+        delete_wishlist = MyWishList.objects.get(id = id)
+        delete_wishlist.delete()
+        return redirect('my_wishlist')
+
+# =========================================================================================================================================        
+def remove_cart_item_View(request,id):
+    if request.session.get('name'):
+        remove_cart_item  = OrderItem.objects.get(id = id)
+        remove_cart_item.delete()
+        return redirect('/cart')
+    else: 
+        return redirect('/')   
+
+# ========================================================================================================================================= 
+def invoice_view(request,id):     
+    if request.session.get('name'):
+        product = Product.objects.get(id = id)
+        order   = Order.objects.filter( order_product = id).order_by('-id')
+    
+ 
+ 
+        context = {'order':order}
+        return render(request,'customer/invoice.html',context)
+
+# =========================================================================================================================================  
+
 
  

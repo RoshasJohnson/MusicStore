@@ -26,7 +26,7 @@
 
                                                     <a class="aspect aspect--bg-grey aspect--square u-d-block" href="{% url 'selected_Product' i.id %}">
 
-                                                        <img class="aspect__img" src="{{i.product_image.url}}" alt=""></a>
+                                                        <img  class="aspect__img " src="{{i.product_image.url}}" alt=""></a>
                                    
                                                     <div class="product-m__add-cart text-center">
 
@@ -43,7 +43,14 @@
                          
 
                                                      
-                                                    <div class="product-m__price">₹ {{i.product_prize}}</div>
+                                                        {% if i.get_coupen_offer_prize == i.product_prize %}
+                     
+                                                        <span style="color: red;" class = 'h5'>₹ {{i.product_prize}} </span> 
+                                                        {% else %}
+                                                        <span style="color: red;" class = 'h5'>₹ {{i.get_coupen_offer_prize}} </span> 
+                                                        <del style="color: red;" class=" p"> 
+                                                         ₹{{i.product_prize}}</del>  </h2> 
+                                                         {% endif %}
                                                     <div class="product-m__hover">
                                                         <div class="product-m__preview-description">
 

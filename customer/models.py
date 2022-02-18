@@ -176,6 +176,7 @@ class Order(models.Model):
     payment_method  = models.CharField(max_length=10,null= True )
     total_prize     = models.IntegerField( null = True ,blank= True)
     quantity        = models.IntegerField(default=1,null = True ,blank= True)
+    date_delivered  = models.DateField(auto_now_add= False,default='2022-01-01')
    
     
     def __str__(self):
@@ -267,4 +268,11 @@ class MyWishList(models.Model):
         orderitems = self.orderitem_set.all()
         total      = sum([item.get_total for item in orderitems])
         return total      
-        
+
+
+
+class MyWishList(models.Model):
+    username         = models.ForeignKey(Usercreation,on_delete= models.SET_NULL, null= True ,blank = True) 
+    product     = models.ForeignKey(Product,on_delete= models.SET_NULL, null= True ,blank = True)
+    def __str__(self):
+         return str(self.user)        

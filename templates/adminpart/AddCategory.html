@@ -65,7 +65,7 @@ $(document).ready(function() {
 		<div class="card mx-auto" style="max-width: 380px;">
 		<div class="card-body">
 		
-		   <form method="post"   class="post-form" action="/adminpanel/addcategory/">  
+		   <form method="post" novalidate   class="post-form" action="/adminpanel/addcategory/">  
         {% csrf_token %} 
         {% for f in form %}
         <div class = 'form-group'>

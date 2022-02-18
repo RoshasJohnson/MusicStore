@@ -44,7 +44,7 @@
                                                         <span class="o-card__price text-danger"> INR {{item.get_total}}</span></div>
                                                 </div>
 
-                                                <a class="o-card__del far fa-trash-alt"></a>
+                                               
                                             </div>
                                             {% endfor %}
                                         </div>
@@ -95,7 +95,7 @@
                                         <div class="o-summary__box">
                                           <a style="background-color: red;" type="button"  onclick="coupen()" class="btn text-light btn-sm w-25 ">
                                             Have a Coupen ? 
-                                        </a> <p style="color: red;">{{not_existing_coupen}} {{message_for_exiting_coupen}}</p>
+                                        </a>  <p style="color: red;">  {% include "adminpart/alert.html" %}</p>
                                         <div style="display: none;" id="coupenDiv">
   
                                             
@@ -104,7 +104,7 @@
                                               
                                               <input name="coupen" required type="text" id = "coupen" class="form-control">
                                              </div>
-                                             <button type="submit" class="btn btn-sm btn-warning mt-2" onclick="coupenFform()"> Apply Coupen {{i.id}}</button>
+                                             <button type="submit" class="btn btn-sm btn-warning mt-2" onclick="coupenFform()"> Apply Coupen </button>
                                             </div>
                                       
                                         </form>
@@ -542,7 +542,7 @@
                                         timer: 1500000,
                                       })
                                       setTimeout(() => {
-                                        window.location.href = "/manage_account"
+                                        window.location.href = "/order_place/"
                                      }, 1000);
                                       
                                     

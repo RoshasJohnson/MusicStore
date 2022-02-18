@@ -79,7 +79,15 @@
                         
                   </div>
                   <h6 class ='text-center text-danger'>
-                    <span class = 'text-dark'>₹</span> {{i.product_prize}}
+                     {% if i.get_coupen_offer_prize == i.product_prize %}
+                     
+                    <span style="color: red;" class = 'h5'>₹ {{i.product_prize}} </span> 
+                    {% else %}
+                    <span style="color: red;" class = 'h5'>₹ {{i.get_coupen_offer_prize}} </span> 
+                    <del style="color: red;" class=" p"> 
+                     ₹{{i.product_prize}}</del>  </h2> 
+                     {% endif %}
+
                    </h6>
                 </div>
                </div>

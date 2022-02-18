@@ -1,13 +1,16 @@
 from __future__ import unicode_literals
 from builtins import print
 from datetime import datetime
+from email import message
 from email.errors import ObsoleteHeaderDefect
 import encodings
 import imp
 from multiprocessing import context
 from turtle import st
 from builtins import KeyError, float, int, len, print,str
-
+from venv import create
+from xmlrpc.client import DateTime
+import pandas as pd
 from urllib import request, response
 from django import http
 from django.shortcuts import render,redirect,get_object_or_404
@@ -25,6 +28,7 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponse, JsonResponse
 import csv
 import xlwt
+from django.contrib import messages
 
 
 get_page = 5 
@@ -32,7 +36,7 @@ get_page = 5
 
 
 
-# --------------------------------------------------------------------
+# ========================================================================================================================================= 
 def adminpart(request):
     form = Customer()
     form = Customer(request.POST or None, request.FILES or None)
@@ -70,8 +74,8 @@ def adminpart(request):
     else:
         form = Customer()
         return render(request,'adminpart/admin_login.html',{'form':form })
+# ========================================================================================================================================= 
 
-# --------------------------------------------------------------------
 def admin_dashboard(request):
     if request.session.get('name'):
         total_sum =0
@@ -99,7 +103,7 @@ def admin_dashboard(request):
     else:
         return redirect('/adminpanel/login/')
   
-# --------------------------------------------------------------------
+# ========================================================================================================================================= 
 
 
 
@@ -116,7 +120,7 @@ def user_view(request):
     else:
         form = Customer()
         return render(request,'adminpart/admin_login.html',{'form':form })
-# --------------------------------------------------------------------
+# ========================================================================================================================================= 
 
 #showing  full details of customer 
 def user_view_full_details(request, pk):
@@ -125,19 +129,18 @@ def user_view_full_details(request, pk):
     # context = {'full_detials':full_detials}
     # return render (request,'adminpart/user_view_details.html',context)
 
-# -------------------------------------------------------------------- 
+# =========================================================================================================================================  
 # Fetching products data and displaying
 
 def product_view(request):
     if request.session.get('name'):
-        page_inition = Paginator(Product.objects.all(),4)
-        page = request.GET.get('page')
-        products =page_inition.get_page(page)
+
+        products = Product.objects.all()
         return render(request,'adminpart/product-management.html',{'products':products})
     else:
         return redirect('/adminpanel/login/')    
 
-# -------------------------------------------------------------------- 
+# =========================================================================================================================================  
 # Fetching category and displaying   
 
 def category_view(request):
@@ -149,7 +152,7 @@ def category_view(request):
 
 
 
- # --------------------------------------------------------------------   
+ # =========================================================================================================================================    
 def delete_product(request,id):
     if request.session.get('name'):
         print('ok')
@@ -160,7 +163,7 @@ def delete_product(request,id):
         return redirect('/adminpanel/login/')    
     
 
-# --------------------------------------------------------------------     
+# =========================================================================================================================================      
 
 def update_product(request,id):
     if request.method =='POST':
@@ -179,7 +182,7 @@ def update_product(request,id):
             return redirect('/adminpanel/login/')    
 
 
- # ------------------------------------------------------------------------------------------  
+ # ========================================================================================================================================= 
 
 def add_product(request):
     if request.method == 'POST':
@@ -195,7 +198,7 @@ def add_product(request):
             return redirect('/adminpanel/login/')    
    
 
-
+# ========================================================================================================================================= 
 
 def userStatusview(request,id):
     if request.session.get('name'):
@@ -208,6 +211,7 @@ def userStatusview(request,id):
 
 
 
+# ========================================================================================================================================= 
 
 def addcategory_view(request):
     form =Category_form()
@@ -223,7 +227,7 @@ def addcategory_view(request):
         else:
             return redirect('/adminpanel/login/')     
 
-
+# ========================================================================================================================================= 
 
 
 def deletecategory_view(request,id):
@@ -236,6 +240,7 @@ def deletecategory_view(request,id):
 
 
 
+# ========================================================================================================================================= 
 
 def editcategory_view(request,id):
     if request.method == 'POST':
@@ -255,13 +260,14 @@ def editcategory_view(request,id):
 
 
 
-#------------------------------------------------------------------------------------------------------------
+# ========================================================================================================================================= 
 #Design management view
 
 def designManagement_View(request):
     Design_page = Design.objects.all()
 
     return render (request,'adminpart/Design_management.html',{'Design_page':Design_page})
+# =========================================================================================================================================     
 
 def ordermangemet_view(request):
     if request.session.get('name'):   
@@ -271,8 +277,7 @@ def ordermangemet_view(request):
     else:
         return redirect('/adminpanel/login/')
 
-
-
+# ========================================================================================================================================= 
 def edit_status_View(request,id):
     if request.session.get('name'):
         user = request.session.get('name')
@@ -282,17 +287,24 @@ def edit_status_View(request,id):
         if edit_status.status   == 'Processing':
             print(edit_status.status)
             edit_status.status  = "Packed"
-            print(edit_status.status,'fds')
+         
         elif edit_status.status == 'Packed':
             edit_status.status  = "Delivered"
+            date = datetime.now()
+            print(date,'//////////////////////////////////')
+            Order.objects.update(user_name = username ,date_delivered = date)
         edit_status.save()         
         return redirect ('/adminpanel/order_management')
+# =========================================================================================================================================         
 
 def coupen_management_View(request):
     if request.session.get('name'):
         coupen  = Coupen.objects.all()
         context = {'coupen':coupen}
         return render(request,'adminpart/coupen-management.html',context)
+
+# ========================================================================================================================================= 
+       
 
 
 
@@ -314,6 +326,7 @@ def edit_coupen_View(request,id):
             return render (request,'adminpart/edit_coupen.html',contex)
     else :
         return redirect('adminpanel/login')
+# =========================================================================================================================================         
 
 def delete_coupen_view(request,id):
     delete_coupen = Coupen.objects.get(id = id)
@@ -343,20 +356,23 @@ def cancel_status_view(request,id):
     cancel_status.save()
     return redirect('/adminpanel/order_management')
 
-
+# ========================================================================================================================================= 
 
 
 def sales_report_view(request):
     if request.session.get('name'):
         Items   = Order.objects.all()
+
         context = {'Items':Items}
         return render(request,'adminpart/sales_reports.html',context)
 
-#log out admin_----------------------------------------------------------------------------------------------- 
+# ========================================================================================================================================= 
+
+
 def export_as_excel_view(request):
     if request.session.get('name'):
         response == HttpResponse(content_type = 'application/ms-excel')
-        d = datetime.strptime(strftime, '%Y-%m-%d %H:%M:%S')
+        d = datetime.strptime(datetime.date, '%Y-%m-%d %H:%M:%S')
         response['content-Disposition'] = 'attachment; filename = Expenses' + \
             str(datetime.now()) +'.xls'
         wb  = xlwt.Workbook(encoding = 'utf-8')
@@ -378,8 +394,63 @@ def export_as_excel_view(request):
         ws.save(response)
         return response
 
+
+
+
+# ========================================================================================================================================= 
+
+def offer_management_view(requst):
+    if request.session.get('name'):
+        # product_offer  = ProductOffer.objects.all()
+        # category_offer = categoryOffer.objects.all()
+        # context        = {'product_offer':product_offer,'category':category_offer}
+
+        return render (request ,'adminpanel/offer_management')
+    else:
+        return redirect('/adminpanel/login/')   
+
+#=========================================================================================================================================         
+
+def date_wise_report_view(request):
+    if request.session.get('name'):
+        if request.method == 'GET':
+            date    = request.GET['date']
+            month   = request.GET['month']
+            year    = request.GET['year']
+         
+            if date  == '' and month == '' and year == '':
+                   messages.error(request,'Empty result, fill the above field')
+                   return redirect('/adminpanel/sales_report/')
+            else:
+                global result
+                if date  != '':
+                    result= Order.objects.filter(date_ordered =date)
+
+                elif month  != '': 
+                
+                    month = month.split('-')
+                    print(month[1])
+                    result= Order.objects.filter(date_ordered__month = month[1])
+                elif year != '':
+                    year = year.split('-')
+                    print(year[0])
+                    result= Order.objects.filter(date_ordered__year = year[0])
+
+                context = {'result':result}
+                return render (request,'adminpart/sale_report2.html',context)
+                    
+
+
+                 
+               
+#=========================================================================================================================================          
+
+
+
+
 def adminlogout_view(request):
+
     del request.session['name']
-    
+
     return redirect('/adminpanel/login/')
        

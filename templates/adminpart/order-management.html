@@ -9,38 +9,39 @@
 <div class='table table-striped table-light  mt-3 '>
     
 
-    <table id ="example"  class="table table-striped table-bordered" style="width:100%">
+    <table id ="example"  class="table table-bordered table-dark" style="width:100%">
         <thead>
           <tr>
-            <th  scope="col" class="border border-dark " style="color:black;">No:</th>
-            <th  scope="col" class="border border-dark " style="color:black;">Customer</th>
-            <th scope="col" class="border border-dark" style="color:black;">Product Name</th>
-            <th scope="col" class="border border-dark" style="color:black;">Category  Name</th>
-            <th scope="col" class="border border-dark" style="color:black;">Quantity</th>
-            <th scope="col" class="border border-dark" style="color:black;">Total prize(INR)</th>
-            <th scope="col" class="border border-dark" style="color:black;">Payment method</th>
-            <th scope="col" class="border border-dark" style="color:black;">Order date</th>
-            <th scope="col" class="border border-dark" style="color:black;">Transaction ID</th>
-            <th scope="col" class="border border-dark" style="color:black;">Order status</th>
+            <th  scope="col" class="border border-dark " style="color:white;">No:</th>
+            <th  scope="col" class="border border-dark " style="color:white;">Customer</th>
+            <th scope="col" class="border border-dark" style="color:white;">Product Name</th>
+            <th scope="col" class="border border-dark" style="color:white;">Category  Name</th>
+            <th scope="col" class="border border-dark" style="color:white;">Quantity</th>
+            <th scope="col" class="border border-dark" style="color:white;">Total prize(INR)</th>
+            <th scope="col" class="border border-dark" style="color:white;">Payment method</th>
+            <th scope="col" class="border border-dark" style="color:white;">Order date</th>
+            <th scope="col" class="border border-dark" style="color:white;">Transaction ID</th>
+            <th scope="col" class="border border-dark" style="color:white;">Order status</th>
+            
           </tr>
         </thead>
         <tbody class="border border-danger" >
         {% for i in order  %}
           <tr>
-            <th scope="row" class="border border-dark" style="color:black;">
+            <th scope="row" class="border border-dark" style="color:white;">
                   {{ forloop.counter }}
          
             </th>
-            <th scope="row" class="border border-dark" style="color:black;">{{i.user_name}}</th>
-            <td class="border border-dark" style="color:black;">{{i.order_product}}</td>
-            <td class="border border-dark" style="color:black;">{{i.order_product.category_type}}</td>
-            <td class="border border-dark" style="color:black;">{{i.quantity}}</td>
-            <td class="border border-dark" style="color:black;">{{i.total_prize}}</td>
-            <td class="border border-dark" style="color:black;">{{i.payment_method}}</td>
-            <td class="border border-dark" style="color:black;">{{i.date_ordered}}</td>
-            <td class="border border-dark" style="color:black;">{{i.transcation_id  }}</td>
+            <th scope="row" class="border border-dark" style="color:white;">{{i.user_name}}</th>
+            <td class="border border-dark" style="color:white;">{{i.order_product}}</td>
+            <td class="border border-dark" style="color:white;">{{i.order_product.category_type}}</td>
+            <td class="border border-dark" style="color:white;">{{i.quantity}}</td>
+            <td class="border border-dark" style="color:white;">{{i.total_prize}}</td>
+            <td class="border border-dark" style="color:white;">{{i.payment_method}}</td>
+            <td class="border border-dark" style="color:white;">{{i.date_ordered}}</td>
+            <td class="border border-dark" style="color:white;">{{i.transcation_id  }}</td>
             {% if  i.status == 'Processing' %}
-            <td class="border border-dark" style="color:black;">  <a type="submit" href = "{% url 'edit_status' i.id %}" class="btn btn-outline-primary">{{i.status}}</a>
+            <td class="border border-dark" style="color:black;">  <a type="submit" href = "{% url 'edit_status' i.id %}" class="btn btn-outline-primary">Placed</a>
               <a type="submit" href = "{% url 'cancel_status' i.id %}" class="btn btn-outline-danger mt-1 btn-lg">Cancel</a></td>
           
           

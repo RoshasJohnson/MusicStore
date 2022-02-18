@@ -447,7 +447,7 @@ function changeqty(id){
       console.log('i.Id:',productId,'action:',action)
       // console.log('user:',user)
       // if(username == 'anonymouseuser'){
-        //   console.log('not logged in')
+        //   console.log('not l5023ogged in')
         // }
         // else{
           updateuserOrder(productId,action)

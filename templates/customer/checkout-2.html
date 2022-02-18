@@ -44,7 +44,7 @@
                                                         <span class="o-card__price text-danger"> INR {{item.get_coupen_offer_prize}}</span></div>
                                                 </div>
 
-                                                <a class="o-card__del far fa-trash-alt"></a>
+                                             
                                             </div>
                                             {% endfor %}
                                         </div>
@@ -93,10 +93,10 @@
                                     </div>
 
                                     <div class="o-summary__section u-s-m-b-30 col-lg">
-                                      <div class="o-summary__box">
-                                        <button style="background-color: red;" type="button"  onclick="coupen()" value = "  Have a Coupen ? "  class="btn btn--e-brand-b-2  btn-sm w-25" >
-                                        
-                                        </button> <p style="color: red;">{{ not_existing_coupen }} {{message_for_exiting_coupen}}</p>
+                                      <a style="background-color: red;" type="button"  onclick="coupen()" class="btn text-light btn-sm w-25 ">
+                                        Have a Coupen ? 
+                                    </a>
+                                     <p style="color: red;">  {% include "adminpart/alert.html" %}</p>
                                       <div style="display: none;" id="coupenDiv">
 
                                         {% for i in  Items %}
@@ -158,6 +158,7 @@
 
                                     <script>
                                               function coupen() {
+                                        
                                                 var x = document.getElementById("coupenDiv");
                                                   x.style.display = "block";
                                                   
@@ -447,7 +448,7 @@
                                 timer: 1500000,
                               })
                               setTimeout(() => {
-                                window.location.href = "/manage_account"
+                                window.location.href = "/order_placed/" +productId
                              }, 1000);
                               
                             
